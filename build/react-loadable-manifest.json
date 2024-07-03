@@ -1,0 +1,29 @@
+{
+  "app\\(auth)\\reset-password\\page.tsx -> @/components/ui/ResetPasswordForm": {
+    "id": 5288,
+    "files": [
+      "static/chunks/288.a52b092c0306c64e.js"
+    ]
+  },
+  "app\\verification\\page.tsx -> @/components/ui/VerificationPageContent": {
+    "id": 6996,
+    "files": [
+      "static/chunks/999-851136954f1c66f4.js",
+      "static/chunks/726-4f91f4af74148e6e.js",
+      "static/chunks/996.55061bd0a8d492e5.js"
+    ]
+  },
+  "components\\ui\\ResetPasswordForm.tsx -> ./ResetPasswordFormContent": {
+    "id": 5132,
+    "files": [
+      "static/chunks/999-851136954f1c66f4.js",
+      "static/chunks/32-fba95d91639afed0.js",
+      "static/chunks/726-4f91f4af74148e6e.js",
+      "static/chunks/648-529f04fce639ab25.js",
+      "static/chunks/138-de226a1607538cb5.js",
+      "static/chunks/343-0ac77a03cb046764.js",
+      "static/chunks/336-f669a1416550e49f.js",
+      "static/chunks/132.1142331b5fa77fbe.js"
+    ]
+  }
+}
