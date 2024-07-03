@@ -25,16 +25,21 @@ const ProfilePage: React.FC = () => {
   const [showPhoneVerificationField, setShowPhoneVerificationField] = useState<boolean>(false);
   const [phoneVerificationCode, setPhoneVerificationCode] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth < 768);
+  const [isMobile, setIsMobile] = useState<boolean>(false);
 
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
+      if (typeof window !== 'undefined') {
+        setIsMobile(window.innerWidth < 768);
+      }
     };
   
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    if (typeof window !== 'undefined') {
+      setIsMobile(window.innerWidth < 768); // Sätt initialt värde
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }
   }, []);
 
   useEffect(() => {
