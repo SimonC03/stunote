@@ -12,7 +12,7 @@ const nextConfig = {
   },
   outputFileTracing: true,
   experimental: {
-    appDir: true, // Aktivera detta om du använder app-mappen i Next.js 13 eller senare
+    appDir: true,
   },
 };
 
