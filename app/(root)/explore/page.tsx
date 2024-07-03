@@ -1,0 +1,329 @@
+'use client';
+
+import React, { useState, useEffect, useCallback } from 'react';
+import { Course, getCoursesData, getUserData, UserProfile } from '@/lib/api';
+import Modal from '@/components/ui/Modal';
+import { useUserContext } from '@/context/UserContext';
+import ProtectedRoute from '@/components/ProtectedRoute';
+import Link from 'next/link';
+
+const ExplorePage = () => {
+  const { user, loading: userLoading } = useUserContext();
+  const [courses, setCourses] = useState<Course[]>([]);
+  const [filteredCourses, setFilteredCourses] = useState<Course[]>([]);
+  const [selectedCourseId, setSelectedCourseId] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [activeTab, setActiveTab] = useState<string>('explore');
+  const [userData, setUserData] = useState<UserProfile | null>(null);
+
+  const fetchCourses = useCallback(async () => {
+    try {
+      setLoading(true);
+      const allCourses = await getCoursesData();
+      setCourses(allCourses);
+      setFilteredCourses(allCourses);
+    } catch (error) {
+      console.error('Error fetching courses:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  const fetchUserData = useCallback(async () => {
+    if (user && user.$id) {
+      try {
+        const data = await getUserData(user.$id);
+        setUserData(data);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (user && !userLoading) {
+      fetchCourses();
+      fetchUserData();
+    }
+  }, [user, userLoading, fetchCourses, fetchUserData]);
+
+  useEffect(() => {
+    if (searchTerm === '') {
+      setFilteredCourses(courses);
+    } else {
+      const lowercasedSearchTerm = searchTerm.toLowerCase();
+      setFilteredCourses(
+        courses.filter(
+          (course) =>
+            (course.courseCode && course.courseCode.toLowerCase().includes(lowercasedSearchTerm)) ||
+            (course.courseName && course.courseName.toLowerCase().includes(lowercasedSearchTerm))
+        )
+      );
+    }
+  }, [searchTerm, courses]);
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const handleCloseModal = () => setSelectedCourseId(null);
+
+  if (loading || userLoading) {
+    return (
+      <div className="loading-container">
+        <div className="spinner"></div>
+      </div>
+    );;
+  }
+
+  const renderCourses = (coursesToRender: Course[]) => {
+    return coursesToRender.map(course => (
+      <li key={course.$id} className="course-item">
+        <div className="course-link" onClick={() => {
+          console.log('Selected course:', course);
+          setSelectedCourseId(course.$id);
+        }}>
+          <div className="course-details">
+            <div className="course-header">
+              <span className="course-code">{course.courseCode}</span>
+            </div>
+            <div className='course-name'>
+              <span className="course-name">{course.courseName}</span>
+            </div>
+            <div className='course-school'>
+              <span className="university">{course.university}</span>
+            </div>
+          </div>
+        </div>
+      </li>
+    ));
+  };
+
+  const renderMyEducation = () => {
+    if (!userData) {
+      return null;
+    }
+  
+    if (!userData.education || !userData.school) {
+      return (
+        <p>
+          No education found.{' '}
+          <Link href="/profile" legacyBehavior>
+            <a className="profile-link">Go to profile and select education</a>
+          </Link>
+        </p>
+      );
+    }
+  
+    return (
+      <div>
+        <p><strong>Education:</strong> {userData.education}</p>
+        <p><strong>School:</strong> {userData.school}</p>
+
+        <br/><br/>
+        <h1><strong>This function is under development</strong></h1>
+        
+      </div>
+    );
+  };
+
+  return (
+    <ProtectedRoute>
+      <div className="container">
+        <h1 className="welcome-title">Discover endless learning possibilities here!</h1>
+        <div className="search-bar">
+          <input
+            className='search-box'
+            type="text"
+            placeholder="Search for course name or course code"
+            value={searchTerm}
+            onChange={handleSearchChange}
+          />
+        </div>
+        <div className="selection-container">
+          <button 
+            className={`tab ${activeTab === 'explore' ? 'active' : ''}`} 
+            onClick={() => setActiveTab('explore')}
+          >
+            Explore
+          </button>
+          <button 
+            className={`tab ${activeTab === 'myEducation' ? 'active' : ''}`} 
+            onClick={() => setActiveTab('myEducation')}
+          >
+            My Education
+          </button>
+        </div>
+        <div className="courses-container">
+          {activeTab === 'explore' ? (
+            <ul className="course-list">
+              {renderCourses(filteredCourses)}
+            </ul>
+          ) : (
+            <div className="my-education">
+              {renderMyEducation()}
+            </div>
+          )}
+        </div>
+        {selectedCourseId && (
+          <Modal
+            show={Boolean(selectedCourseId)}
+            onClose={handleCloseModal}
+            courseId={selectedCourseId}
+          />
+        )}
+        <style jsx>{`
+          .container {
+            margin-top: 20px;
+            padding: 10px;
+          }
+          .welcome-title {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin: 30px;
+            color: white;
+          }
+          .search-bar {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+          }
+          .search-box {
+            padding: 10px;
+            border-radius: 20px;
+            border: 1px solid #ddd;
+            width: 600px;
+            margin: 10px 10px 10px 0;
+          }
+          .selection-container {
+            display: flex;
+            justify-content: center;
+            height: 40px;
+            margin-bottom: 5px;
+          }
+          .tab {
+            flex: 1;
+            padding: 10px 20px;
+            margin: 0;
+            border: none;
+            background: none;
+            color: #D9D9D8;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            cursor: pointer;
+            background-color: #F6F6F6;
+          }
+          .tab.active {
+            background-color: #47ABFE;
+            color: white;
+          }
+          .courses-container {
+            display: flex;
+            justify-content: center;
+            background-color: white;
+            padding: 20px;
+          }
+          .course-list {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            width: 100%;
+          }
+          .course-item {
+            background: #F6F6F6;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            transition: background 0.3s;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+          }
+          .course-item:hover {
+            background: #eeeeee;
+          }
+          .course-details {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+          }
+          .course-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          }
+          .course-code {
+            font-weight: bold;
+            color: #333;
+            font-size: 14px;
+          }
+          .course-name {
+            font-size: 16px;
+            color: #000;
+            font-weight: bold;
+            margin: 10px 0;
+          }
+          .university {
+            font-style: italic;
+            color: #777;
+          }
+          .my-education {
+            text-align: center;
+          }
+          .profile-link {
+            color: #47ABFE;
+            text-decoration: underline;
+            cursor: pointer;
+          }
+          .my-education {
+            text-align: left;
+            font-size: 14px;
+          }
+          @media (max-width: 768px) {
+            .welcome-title {
+              font-size: 20px;
+              margin: 20px;
+            }
+            .search-box {
+              width: 100%;
+              font-size: 10px;
+            }
+            .course-list {
+              grid-template-columns: 1fr;
+            }
+            .course-item {
+              padding: 10px;
+            }
+            .tab {
+              font-size: 14px;
+              padding: 8px 10px;
+            }
+            .search-bar {
+              margin-bottom: 10px;
+            }
+            .course-code {
+              font-size: 12px;
+            }
+            .course-name {
+              font-size: 14px;
+            }
+            .university {
+              font-size: 10px;
+            }
+            .my-education {
+              font-size: 12px;
+            }
+          }
+        `}</style>
+      </div>
+    </ProtectedRoute>
+  );
+};
+
+export default ExplorePage;
