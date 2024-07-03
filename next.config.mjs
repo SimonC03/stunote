@@ -11,9 +11,6 @@ const nextConfig = {
     ],
   },
   outputFileTracing: true,
-  experimental: {
-    appDir: true,
-  },
 };
 
 export default nextConfig;
