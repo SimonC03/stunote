@@ -20,10 +20,9 @@ const VerificationPageContent: React.FC = () => {
           await account.updateVerification(userId, secret);
           toast.success('Verification successful');
           setVerificationStatus('success');
-          // Omdirigera till profilsidan efter en kort fördröjning
           setTimeout(() => {
             router.push('/profile');
-          }, 3000); // Fördröjning på 3 sekunder innan omdirigering
+          }, 3000);
         } catch (error: any) {
           if (error.code === 429) {
             toast.error('Rate limit exceeded. Please try again later.');

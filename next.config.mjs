@@ -10,7 +10,6 @@ const nextConfig = {
       },
     ],
   },
-  outputFileTracing: true,
 };
 
 export default nextConfig;
