@@ -21,7 +21,7 @@ import { toast } from 'react-hot-toast';
 
 const signInSchema = z.object({
   email: z.string().email(),
-  password: z.string().min(6),
+  password: z.string().min(8),
 });
 
 const LoginForm: React.FC = () => {
