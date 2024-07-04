@@ -267,7 +267,7 @@ const UploadPage = () => {
                     </select>
                   </div>
                   <div>
-                    <label htmlFor="examDate" className="block text-sm font-medium text-gray-700">Date</label>
+                    <label htmlFor="examDate" className="block text-sm font-medium text-gray-700">Exam Date</label>
                     <input
                       type="date"
                       id="examDate"
