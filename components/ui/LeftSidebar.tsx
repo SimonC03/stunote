@@ -52,7 +52,9 @@ const LeftSidebar = () => {
             
             <div className="flex flex-col gap-6 py-4 max-lg:px-4 justify-start">
                 <ProfileIcon/>
-                <LogoutButton/>
+                <div className='flex flex-col max-lg:mr-1 mr-10'>
+                    <LogoutButton/>   
+                </div>
             </div>  
         </section>
     </ProtectedRoute>
