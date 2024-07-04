@@ -1,26 +1,34 @@
+/* HTML: <div class="spinner"></div> */
 .spinner {
-    border: 8px solid rgba(255, 255, 255, 0.3);
-    border-top: 8px solid #ffffff;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    animation: spin 1s linear infinite;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 100px auto;
-  }
-  
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-  
-  .loading-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    background-color: transparent; /* Adjust the background color as needed */
-  }
-  
+  width: 50px;
+  aspect-ratio: 1;
+  display: grid;
+  border: 4px solid #0000;
+  border-radius: 50%;
+  border-right-color: white;
+  animation: l15 1s infinite linear;
+}
+.spinner::before,
+.spinner::after {    
+  content: "";
+  grid-area: 1/1;
+  margin: 2px;
+  border: inherit;
+  border-radius: 50%;
+  animation: l15 2s infinite;
+}
+.spinner::after {
+  margin: 8px;
+  animation-duration: 3s;
+}
+@keyframes l15 { 
+  100% { transform: rotate(1turn); }
+}
+
+.loading-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: transparent; /* Adjust the background color as needed */
+}
