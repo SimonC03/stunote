@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  distDir: '.next',
   images: {
     remotePatterns: [
       {
@@ -11,12 +12,6 @@ const nextConfig = {
     ],
   },
   webpack: (config, { isServer }) => {
-    if (isServer) {
-      console.log("Building server-side...");
-    } else {
-      console.log("Building client-side...");
-    }
-
     config.plugins.push({
       apply: (compiler) => {
         compiler.hooks.emit.tapAsync('LogFilesPlugin', (compilation, callback) => {
@@ -25,6 +20,14 @@ const nextConfig = {
         });
       }
     });
+
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+        path: false,
+      };
+    }
 
     return config;
   },

@@ -3,7 +3,7 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useUserContext } from '../context/UserContext';
-import HomePage from './(root)/page'; // Justera sökvägen efter behov
+import HomePage from './(root)/index'; // Justera sökvägen efter behov
 import LandingPage from './(auth)/LandingPage'; // Justera sökvägen efter behov
 import RootLayout from './(root)/layout';
 import '@/components/animations/spinner.css'; // Importera CSS-filen
