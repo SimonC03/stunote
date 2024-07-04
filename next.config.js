@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  distDir: 'build',
   images: {
     remotePatterns: [
       {
@@ -10,7 +11,6 @@ const nextConfig = {
       },
     ],
   },
-  distDir: 'build',
   webpack: (config, { isServer }) => {
     if (isServer) {
       console.log("Building server-side...");
