@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import { Query } from 'appwrite';
 import { Button } from '@/components/ui/button';
 import AdminRoute from '@/components/AdminRoute';
+import toast from 'react-hot-toast';
 
 interface UploadFormData {
   school: string;
@@ -15,6 +16,8 @@ interface UploadFormData {
   documentType: string;
   file: FileList;
   description: string; // Lägg till description här
+  examType?: string; // Lägg till examType för att hålla "Tentamen" eller "Dugga"
+  examDate?: string; // Lägg till examDate för att hålla datumet
 }
 
 const documentTypes = [
@@ -25,6 +28,11 @@ const documentTypes = [
   "Formula collection",
 ];
 
+const examTypes = [
+  "Tentamen",
+  "Dugga"
+];
+
 const UploadPage = () => {
   const { register, handleSubmit, watch, reset } = useForm<UploadFormData>();
   const [loading, setLoading] = useState(false);
@@ -32,8 +40,10 @@ const UploadPage = () => {
   const [courses, setCourses] = useState<{ id: string, courseCode: string }[]>([]);
   const [charCount, setCharCount] = useState(0);
   const [descriptionError, setDescriptionError] = useState('');
+  const [isExamination, setIsExamination] = useState(false); // Lägg till state för examination
   const router = useRouter();
   const selectedSchool = watch('school');
+  const selectedDocumentType = watch('documentType');
 
   useEffect(() => {
     // Hämta alla unika skolor från Appwrite-databasen
@@ -81,12 +91,17 @@ const UploadPage = () => {
     }
   }, [selectedSchool]);
 
+  useEffect(() => {
+    // Uppdatera state när dokumenttypen ändras
+    setIsExamination(selectedDocumentType === 'Examination');
+  }, [selectedDocumentType]);
+
   const onSubmit: SubmitHandler<UploadFormData> = async (data) => {
     setLoading(true);
     const file = data.file[0];
 
     if (!file) {
-      console.error('No file selected');
+      toast.error('No file selected');
       setLoading(false);
       return;
     }
@@ -102,6 +117,25 @@ const UploadPage = () => {
       const user = await account.get();
       const userId = user.$id;
 
+      // Kontrollera om ett dokument med samma kurs och description redan finns
+      let description = data.description;
+      if (isExamination && data.examType && data.examDate) {
+        description = `${data.examType} ${data.examDate}`;
+      }
+
+      const existingDocuments = await databases.listDocuments(
+        process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!,
+        process.env.NEXT_PUBLIC_APPWRITE_DOCUMENTS_COLLECTION_ID!,
+        [Query.equal('courses', data.courseId), Query.equal('description', description)]
+      );
+
+      if (existingDocuments.total > 0) {
+        toast.error("A document with the same course and description already exists.")
+        setDescriptionError('A document with the same course and description already exists.');
+        setLoading(false);
+        return;
+      }
+
       // Ladda upp filen till Appwrite Storage
       const fileUploadResponse = await storage.createFile(
         process.env.NEXT_PUBLIC_APPWRITE_STORAGE_ID!,
@@ -116,7 +150,7 @@ const UploadPage = () => {
         uploadTime: new Date().toISOString(),
         fileUrl: `https://cloud.appwrite.io/v1/storage/buckets/${process.env.NEXT_PUBLIC_APPWRITE_STORAGE_ID}/files/${fileUploadResponse.$id}/view?project=${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`,
         uploadedBy: userId,
-        description: data.description, // Lägg till description här
+        description, // Uppdatera description här
         // Kommentera bort eller ta bort school attributet om det inte finns i din samling
         // school: data.school,
       };
@@ -130,6 +164,7 @@ const UploadPage = () => {
       );
 
       reset();
+      toast.success('Document uploaded successfully.');
       router.push(`/`); // Redirect to success page or confirmation page
     } catch (error) {
       console.error('Error uploading document:', error);
@@ -214,19 +249,48 @@ const UploadPage = () => {
                   className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
-              <div>
-                <label htmlFor="description" className="block text-sm font-medium text-gray-700">Description</label>
-                <textarea
-                  id="description"
-                  {...register('description', { required: true })}
-                  onChange={handleDescriptionChange}
-                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                />
-                {descriptionError && (
-                  <p className="mt-2 text-sm text-red-600">{descriptionError}</p>
-                )}
-                <p className="mt-2 text-sm text-gray-600">{charCount}/100 characters</p>
-              </div>
+              {isExamination ? (
+                <>
+                  <div>
+                    <label htmlFor="examType" className="block text-sm font-medium text-gray-700">Exam Type</label>
+                    <select
+                      id="examType"
+                      {...register('examType', { required: isExamination })}
+                      className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                    >
+                      <option value="">Select an exam type</option>
+                      {examTypes.map((type, index) => (
+                        <option key={index} value={type}>
+                          {type}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label htmlFor="examDate" className="block text-sm font-medium text-gray-700">Date</label>
+                    <input
+                      type="date"
+                      id="examDate"
+                      {...register('examDate', { required: isExamination })}
+                      className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                    />
+                  </div>
+                </>
+              ) : (
+                <div>
+                  <label htmlFor="description" className="block text-sm font-medium text-gray-700">Description</label>
+                  <textarea
+                    id="description"
+                    {...register('description', { required: true })}
+                    onChange={handleDescriptionChange}
+                    className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  />
+                  {descriptionError && (
+                    <p className="mt-2 text-sm text-red-600">{descriptionError}</p>
+                  )}
+                  <p className="mt-2 text-sm text-gray-600">{charCount}/100 characters</p>
+                </div>
+              )}
               <Button
                 type="submit"
                 variant="default"
