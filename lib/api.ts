@@ -6,6 +6,8 @@ const usersCollectionId = process.env.NEXT_PUBLIC_APPWRITE_USERS_COLLECTION_ID!;
 const coursesCollectionId = process.env.NEXT_PUBLIC_APPWRITE_COURSES_COLLECTION_ID!;
 const documentsCollectionId = process.env.NEXT_PUBLIC_APPWRITE_DOCUMENTS_COLLECTION_ID!;
 const subscriptionsCollectionId = process.env.NEXT_PUBLIC_APPWRITE_SUBSCRIPTIONS_COLLECTION_ID!;
+const applicationsCollectionId = process.env.NEXT_PUBLIC_APPWRITE_APPLICATIONS_COLLECTION_ID!;
+const messagesCollectionId = process.env.NEXT_PUBLIC_APPWRITE_MESSAGES_COLLECTION_ID!;
 const userIconStorageId = process.env.NEXT_PUBLIC_APPWRITE_USERICON_ID!;
 
 export interface UserProfile {
@@ -47,6 +49,21 @@ export interface Document {
   fileUrl: string;
   uploadTime: string;
   description: string;
+}
+
+export interface Application {
+  name: string;
+  email: string;
+  phone: string;
+  message: string;
+  jobTitle: string;
+}
+
+export interface Message {
+  name: string;
+  email: string;
+  type: string;
+  message: string;
 }
 
 // Central felhanteringsfunktion
@@ -467,5 +484,45 @@ export const removeFavoriteDocument = async (userId: string, documentId: string)
   } catch (error: any) {
     console.error('Failed to remove favorite document:', error);
     throw new Error('Failed to remove favorite document');
+  }
+};
+
+export const createApplication = async (applicationData: Application) => {
+  try {
+    const response = await databases.createDocument(
+      databaseId,
+      applicationsCollectionId,
+      ID.unique(),
+      applicationData,
+      [
+        Permission.read(Role.any()),
+        Permission.write(Role.any())
+      ]
+    );
+
+    return response;
+  } catch (error: any) {
+    handleError('Failed to create application', error);
+    throw new Error('Failed to create application');
+  }
+};
+
+export const createMessage = async (messageData: Message) => {
+  try {
+    const response = await databases.createDocument(
+      databaseId,
+      messagesCollectionId,
+      ID.unique(),
+      messageData,
+      [
+        Permission.read(Role.any()),
+        Permission.write(Role.any())
+      ]
+    );
+
+    return response;
+  } catch (error: any) {
+    console.error('Failed to create message', error);
+    throw new Error('Failed to create message');
   }
 };

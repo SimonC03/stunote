@@ -23,4 +23,10 @@ export const sidebarLinks = [
         imgURL: '/icons/createIcon.svg',
         admin: true,
     },
+    {
+        route: '/contact',
+        label: 'Contact',
+        imgURL: '/icons/contactIcon.svg',
+        admin: false,
+    },
 ];
