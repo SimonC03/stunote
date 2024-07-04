@@ -13,7 +13,6 @@ import { Button } from '@/components/ui/button';
 const ProfilePage: React.FC = () => {
   const { user, loading } = useUserContext();
   const [profile, setProfile] = useState<UserProfile | null>(null);
-  const [profilePicture, setProfilePicture] = useState<File | null>(null);
   const [phoneNumber, setPhoneNumber] = useState<string>('');
   const [phoneVerified, setPhoneVerified] = useState<boolean>(false);
   const [emailVerified, setEmailVerified] = useState<boolean>(false);
@@ -27,14 +26,13 @@ const ProfilePage: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isMobile, setIsMobile] = useState<boolean>(false);
 
-
   useEffect(() => {
     const handleResize = () => {
       if (typeof window !== 'undefined') {
         setIsMobile(window.innerWidth < 768);
       }
     };
-  
+
     if (typeof window !== 'undefined') {
       setIsMobile(window.innerWidth < 768); // Sätt initialt värde
       window.addEventListener('resize', handleResize);
@@ -184,7 +182,7 @@ const ProfilePage: React.FC = () => {
       try {
         // Skapa ett objekt för uppdateringar med endast de fält som har ändrats
         const updatedProfileData: Partial<UserProfile> = {};
-  
+
         if (profile.username !== user?.username) {
           updatedProfileData.username = profile.username;
           await updateUsername(profile.username);
@@ -204,7 +202,7 @@ const ProfilePage: React.FC = () => {
         if (profile.phoneNumber !== phoneNumber) {
           updatedProfileData.phoneNumber = phoneNumber;
         }
-  
+
         // Kontrollera om det finns några ändringar att spara
         if (Object.keys(updatedProfileData).length > 0) {
           await updateUserProfile(profile.documentId, updatedProfileData, password);
@@ -216,7 +214,7 @@ const ProfilePage: React.FC = () => {
         toast.error('Failed to update profile');
         console.error('Failed to update profile', error);
       }
-  
+
       if (!phoneVerified && phoneNumber !== profile.phoneNumber) {
         try {
           await updatePhoneNumber(phoneNumber, password, profile.documentId);
@@ -226,7 +224,7 @@ const ProfilePage: React.FC = () => {
           console.error('Failed to update phone number', error);
         }
       }
-  
+
       if (!emailVerified && profile.email !== user.email) {
         try {
           await updateEmail(profile.email, password, profile.documentId);
@@ -242,7 +240,7 @@ const ProfilePage: React.FC = () => {
   const formatPhoneNumber = (phoneNumber: string): string => {
     // Tar bort alla icke-siffror
     const cleaned = phoneNumber.replace(/\D/g, '');
-    
+
     // Lägger till +46 prefixet och begränsar längden till 11 tecken (2 för landskod och 9 för numret)
     if (cleaned.startsWith('46')) {
       return '+' + cleaned.slice(0, 11); // +46 följt av 9 siffror
@@ -305,7 +303,6 @@ const ProfilePage: React.FC = () => {
   const getStyles = (): { [key: string]: React.CSSProperties } => {
     return isMobile ? { ...styles, ...mobileStyles } : styles;
   };
-  
 
   return (
     <ProtectedRoute>
@@ -315,23 +312,30 @@ const ProfilePage: React.FC = () => {
             style={getStyles().profileImageContainer}
             onDrop={handleDrop}
             onDragOver={handleDragOver}
-            onClick={() => fileInputRef.current?.click()}
           >
-            <input
-              type="file"
-              id="iconUrl"
-              name="iconUrl"
-              accept="image/*"
-              onChange={handleProfilePictureChange}
-              style={getStyles().fileInput}
-              ref={fileInputRef}
-            />
             <Image
               src={profile.iconUrl || '/icons/avatar.svg'}
               alt="Profile"
               style={getStyles().profileImage}
               width={150}
               height={150}
+            />
+            <Button
+              variant="default"
+              size="xs"
+              style={getStyles().changePictureButton}
+              onClick={() => fileInputRef.current?.click()}
+            >
+              Change Profile Picture
+            </Button>
+            <input
+              type="file"
+              id="iconUrl"
+              name="iconUrl"
+              accept="image/*"
+              onChange={handleProfilePictureChange}
+              style={{ display: 'none' }}
+              ref={fileInputRef}
             />
           </div>
           <div style={getStyles().subscriptionPlan}>
@@ -408,9 +412,14 @@ const ProfilePage: React.FC = () => {
                     onChange={(e) => setPhoneVerificationCode(e.target.value)}
                     style={getStyles().formInput}
                   />
-                  <button type="button" onClick={handlePhoneVerification} style={getStyles().verifyButton}>
+                  <Button
+                    type="button"
+                    style={getStyles().verifyButton}
+                    onClick={handlePhoneVerification}
+                    size="sm"
+                  >
                     Enter
-                  </button>
+                  </Button>
                 </div>
               </div>
             )}
@@ -460,7 +469,14 @@ const ProfilePage: React.FC = () => {
                 style={getStyles().passwordInput}
                 required
               />
-              <button type="submit" style={getStyles().saveButton}>Save</button>
+              <Button
+                type="submit"
+                variant="default"
+                size="default"
+                style={getStyles().saveButton}
+              >
+                Save
+              </Button>
             </div>
           </form>
         </div>
@@ -490,8 +506,8 @@ const styles: { [key: string]: React.CSSProperties } = {
     position: 'relative',
     width: '150px',
     height: '150px',
-    marginBottom: '20px',
-    cursor: 'pointer',
+    marginBottom: '10px',
+    textAlign: 'center',
   },
   profileImage: {
     width: '150px',
@@ -499,15 +515,19 @@ const styles: { [key: string]: React.CSSProperties } = {
     borderRadius: '50%',
     objectFit: 'cover',
   },
-  fileInput: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    opacity: 0,
-    cursor: 'pointer',
+  changePictureButton: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: '10px auto 0',
+    width: '80%',
+    boxSizing: 'border-box',
+    fontSize: '10px',
   },
   subscriptionPlan: {
     textAlign: 'center',
+    marginTop: '60px',
+    fontWeight: 'bold',
   },
   subscriptionInput: {
     width: '100px',
@@ -517,15 +537,6 @@ const styles: { [key: string]: React.CSSProperties } = {
     border: '1px solid #ccc',
     borderRadius: '5px',
     backgroundColor: '#fff',
-  },
-  changePlanButton: {
-    marginLeft: '10px',
-    padding: '6px 15px',
-    backgroundColor: '#007bff',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '5px',
-    cursor: 'pointer',
   },
   profileFormContainer: {
     flex: 1,
@@ -565,16 +576,12 @@ const styles: { [key: string]: React.CSSProperties } = {
     top: '50%',
     transform: 'translateY(-50%)',
     padding: '8px 15px',
-    backgroundColor: '#007bff',
-    color: '#fff',
     border: 'none',
     borderRadius: '5px',
     cursor: 'pointer',
   },
   saveButton: {
     padding: '11px 20px',
-    backgroundColor: '#007bff',
-    color: '#fff',
     border: 'none',
     borderRadius: '5px',
     cursor: 'pointer',
@@ -624,15 +631,19 @@ const mobileStyles: { [key: string]: React.CSSProperties } = {
     borderRadius: '50%',
     objectFit: 'cover',
   },
-  fileInput: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    opacity: 0,
-    cursor: 'pointer',
+  changePictureButton: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: '10px auto 0',
+    width: '100px',
+    fontSize: '8px',
   },
   subscriptionPlan: {
     textAlign: 'center',
+    marginTop: '30px',
+    fontSize: '14px',
+    fontWeight: 'bold'
   },
   subscriptionInput: {
     width: '80px',
@@ -642,15 +653,6 @@ const mobileStyles: { [key: string]: React.CSSProperties } = {
     border: '1px solid #ccc',
     borderRadius: '5px',
     backgroundColor: '#fff',
-  },
-  changePlanButton: {
-    marginLeft: '10px',
-    padding: '6px 15px',
-    backgroundColor: '#007bff',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '5px',
-    cursor: 'pointer',
   },
   profileFormContainer: {
     flex: 1,
@@ -691,16 +693,12 @@ const mobileStyles: { [key: string]: React.CSSProperties } = {
     top: '50%',
     transform: 'translateY(-50%)',
     padding: '8px 15px',
-    backgroundColor: '#007bff',
-    color: '#fff',
     border: 'none',
     borderRadius: '5px',
     cursor: 'pointer',
   },
   saveButton: {
     padding: '10px 20px',
-    backgroundColor: '#007bff',
-    color: '#fff',
     border: 'none',
     borderRadius: '5px',
     cursor: 'pointer',
