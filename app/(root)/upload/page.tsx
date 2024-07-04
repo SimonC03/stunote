@@ -7,6 +7,7 @@ import ProtectedRoute from '@/components/ProtectedRoute';
 import { useRouter } from 'next/navigation';
 import { Query } from 'appwrite';
 import { Button } from '@/components/ui/button';
+import AdminRoute from '@/components/AdminRoute';
 
 interface UploadFormData {
   school: string;
@@ -155,88 +156,90 @@ const UploadPage = () => {
 
   return (
     <ProtectedRoute>
-      <div className="flex items-center justify-center min-h-screen py-12 px-4 sm:px-6 lg:px-8">
-        <div className="bg-white p-8 rounded-md shadow-md w-full max-w-md">
-          <h1 className="text-2xl font-bold text-gray-800 mb-6">Upload</h1>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div>
-              <label htmlFor="school" className="block text-sm font-medium text-gray-700">School</label>
-              <select
-                id="school"
-                {...register('school', { required: true })}
-                className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+      <AdminRoute>
+        <div className="flex items-center justify-center min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+          <div className="bg-white p-8 rounded-md shadow-md w-full max-w-md">
+            <h1 className="text-2xl font-bold text-gray-800 mb-6">Upload</h1>
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+              <div>
+                <label htmlFor="school" className="block text-sm font-medium text-gray-700">School</label>
+                <select
+                  id="school"
+                  {...register('school', { required: true })}
+                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                >
+                  <option value="">Select a school</option>
+                  {schools.map((school, index) => (
+                    <option key={index} value={school}>
+                      {school}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label htmlFor="courseId" className="block text-sm font-medium text-gray-700">Course Code</label>
+                <select
+                  id="courseId"
+                  {...register('courseId', { required: true })}
+                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                >
+                  <option value="">Select a course</option>
+                  {courses.map((course, index) => (
+                    <option key={index} value={course.id}>
+                      {course.courseCode}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label htmlFor="documentType" className="block text-sm font-medium text-gray-700">Document Type</label>
+                <select
+                  id="documentType"
+                  {...register('documentType', { required: true })}
+                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                >
+                  {documentTypes.map((type, index) => (
+                    <option key={index} value={type}>
+                      {type}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label htmlFor="file" className="block text-sm font-medium text-gray-700">File</label>
+                <input
+                  id="file"
+                  type="file"
+                  {...register('file', { required: true })}
+                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                />
+              </div>
+              <div>
+                <label htmlFor="description" className="block text-sm font-medium text-gray-700">Description</label>
+                <textarea
+                  id="description"
+                  {...register('description', { required: true })}
+                  onChange={handleDescriptionChange}
+                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                />
+                {descriptionError && (
+                  <p className="mt-2 text-sm text-red-600">{descriptionError}</p>
+                )}
+                <p className="mt-2 text-sm text-gray-600">{charCount}/100 characters</p>
+              </div>
+              <Button
+                type="submit"
+                variant="default"
+                size="default"
+                className="w-full py-2 px-4 font-semibold shadow-sm"
+                disabled={loading}
               >
-                <option value="">Select a school</option>
-                {schools.map((school, index) => (
-                  <option key={index} value={school}>
-                    {school}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label htmlFor="courseId" className="block text-sm font-medium text-gray-700">Course Code</label>
-              <select
-                id="courseId"
-                {...register('courseId', { required: true })}
-                className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-              >
-                <option value="">Select a course</option>
-                {courses.map((course, index) => (
-                  <option key={index} value={course.id}>
-                    {course.courseCode}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label htmlFor="documentType" className="block text-sm font-medium text-gray-700">Document Type</label>
-              <select
-                id="documentType"
-                {...register('documentType', { required: true })}
-                className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-              >
-                {documentTypes.map((type, index) => (
-                  <option key={index} value={type}>
-                    {type}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label htmlFor="file" className="block text-sm font-medium text-gray-700">File</label>
-              <input
-                id="file"
-                type="file"
-                {...register('file', { required: true })}
-                className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-              />
-            </div>
-            <div>
-              <label htmlFor="description" className="block text-sm font-medium text-gray-700">Description</label>
-              <textarea
-                id="description"
-                {...register('description', { required: true })}
-                onChange={handleDescriptionChange}
-                className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-              />
-              {descriptionError && (
-                <p className="mt-2 text-sm text-red-600">{descriptionError}</p>
-              )}
-              <p className="mt-2 text-sm text-gray-600">{charCount}/100 characters</p>
-            </div>
-            <Button
-              type="submit"
-              variant="default"
-              size="default"
-              className="w-full py-2 px-4 font-semibold shadow-sm"
-              disabled={loading}
-            >
-              {loading ? 'Uploading...' : 'Upload'}
-            </Button>
-          </form>
+                {loading ? 'Uploading...' : 'Upload'}
+              </Button>
+            </form>
+          </div>
         </div>
-      </div>
+      </AdminRoute>
     </ProtectedRoute>
   );
 };

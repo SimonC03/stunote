@@ -85,3 +85,19 @@ export const updateEmail = async (email: string, password: string, documentId: s
     throw new Error('Failed to update email');
   }
 };
+
+// Funktion för att hämta användarens roll via Labels
+export const getUserRole = async (): Promise<string | null> => {
+  try {
+    const user = await account.get();
+
+    if (user.labels.includes('admin')) {
+      return 'admin';
+    } else {
+      return null;
+    }
+  } catch (error: any) {
+    console.error('Failed to fetch user role:', error);
+    throw new Error('Failed to fetch user role');
+  }
+};
