@@ -3,21 +3,24 @@ export const sidebarLinks = [
         route: '/',
         label: 'Home',
         imgURL: "/icons/home.svg",
+        admin: false,
     },
     {
         route: '/explore',
         label: 'Explore',
         imgURL: '/icons/exploreIcon.svg',
+        admin: false,
     },
     {
         route: '/upload',
         label: 'Upload Documents',
         imgURL: '/icons/documentIcon.svg',
+        admin: true,
     },
     {
         route: '/create-course',
         label: 'Create Course',
         imgURL: '/icons/createIcon.svg',
+        admin: true,
     },
-    
-]
+];
