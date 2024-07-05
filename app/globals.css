@@ -10,7 +10,7 @@
 
 html {
   background: linear-gradient(to left, #60a5fa, #1e40af);
-  height: auto;
+  background-attachment: fixed;
 }
 
 body {
