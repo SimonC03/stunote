@@ -9,30 +9,31 @@
 }
 
 html {
+  background-color: red;
   background: linear-gradient(to left, #60a5fa, #1e40af);
   background-attachment: fixed;
   height: 100%;
-  margin: 0;
-  padding: 0;
 }
 
 body {
-  min-height: 100vh;
+  height: 100%;
+  margin: 0;
   display: flex;
   flex-direction: column;
-  margin: 0;
 }
 
 #__next {
   flex: 1;
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
 }
 
 main {
   flex: 1;
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
   overflow-y: auto;
 }
 
