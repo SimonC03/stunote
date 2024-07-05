@@ -1,4 +1,4 @@
-/* HTML: <div class="spinner"></div> */
+
 .spinner {
   width: 50px;
   aspect-ratio: 1;
@@ -30,5 +30,5 @@
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background-color: transparent; /* Adjust the background color as needed */
+  background-color: transparent;
 }
