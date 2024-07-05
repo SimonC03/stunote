@@ -25,6 +25,7 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
 #__next {
@@ -39,15 +40,6 @@ main {
   flex-direction: column;
   overflow-y: auto;
 }
-
-/* Ensure background covers safe area insets on iPhones */
-@supports (padding: max(0px)) {
-  body {
-    padding: max(env(safe-area-inset-top), 0px) max(env(safe-area-inset-right), 0px) max(env(safe-area-inset-bottom), 0px) max(env(safe-area-inset-left), 0px);
-  }
-}
-
-
 
 .left_sidebar {
   @apply fixed left-0 top-0 h-full flex flex-col justify-between bg-black-1 text-white-1 w-[270px] pt-8;
