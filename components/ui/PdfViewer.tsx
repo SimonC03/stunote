@@ -47,7 +47,7 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl }) => {
           adobeDCView.previewFile(
             {
               content: { location: { url: pdfUrl } },
-              metaData: { fileName: 'sample.pdf' },
+              metaData: { fileName: 'document.pdf' },
             },
             {
               embedMode: 'IN_LINE',
@@ -56,8 +56,9 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl }) => {
               showPageControls: false,
               showDownloadPDF: false,
               showPrintPDF: false,
-              showFullScreen: false,
-              showZoomControl: false,
+              showFullScreen: true,
+              showZoomControl: true,
+              hasReadOnlyAccess: true,
             }
           );
         }
