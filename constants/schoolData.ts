@@ -49,7 +49,7 @@ export const schoolData: SchoolData = {
     { name: "Ekonomi och produktionsteknik, 180 hp", codes: [] },
     { name: "Elektroteknik, 180 hp", codes: [] },
     { name: "Maskinteknik, 180 hp", codes: [] },
-    { name: "Mekatronik, 180 hp", codes: ["LEU471", "LMA401"] },
+    { name: "Mekatronik, 180 hp", codes: ["LEU471", "LMA401", "MVE580", "TME221", "LEU481"] },
     { name: "Samhällsbyggnadsteknik, 180 hp", codes: [] },
   ],
 
