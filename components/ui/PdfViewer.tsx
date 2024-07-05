@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 interface PdfViewerProps {
   pdfUrl: string;
@@ -12,22 +12,20 @@ declare global {
 
 const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl }) => {
   const viewerRef = useRef<HTMLDivElement>(null);
+  const [isScriptLoaded, setIsScriptLoaded] = useState(false);
 
   useEffect(() => {
     const loadAdobeScript = () => {
       return new Promise((resolve, reject) => {
         if (window.AdobeDC) {
-          return resolve(window.AdobeDC);
+          resolve(window.AdobeDC);
         } else {
-          if (document.getElementById('adobe-dc-view-sdk')) {
-            return resolve(window.AdobeDC);
-          }
           const script = document.createElement('script');
-          script.id = 'adobe-dc-view-sdk';
           script.src = 'https://documentcloud.adobe.com/view-sdk/main.js';
           script.onload = () => {
             if (window.AdobeDC) {
               resolve(window.AdobeDC);
+              setIsScriptLoaded(true);
             } else {
               reject(new Error('AdobeDC not loaded'));
             }
@@ -48,18 +46,10 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl }) => {
 
           adobeDCView.previewFile(
             {
-              content: {
-                location: {
-                  url: pdfUrl,
-                },
-              },
-              metaData: {
-                fileName: 'sample.pdf',
-              },
+              content: { location: { url: pdfUrl } },
+              metaData: { fileName: 'sample.pdf' },
             },
-            {
-              embedMode: 'IN_LINE',
-            }
+            { embedMode: 'IN_LINE' }
           );
         }
       })
@@ -69,11 +59,10 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl }) => {
   }, [pdfUrl]);
 
   return (
-    <div
-      id="adobe-dc-view"
-      ref={viewerRef}
-      style={{ width: '100%', height: '100%' }}
-    ></div>
+    <div>
+      <div id="adobe-dc-view" ref={viewerRef} style={{ width: '100%', height: '100%' }}></div>
+      {!isScriptLoaded && <p>Loading PDF...</p>}
+    </div>
   );
 };
 

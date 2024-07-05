@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PdfViewer from './PdfViewer';
 
 interface PdfModalProps {
@@ -8,57 +8,46 @@ interface PdfModalProps {
   description: string;
 }
 
-const PdfModal: React.FC<PdfModalProps> = ({
-  isOpen,
-  onRequestClose,
-  pdfUrl,
-  description,
-}) => {
+const PdfModal: React.FC<PdfModalProps> = ({ isOpen, onRequestClose, pdfUrl, description }) => {
+  const [isLoaded, setIsLoaded] = useState(false);
+
   useEffect(() => {
     if (isOpen) {
-      const preventCopy = (e: ClipboardEvent) => {
+      const preventCopy = (e: ClipboardEvent) => e.preventDefault();
+      const preventPrint = (e: BeforeUnloadEvent) => {
+        alert("Printing is disabled for this content.");
         e.preventDefault();
-      };
-
-      const preventPrint = () => {
-        const beforePrintHandler = (e: BeforeUnloadEvent) => {
-          alert("Printing is disabled for this content.");
-          e.preventDefault();
-          e.returnValue = '';
-        };
-
-        window.addEventListener('beforeprint', beforePrintHandler);
-        return () => {
-          window.removeEventListener('beforeprint', beforePrintHandler);
-        };
+        e.returnValue = '';
       };
 
       document.addEventListener('copy', preventCopy);
-      const removePrintListener = preventPrint();
+      window.addEventListener('beforeprint', preventPrint);
+
+      const script = document.createElement('script');
+      script.src = 'https://documentcloud.adobe.com/view-sdk/main.js';
+      script.onload = () => setIsLoaded(true);
+      script.onerror = () => console.error('AdobeDC script failed to load');
+      document.body.appendChild(script);
 
       return () => {
         document.removeEventListener('copy', preventCopy);
-        removePrintListener();
+        window.removeEventListener('beforeprint', preventPrint);
       };
     }
   }, [isOpen]);
 
-  if (!isOpen) {
-    return null;
-  }
+  if (!isOpen) return null;
 
-  const preventDefault = (e: React.MouseEvent) => {
-    e.preventDefault();
-  };
+  const preventDefault = (e: React.MouseEvent) => e.preventDefault();
 
   return (
     <div className="overlay" onClick={onRequestClose}>
       <div className="modal" onClick={(e) => e.stopPropagation()}>
         <button className="close-button" onClick={onRequestClose}>×</button>
-        <div className="content" onContextMenu={(e: React.MouseEvent) => preventDefault(e)}>
+        <div className="content" onContextMenu={preventDefault}>
           <h2 className="description">{description}</h2>
-          <div className="pdf-container" onContextMenu={(e: React.MouseEvent) => preventDefault(e)}>
-            <PdfViewer pdfUrl={pdfUrl} />
+          <div className="pdf-container" onContextMenu={preventDefault}>
+            {isLoaded ? <PdfViewer pdfUrl={pdfUrl} /> : <p>Loading PDF...</p>}
           </div>
         </div>
       </div>
