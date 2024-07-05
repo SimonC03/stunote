@@ -24,8 +24,8 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl }) => {
           script.src = 'https://documentcloud.adobe.com/view-sdk/main.js';
           script.onload = () => {
             if (window.AdobeDC) {
-              setIsScriptLoaded(true);
               resolve(window.AdobeDC);
+              setIsScriptLoaded(true);
             } else {
               reject(new Error('AdobeDC not loaded'));
             }
@@ -49,14 +49,7 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl }) => {
               content: { location: { url: pdfUrl } },
               metaData: { fileName: 'sample.pdf' },
             },
-            {
-              embedMode: 'SIZED_CONTAINER',
-              showDownloadPDF: false,
-              showPrintPDF: false,
-              showLeftHandPanel: false,
-              showAnnotationTools: false,
-              defaultViewMode: 'FIT_WIDTH',
-            }
+            { embedMode: 'IN_LINE' }
           );
         }
       })
@@ -66,21 +59,8 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl }) => {
   }, [pdfUrl]);
 
   return (
-    <div id="pdf-viewer-container" style={{ width: '100%', height: '100%' }}>
+    <div>
       <div id="adobe-dc-view" ref={viewerRef} style={{ width: '100%', height: '100%' }}></div>
-      <style jsx>{`
-        #pdf-viewer-container {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          width: 100%;
-          height: 100%;
-        }
-        #adobe-dc-view {
-          width: 100%;
-          height: 100%;
-        }
-      `}</style>
     </div>
   );
 };
