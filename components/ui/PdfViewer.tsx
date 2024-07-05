@@ -51,6 +51,9 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl }) => {
         onMouseDown={(e) => e.preventDefault()} // Prevent text selection
         onContextMenu={(e) => e.preventDefault()}
       />
+      <div style={{ position: 'absolute', top: 10, right: 10 }}>
+        <a href={pdfUrl} target="_blank" rel="noopener noreferrer">Öppna PDF i ny flik</a>
+      </div>
     </div>
   );
 };
