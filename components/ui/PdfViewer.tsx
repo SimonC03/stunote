@@ -10,7 +10,7 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl }) => {
   useEffect(() => {
     if (viewerRef.current) {
       const iframe = document.createElement('iframe');
-      iframe.src = `${pdfUrl}#toolbar=0&navpanes=0&scrollbar=0`;
+      iframe.src = `${pdfUrl}#view=FitH`;
       iframe.style.width = '100%';
       iframe.style.height = '100%';
       iframe.style.border = 'none';
@@ -51,19 +51,6 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl }) => {
         onMouseDown={(e) => e.preventDefault()}
         onContextMenu={(e) => e.preventDefault()}
       />
-      <style jsx>{`
-        div {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-
-        @media (max-width: 768px) {
-          div {
-            flex-direction: column;
-          }
-        }
-      `}</style>
     </div>
   );
 };
