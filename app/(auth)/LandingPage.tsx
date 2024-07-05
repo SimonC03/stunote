@@ -7,7 +7,7 @@ import Footer from '@/components/ui/Footer';
 
 const LandingPage: React.FC = () => {
   return (
-    <div className="flex flex-col justify-between min-h-screen bg-gradient-to-l from-blue-400 to-blue-800 text-white p-8">
+    <div className="flex flex-col justify-between min-h-screen text-white p-8">
       <div className="absolute top-14 left-14 max-lg:hidden">
       <p style={{
         fontFamily: 'Popplins, sans-serif',

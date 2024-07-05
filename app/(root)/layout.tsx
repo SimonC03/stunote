@@ -13,7 +13,7 @@ export default function RootLayout({
       <div className="hidden md:flex">
         <LeftSidebar />
       </div>
-      <main className="flex flex-1 flex-col md:ml-[270px] bg-blue-1">
+      <main className="flex flex-1 flex-col md:ml-[270px]">
         <div className="flex flex-col flex-1 overflow-y-auto">
           <section className="flex flex-1 flex-col">
             <div className="mx-auto flex w-full max-w-5xl flex-col max-sm:px-4">
