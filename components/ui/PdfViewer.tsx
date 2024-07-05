@@ -10,7 +10,7 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl }) => {
   useEffect(() => {
     if (viewerRef.current) {
       const iframe = document.createElement('iframe');
-      iframe.src = `${pdfUrl}#toolbar=0&navpanes=0&scrollbar=0&zoom=scale`;
+      iframe.src = `${pdfUrl}#toolbar=0&navpanes=0&scrollbar=0&zoom=page-fit`;
       iframe.style.width = '100%';
       iframe.style.height = '100%';
       iframe.style.border = 'none';
