@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { Course, getCoursesData, getUserData, UserProfile } from '@/lib/api';
+import { getCourses } from '@/lib/schools';
 import Modal from '@/components/ui/Modal';
 import { useUserContext } from '@/context/UserContext';
 import ProtectedRoute from '@/components/ProtectedRoute';
@@ -16,52 +17,69 @@ const ExplorePage = () => {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [activeTab, setActiveTab] = useState<string>('explore');
   const [userData, setUserData] = useState<UserProfile | null>(null);
+  const [courseCodes, setCourseCodes] = useState<string[]>([]);
+  const [exploreCourses, setExploreCourses] = useState<Course[]>([]);
+  const [myEducationCourses, setMyEducationCourses] = useState<Course[]>([]);
+  
 
   const fetchCourses = useCallback(async () => {
     try {
       setLoading(true);
       const allCourses = await getCoursesData();
-      setCourses(allCourses);
-      setFilteredCourses(allCourses);
+      setExploreCourses(allCourses);
     } catch (error) {
       console.error('Error fetching courses:', error);
     } finally {
       setLoading(false);
     }
   }, []);
+  
 
   const fetchUserData = useCallback(async () => {
     if (user && user.$id) {
       try {
         const data = await getUserData(user.$id);
         setUserData(data);
+        if (data.education && data.school) {
+          const codes = getCourses(data.school, data.education);
+          setCourseCodes(codes);
+  
+          // Filtrera kurser baserat på kurskoderna
+          const allCourses = await getCoursesData();
+          const filteredUserCourses = allCourses.filter(course => 
+            codes.includes(course.courseCode)
+          );
+          setMyEducationCourses(filteredUserCourses);
+        }
       } catch (error) {
         console.error('Error fetching user data:', error);
       }
     }
   }, [user]);
+  
 
   useEffect(() => {
     if (user && !userLoading) {
       fetchCourses();
       fetchUserData();
     }
-  }, [user, userLoading, fetchCourses, fetchUserData]);
+  }, [user, userLoading, fetchCourses, fetchUserData]);  
 
   useEffect(() => {
     if (searchTerm === '') {
-      setFilteredCourses(courses);
+      setFilteredCourses(exploreCourses);
     } else {
       const lowercasedSearchTerm = searchTerm.toLowerCase();
       setFilteredCourses(
-        courses.filter(
+        exploreCourses.filter(
           (course) =>
             (course.courseCode && course.courseCode.toLowerCase().includes(lowercasedSearchTerm)) ||
             (course.courseName && course.courseName.toLowerCase().includes(lowercasedSearchTerm))
         )
       );
     }
-  }, [searchTerm, courses]);
+  }, [searchTerm, exploreCourses]);
+  
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
@@ -77,21 +95,18 @@ const ExplorePage = () => {
     );;
   }
 
-  const renderCourses = (coursesToRender: Course[]) => {
+  const renderCourses = (coursesToRender: Course[], onSelectCourse: (courseId: string) => void) => {
     return coursesToRender.map(course => (
       <li key={course.$id} className="course-item">
-        <div className="course-link" onClick={() => {
-          console.log('Selected course:', course);
-          setSelectedCourseId(course.$id);
-        }}>
+        <div className="course-link" onClick={() => onSelectCourse(course.$id)}>
           <div className="course-details">
             <div className="course-header">
               <span className="course-code">{course.courseCode}</span>
             </div>
-            <div className='course-name'>
+            <div className="course-name">
               <span className="course-name">{course.courseName}</span>
             </div>
-            <div className='course-school'>
+            <div className="course-school">
               <span className="university">{course.university}</span>
             </div>
           </div>
@@ -99,7 +114,9 @@ const ExplorePage = () => {
       </li>
     ));
   };
+  
 
+  
   const renderMyEducation = () => {
     if (!userData) {
       return null;
@@ -117,16 +134,24 @@ const ExplorePage = () => {
     }
   
     return (
-      <div>
-        <p><strong>Education:</strong> {userData.education}</p>
-        <p><strong>School:</strong> {userData.school}</p>
-
-        <br/><br/>
-        <h1><strong>This function is under development</strong></h1>
-        
-      </div>
+      <>
+        {courseCodes.length === 0 ? (
+          <p>No Courses connected to your education yet</p>
+        ) : (
+          <>
+            {renderCourses(myEducationCourses, setSelectedCourseId)}
+          </>
+        )}
+      </>
     );
   };
+  
+  
+  
+  
+  
+  
+  
 
   return (
     <ProtectedRoute>
@@ -158,12 +183,12 @@ const ExplorePage = () => {
         <div className="courses-container">
           {activeTab === 'explore' ? (
             <ul className="course-list">
-              {renderCourses(filteredCourses)}
+              {renderCourses(filteredCourses, setSelectedCourseId)}
             </ul>
           ) : (
-            <div className="my-education">
+            <ul className="course-list">
               {renderMyEducation()}
-            </div>
+            </ul>
           )}
         </div>
         {selectedCourseId && (
