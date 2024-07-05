@@ -15,7 +15,8 @@ html, body {
 }
 
 html {
-  background: linear-gradient(to left, #60a5fa, #1e40af);
+  background-color: #1e40af;
+  
   background-attachment: fixed;
   background-size: cover;
   background-repeat: no-repeat;
