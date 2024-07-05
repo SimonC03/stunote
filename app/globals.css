@@ -8,16 +8,21 @@
   box-sizing: border-box;
 }
 
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 html {
-  background-color: red;
   background: linear-gradient(to left, #60a5fa, #1e40af);
   background-attachment: fixed;
-  height: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 body {
-  height: 100%;
-  margin: 0;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
@@ -26,16 +31,22 @@ body {
   flex: 1;
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
 }
 
 main {
   flex: 1;
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
   overflow-y: auto;
 }
+
+/* Ensure background covers safe area insets on iPhones */
+@supports (padding: max(0px)) {
+  body {
+    padding: max(env(safe-area-inset-top), 0px) max(env(safe-area-inset-right), 0px) max(env(safe-area-inset-bottom), 0px) max(env(safe-area-inset-left), 0px);
+  }
+}
+
 
 
 .left_sidebar {
