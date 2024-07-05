@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 
+const adobe_api_key = process.env.ADOBE_API_KEY!;
 interface PdfViewerProps {
   pdfUrl: string;
 }
@@ -40,7 +41,7 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl }) => {
       .then(() => {
         if (viewerRef.current) {
           const adobeDCView = new window.AdobeDC.View({
-            clientId: '43c76f66fe814110ae50dd046b84c477',
+            clientId: adobe_api_key,
             divId: viewerRef.current.id,
           });
 
