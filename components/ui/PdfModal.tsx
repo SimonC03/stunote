@@ -80,8 +80,8 @@ const PdfModal: React.FC<PdfModalProps> = ({
           background: white;
           padding: 20px;
           border-radius: 8px;
-          width: 80%;
-          height: 90%;
+          width: 100vw;
+          height: 100vh;
           overflow: hidden;
           display: flex;
           flex-direction: column;
@@ -124,8 +124,8 @@ const PdfModal: React.FC<PdfModalProps> = ({
         }
         @media (max-width: 768px) {
           .modal {
-            width: 95%;
-            height: 85%;
+            width: 100vw;
+            height: 100vh;
             padding: 10px;
           }
           .description {

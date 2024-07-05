@@ -11,8 +11,8 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl }) => {
     if (viewerRef.current) {
       const iframe = document.createElement('iframe');
       iframe.src = `${pdfUrl}#toolbar=0&navpanes=0&scrollbar=0&zoom=page-fit`;
-      iframe.style.width = '100%';
-      iframe.style.height = '100%';
+      iframe.style.width = '100vw';
+      iframe.style.height = '100vh';
       iframe.style.border = 'none';
 
       // Remove any existing children
@@ -26,12 +26,12 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl }) => {
   }, [pdfUrl]);
 
   return (
-    <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+    <div style={{ position: 'relative', width: '100vw', height: '100vh' }}>
       <div
         ref={viewerRef}
         style={{
-          width: '100%',
-          height: '100%',
+          width: '100vw',
+          height: '100vh',
         }}
       />
       <div
@@ -51,9 +51,6 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl }) => {
         onMouseDown={(e) => e.preventDefault()} // Prevent text selection
         onContextMenu={(e) => e.preventDefault()}
       />
-      <div style={{ position: 'absolute', top: 10, right: 10 }}>
-        <a href={pdfUrl} target="_blank" rel="noopener noreferrer">Öppna PDF i ny flik</a>
-      </div>
     </div>
   );
 };
