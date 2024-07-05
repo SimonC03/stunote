@@ -49,7 +49,16 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl }) => {
               content: { location: { url: pdfUrl } },
               metaData: { fileName: 'sample.pdf' },
             },
-            { embedMode: 'IN_LINE' }
+            {
+              embedMode: 'IN_LINE',
+              showAnnotationTools: false,
+              showLeftHandPanel: false,
+              showPageControls: false,
+              showDownloadPDF: false,
+              showPrintPDF: false,
+              showFullScreen: false,
+              showZoomControl: false,
+            }
           );
         }
       })
