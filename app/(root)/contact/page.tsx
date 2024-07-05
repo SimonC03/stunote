@@ -382,6 +382,7 @@ const ContactPage = () => {
           max-width: 800px;
           width: 100%;
           text-align: left;
+
         }
         .contact-form, .application-form {
           max-width: 800px;
@@ -408,9 +409,62 @@ const ContactPage = () => {
         .job-details p {
           margin-bottom: 10px;
         }
-        @media (max-width: 768px) {
+        @media (max-width: 1023px) {
+          .container {
+            padding: 5px;
+          }
+          .selection-container {
+            height: auto;
+          }
           .tab {
             font-size: 12px;
+            padding: 5px 10px;
+            margin-bottom: 5px;
+          }
+          .content-container {
+            padding: 10px;
+            font-size: 12px;
+          }
+          .about-us, .faq, .jobs {
+            max-width: 100%;
+          }
+          .contact-form, .application-form {
+            max-width: 100%;
+          }
+          .job-item {
+            padding: 5px;
+          }
+          .job-details {
+            padding: 5px;
+          }
+
+        @media (max-width: 768px) {
+          .container {
+            padding: 5px;
+          }
+          .selection-container {
+            height: auto;
+          }
+          .tab {
+            font-size: 10px;
+            padding: 5px 10px;
+            margin-bottom: 5px;
+          }
+          .content-container {
+            padding: 10px;
+            font-size: 10px;
+          }
+          .about-us, .faq, .jobs {
+            max-width: 100%;
+          }
+          .contact-form, .application-form {
+            max-width: 100%;
+          }
+          .job-item {
+            padding: 5px;
+          }
+          .job-details {
+            padding: 5px;
           }
         }
       `}</style>
