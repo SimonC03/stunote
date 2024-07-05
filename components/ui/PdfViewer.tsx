@@ -10,7 +10,7 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl }) => {
   useEffect(() => {
     if (viewerRef.current) {
       const iframe = document.createElement('iframe');
-      iframe.src = `${pdfUrl}#view=FitH`;
+      iframe.src = `${pdfUrl}#toolbar=0&navpanes=0&scrollbar=0&zoom=scale`;
       iframe.style.width = '100%';
       iframe.style.height = '100%';
       iframe.style.border = 'none';
@@ -48,7 +48,7 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl }) => {
           MozUserSelect: 'none',
           msUserSelect: 'none',
         }}
-        onMouseDown={(e) => e.preventDefault()}
+        onMouseDown={(e) => e.preventDefault()} // Prevent text selection
         onContextMenu={(e) => e.preventDefault()}
       />
     </div>
