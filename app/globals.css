@@ -12,7 +12,10 @@ html, body {
   height: 100%;
   margin: 0;
   padding: 0;
-  background: linear-gradient(to left, #60a5fa, #1e40af);
+}
+
+html {
+  background-color: #2268CD;
   background-attachment: fixed;
   background-size: cover;
   background-repeat: no-repeat;
@@ -37,7 +40,6 @@ main {
   flex-direction: column;
   overflow-y: auto;
 }
-
 
 .left_sidebar {
   @apply fixed left-0 top-0 h-full flex flex-col justify-between bg-black-1 text-white-1 w-[270px] pt-8;
