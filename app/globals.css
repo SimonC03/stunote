@@ -108,7 +108,7 @@ footer {
 
   /* Auth specific styles */
   .auth-container {
-    @apply flex min-h-screen items-center justify-center bg-gray-100;
+    @apply flex min-h-screen items-center justify-center bg-transparent lg:bg-gray-100;
   }
 
   .auth-box {

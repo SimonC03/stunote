@@ -16,10 +16,10 @@ interface AuthBoxProps {
 
 const AuthBox: React.FC<AuthBoxProps> = ({ children, title, subtitle, linkText, linkHref, buttonText }) => {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex flex-col items-center justify-center min-h-screen">
       <div className="w-full max-w-3xl mx-auto">
         <div className="text-center mb-6">
-          <h1 className="text-2xl font-bold">Created by students, for students!</h1>
+          <h1 className="text-2xl font-bold text-white-1 lg:text-black-1">Created by students, for students!</h1>
         </div>
         <section className="auth-box bg-white shadow-md rounded-lg overflow-hidden flex h-[500px] w-[900px]">
           <div className="auth-left p-8 flex-1 flex flex-col justify-between">
