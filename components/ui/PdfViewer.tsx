@@ -24,8 +24,8 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl }) => {
           script.src = 'https://documentcloud.adobe.com/view-sdk/main.js';
           script.onload = () => {
             if (window.AdobeDC) {
-              resolve(window.AdobeDC);
               setIsScriptLoaded(true);
+              resolve(window.AdobeDC);
             } else {
               reject(new Error('AdobeDC not loaded'));
             }
@@ -61,7 +61,6 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl }) => {
   return (
     <div id="pdf-viewer-container" style={{ width: '100%', height: '100%' }}>
       <div id="adobe-dc-view" ref={viewerRef} style={{ width: '100%', height: '100%' }}></div>
-      {!isScriptLoaded && <p>Loading PDF...</p>}
       <style jsx>{`
         #pdf-viewer-container {
           display: flex;
