@@ -59,9 +59,22 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl }) => {
   }, [pdfUrl]);
 
   return (
-    <div>
+    <div id="pdf-viewer-container" style={{ width: '100%', height: '100%' }}>
       <div id="adobe-dc-view" ref={viewerRef} style={{ width: '100%', height: '100%' }}></div>
       {!isScriptLoaded && <p>Loading PDF...</p>}
+      <style jsx>{`
+        #pdf-viewer-container {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 100%;
+          height: 100%;
+        }
+        #adobe-dc-view {
+          width: 100%;
+          height: 100%;
+        }
+      `}</style>
     </div>
   );
 };

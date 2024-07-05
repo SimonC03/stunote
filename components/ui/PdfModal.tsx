@@ -71,6 +71,8 @@ const PdfModal: React.FC<PdfModalProps> = ({ isOpen, onRequestClose, pdfUrl, des
           border-radius: 8px;
           width: 80%;
           height: 90%;
+          max-width: 1000px;
+          max-height: 90%;
           overflow: hidden;
           display: flex;
           flex-direction: column;
