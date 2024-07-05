@@ -100,15 +100,9 @@ const ExplorePage = () => {
       <li key={course.$id} className="course-item">
         <div className="course-link" onClick={() => onSelectCourse(course.$id)}>
           <div className="course-details">
-            <div className="course-header">
-              <span className="course-code">{course.courseCode}</span>
-            </div>
-            <div className="course-name">
-              <span className="course-name">{course.courseName}</span>
-            </div>
-            <div className="course-school">
-              <span className="university">{course.university}</span>
-            </div>
+              <span className="course-name">{course.courseName}</span><br/>
+              <span className="course-code">{course.courseCode}</span><br/>
+              <span className="university">{course.university}</span><br/>
           </div>
         </div>
       </li>
@@ -145,13 +139,6 @@ const ExplorePage = () => {
       </>
     );
   };
-  
-  
-  
-  
-  
-  
-  
 
   return (
     <ProtectedRoute>
@@ -277,11 +264,6 @@ const ExplorePage = () => {
             text-decoration: none;
             color: inherit;
             display: block;
-          }
-          .course-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
           }
           .course-code {
             font-weight: bold;
