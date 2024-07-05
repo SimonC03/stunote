@@ -122,7 +122,6 @@ const CoursePage = () => {
         <div className="document-details" onClick={() => openPdfModal(document.fileUrl, document.documentType)}>
           <h2 className="document-type">{document.documentType}</h2>
           <p className="uploaded-description">{document.description}</p>
-          <p className="upload-time">Published: {new Date(document.uploadTime).toLocaleDateString()}</p>
         </div>
         <div className="favorite-icon" onClick={() => toggleFavorite(document)}>
           {favorites.some(fav => fav.$id === document.$id) ? <FaStar className="text-yellow-500" /> : <FaRegStar className="text-gray-400" />}
