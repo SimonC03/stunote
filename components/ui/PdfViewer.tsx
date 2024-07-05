@@ -51,6 +51,19 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl }) => {
         onMouseDown={(e) => e.preventDefault()}
         onContextMenu={(e) => e.preventDefault()}
       />
+      <style jsx>{`
+        div {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
+        @media (max-width: 768px) {
+          div {
+            flex-direction: column;
+          }
+        }
+      `}</style>
     </div>
   );
 };
