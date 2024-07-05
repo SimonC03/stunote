@@ -126,6 +126,16 @@ const PdfModal: React.FC<PdfModalProps> = ({
           .modal {
             width: 95%;
             height: 85%;
+            padding: 10px;
+          }
+          .description {
+            font-size: 14px;
+            margin-bottom: 5px;
+          }
+          .close-button {
+            font-size: 1.5rem;
+            top: 5px;
+            right: 5px;
           }
         }
         @keyframes fadeIn {

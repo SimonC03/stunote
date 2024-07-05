@@ -48,8 +48,8 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl }) => {
           MozUserSelect: 'none',
           msUserSelect: 'none',
         }}
-        onMouseDown={(e) => e.preventDefault()} // Prevent text selection
-        onContextMenu={(e) => e.preventDefault()} // Prevent right-click menu
+        onMouseDown={(e) => e.preventDefault()}
+        onContextMenu={(e) => e.preventDefault()}
       />
     </div>
   );
