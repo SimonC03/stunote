@@ -13,10 +13,11 @@ interface ModalProps {
 
 const documentTypes = [
   "Examination",
-  "Summation",
+  "Summations",
+  "Lectures",
   "Notes",
-  "Assignment",
-  "Formula collection"
+  "Assignments",
+  "Formula collections",
 ];
 
 const countDocumentTypes = (course: Course) => {
