@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import PdfViewer from './PdfViewer';
+import PdfViewerPC from './PdfViewerPC';
+import PdfViewerMobile from './PdfViewer';
+import { isMobileOrTablet } from '@/lib/deviceType';
 
 interface PdfModalProps {
   isOpen: boolean;
@@ -10,8 +12,11 @@ interface PdfModalProps {
 
 const PdfModal: React.FC<PdfModalProps> = ({ isOpen, onRequestClose, pdfUrl, description }) => {
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    setIsMobile(isMobileOrTablet());
+
     if (isOpen) {
       const preventCopy = (e: ClipboardEvent) => e.preventDefault();
       const preventPrint = (e: BeforeUnloadEvent) => {
@@ -47,7 +52,7 @@ const PdfModal: React.FC<PdfModalProps> = ({ isOpen, onRequestClose, pdfUrl, des
         <div className="content" onContextMenu={preventDefault}>
           <h2 className="description">{description}</h2>
           <div className="pdf-container" onContextMenu={preventDefault}>
-            {isLoaded ? <PdfViewer pdfUrl={pdfUrl} /> : <p>Loading PDF...</p>}
+            {isLoaded ? (isMobile ? <PdfViewerMobile pdfUrl={pdfUrl} /> : <PdfViewerPC pdfUrl={pdfUrl} />) : <p>Loading PDF...</p>}
           </div>
         </div>
       </div>
