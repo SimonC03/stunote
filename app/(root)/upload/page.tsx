@@ -31,7 +31,9 @@ const documentTypes = [
 
 const examTypes = [
   "Tentamen",
-  "Dugga"
+  "Dugga",
+  "Tentamen Solution",
+  "Dugga Solution",
 ];
 
 const UploadPage = () => {
