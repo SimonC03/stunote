@@ -138,13 +138,14 @@ const CoursePage = () => {
         }}>
           <div style={{ marginBottom: '10px' }}>
             <p style={{
-              fontSize: isMobile ? '10px' : '16px',
+              fontSize: isMobile ? '8px' : '14px',
               color: '#000',
-              fontWeight: 'bold',
+              
               margin: '1px 0'
             }}>{document.documentType}</p>
             <p style={{
               color: '#333',
+              fontWeight: 'bold',
               fontSize: isMobile ? '8px' : '14px',
               margin: '1px 0'
             }}>{document.description}</p>
