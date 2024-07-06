@@ -56,7 +56,7 @@ const MobileNav = () => {
                   })}
               </nav>
             </SheetClose>
-            <div className="flex flex-col gap-6 py-4 max-lg:px-4 justify-start text-white-1 mb-10">
+            <div className="flex flex-col gap-6 py-4 max-lg:px-4 justify-start text-white-1 mb-14">
               <ProfileIcon/>
               <LogoutButton/>
             </div>
