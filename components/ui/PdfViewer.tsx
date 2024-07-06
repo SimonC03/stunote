@@ -40,7 +40,7 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl }) => {
       .then(() => {
         if (viewerRef.current) {
           const adobeDCView = new window.AdobeDC.View({
-            clientId: '43c76f66fe814110ae50dd046b84c477',
+            clientId: '0b3fb5d0bd91457eb490dd2a03d53da1',
             divId: viewerRef.current.id,
           });
 
