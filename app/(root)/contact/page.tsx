@@ -153,7 +153,7 @@ const ContactPage = () => {
         <div className="content-container">
         {activeTab === 'about' && (
             <div className="about-us">
-                <h1 className="text-2xl font-bold text-gray-800 mb-4 text-center">About Us</h1>
+                <h1 className="text-m md:text-2xl font-bold text-gray-800 mb-4 text-center">About Us</h1>
                 <p className="text-gray-600">
                 Welcome to StuNote! We are dedicated to transforming the way students collaborate and learn. Our platform seamlessly facilitates the sharing and accessing of study materials, promoting knowledge exchange and fostering a community of learning. 📚💡
                 </p>
@@ -183,7 +183,7 @@ const ContactPage = () => {
 
           {activeTab === 'contact' && (
             <form onSubmit={handleContactSubmit(onSubmitContact)} className="space-y-4 contact-form">
-              <h1 className="text-2xl font-bold text-gray-800 mb-4 text-center">Contact Us</h1>
+              <h1 className="text-m md:text-2xl font-bold text-gray-800 mb-4 text-center">Contact Us</h1>
               <div className="grid grid-cols-1 gap-4">
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
@@ -231,7 +231,7 @@ const ContactPage = () => {
               <Button
                 type="submit"
                 variant="default"
-                size="default"
+                size="sm"
                 className="w-full py-2 px-4 font-semibold shadow-sm"
                 disabled={loading}
               >
@@ -241,11 +241,11 @@ const ContactPage = () => {
           )}
           {activeTab === 'faq' && (
             <div className="faq">
-              <h1 className="text-2xl font-bold text-gray-800 mb-4 text-center">Frequently Asked Questions</h1>
+              <h1 className="text-m md:text-2xl font-bold text-gray-800 mb-4 text-center">Frequently Asked Questions</h1>
               <div className="space-y-4">
                 {FAQ_DATA.map((faq, index) => (
                   <div key={index}>
-                    <h2 className="text-xl font-semibold text-gray-800">{faq.question}</h2>
+                    <h2 className="text-m md:text-xl font-semibold text-gray-800">{faq.question}</h2>
                     <p className="text-gray-600">{faq.answer}</p>
                   </div>
                 ))}
@@ -254,12 +254,12 @@ const ContactPage = () => {
           )}
           {activeTab === 'jobs' && (
             <div className="jobs">
-              <h1 className="text-2xl font-bold text-gray-800 mb-4 text-center">CAREERS AT STUNOTE</h1>
+              <h1 className="text-m md:text-2xl font-bold text-gray-800 mb-4 text-center">CAREERS AT STUNOTE</h1>
               <ul className="job-list mt-8">
-                <h2 className="text-xl font-bold text-gray-800 mb-2">Job List</h2>
+                <h2 className="text-m md:text-xl font-bold text-gray-800 mb-2">Job List</h2>
                 {JOBS_DATA.map((job) => (
                   <li key={job.id} className="job-item" onClick={() => toggleJobDetails(job.id)}>
-                    <h3 className="text-lg font-bold text-gray-800">{job.title}</h3>
+                    <h3 className="text-m md:text-xl font-bold text-gray-800">{job.title}</h3>
                     <p className="text-gray-600">{job.type} - {job.location}</p>
                     {expandedJobId === job.id && (
                       <div className="job-details mt-2">
@@ -277,7 +277,7 @@ const ContactPage = () => {
                 ))}
               </ul>
               <form onSubmit={handleApplicationSubmit(onSubmitApplication)} className="space-y-4 application-form">
-                <h2 className="text-xl font-bold text-gray-800 mb-2">Application Form</h2>
+                <h2 className="text-m md:text-xl font-bold text-gray-800 mb-2">Application Form</h2>
                 <div className="grid grid-cols-1 gap-4">
                   <div>
                     <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
@@ -332,7 +332,7 @@ const ContactPage = () => {
                 <Button
                   type="submit"
                   variant="default"
-                  size="default"
+                  size="sm"
                   className="w-full py-2 px-4 font-semibold shadow-sm"
                   disabled={loading}
                 >
