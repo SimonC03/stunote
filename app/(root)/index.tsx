@@ -67,14 +67,14 @@ const HomePage = () => {
   
     return coursesToRender.map(course => (
       <li key={course.$id} style={{
-        background: '#F6F6F6',
+        background: 'white',
         border: '1px solid #ddd',
         borderRadius: '5px',
         padding: isMobile ? '4px' : '10px',
         transition: 'background 0.3s',
         display: 'flex',
         flexDirection: 'column',
-        position: 'relative',  // Added for positioning buttons
+        position: 'relative',
         cursor: 'pointer'
       }}>
         <Link href={`/course/${course.courseCode}`} style={{
@@ -220,7 +220,7 @@ const HomePage = () => {
           .courses-container {
             display: flex;
             justify-content: center;
-            background-color: white;
+            background-color: #F6F6F6;
             padding: 20px;
           }
           .course-list {

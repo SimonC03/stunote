@@ -100,7 +100,7 @@ const ExplorePage = () => {
   const renderCourses = (coursesToRender: Course[], onSelectCourse: (courseId: string) => void) => {
     return coursesToRender.map(course => (
       <li key={course.$id} style={{
-        background: '#F6F6F6',
+        background: 'white',
         border: '1px solid #ddd',
         borderRadius: '5px',
         padding: isMobile ? '4px' : '10px',
@@ -266,7 +266,7 @@ const ExplorePage = () => {
           .courses-container {
             display: flex;
             justify-content: center;
-            background-color: white;
+            background-color: #F6F6F6;
             padding: 20px;
           }
           .course-list {

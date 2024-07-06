@@ -121,7 +121,7 @@ const CoursePage = () => {
 
     return documentsToRender.map((document) => (
       <li key={document.$id} style={{
-        background: '#F6F6F6',
+        background: 'white',
         border: '1px solid #ddd',
         borderRadius: '5px',
         padding: isMobile ? '4px' : '10px',
@@ -287,7 +287,7 @@ const CoursePage = () => {
           box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
         .main-section {
-          background-color: white;
+          background-color: #F6F6F6;
         }
         .documents-container {
           display: flex;
