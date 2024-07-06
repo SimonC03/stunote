@@ -12,14 +12,7 @@ const nextConfig = {
     ],
   },
   webpack: (config, { isServer }) => {
-    config.plugins.push({
-      apply: (compiler) => {
-        compiler.hooks.emit.tapAsync('LogFilesPlugin', (compilation, callback) => {
-          console.log('Assets being emitted:', Object.keys(compilation.assets));
-          callback();
-        });
-      }
-    });
+    // Ta bort loggningen av tillgångar
 
     if (!isServer) {
       config.resolve.fallback = {
