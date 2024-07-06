@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import { useUserContext } from '@/context/UserContext';
 import { getUserData, UserProfile, Subscription, removeFavoriteCourse, addFavoriteCourse, Course, removeSubscription } from '@/lib/api';
@@ -61,23 +61,72 @@ const HomePage = () => {
       console.error('Failed to remove subscription:', error);
     }
   };
+
+  const renderCourses = (coursesToRender: Course[]) => {
+    const isMobile = window.innerWidth <= 768;
   
-  const renderCourses = (courses: Course[]) => {
-    return courses.map(course => (
-      <li key={course.$id} className="course-item">
-        <Link href={`/course/${course.courseCode}`}>
-          <div className="course-details">
-            <span className="course-name">{course.courseName}</span><br/>
-            <span className="course-code">{course.courseCode}</span><br/>
-            <span className="university">{course.university}</span><br/>
+    return coursesToRender.map(course => (
+      <li key={course.$id} style={{
+        background: '#F6F6F6',
+        border: '1px solid #ddd',
+        borderRadius: '5px',
+        padding: isMobile ? '4px' : '10px',
+        transition: 'background 0.3s',
+        display: 'flex',
+        flexDirection: 'column',
+        position: 'relative',  // Added for positioning buttons
+        cursor: 'pointer'
+      }}>
+        <Link href={`/course/${course.courseCode}`} style={{
+          textDecoration: 'none',
+          color: 'inherit',
+          display: 'block'
+        }}>
+          <div style={{ marginBottom: '10px' }}>
+            <p style={{
+              fontSize: isMobile ? '10px' : '16px',
+              color: '#000',
+              fontWeight: 'bold',
+              margin: '1px 0'
+            }}>{course.courseName}</p>
+            <p style={{
+              fontWeight: 'bold',
+              color: '#333',
+              fontSize: isMobile ? '8px' : '14px',
+              margin: '1px 0'
+            }}>{course.courseCode}</p>
+            <p style={{
+              fontStyle: 'italic',
+              color: '#777',
+              fontSize: isMobile ? '8px' : '12px',
+              margin: '1px 0'
+            }}>{course.university}</p>
           </div>
         </Link>
-        <button onClick={() => toggleFavorite(course)} className="favorite-button">
-          {favorites.some(fav => fav.$id === course.$id) ? <FaStar className="text-yellow-500" /> : <FaRegStar className="text-gray-400" />}
-        </button>
-        <button onClick={() => handleRemoveSubscription(course.$id)} className="remove-button">
-          <FaTrash className='text-gray-400'/>
-        </button>
+        <div style={{
+          position: 'absolute',
+          top: '10px',
+          right: '10px',
+          display: 'flex',
+          gap: '10px'
+        }}>
+          <button onClick={() => toggleFavorite(course)} className="favorite-button" style={{
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            fontSize: isMobile ? '10px' : '14px',
+          }}>
+            {favorites.some(fav => fav.$id === course.$id) ? <FaStar className="text-yellow-500" /> : <FaRegStar className="text-gray-400" />}
+          </button>
+          <button onClick={() => handleRemoveSubscription(course.$id)} className="remove-button" style={{
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            fontSize: isMobile ? '10px' : '14px',
+          }}>
+            <FaTrash className='text-gray-400'/>
+          </button>
+        </div>
       </li>
     ));
   };
@@ -133,125 +182,85 @@ const HomePage = () => {
             </ul>
           )}
         </div>
-      </div>
-      <style jsx>{`
-        .container {
-          margin-top: 20px;
-          padding: 10px;
-        }
-        .welcome-title {
-          font-size: 24px;
-          font-weight: bold;
-          text-align: center;
-          margin: 30px;
-          color: white;
-        }
-        .selection-container {
-          display: flex;
-          justify-content: center;
-          height: 40px;
-          margin-bottom: 5px;
-        }
-        .tab {
-          flex: 1;
-          padding: 10px 20px;
-          margin: 0;
-          border: none;
-          background: none;
-          color: #D9D9D8;
-          font-size: 16px;
-          font-weight: bold;
-          text-align: center;
-          cursor: pointer;
-          background-color: #F6F6F6;
-        }
-        .tab.active {
-          background-color: #47ABFE;
-          color: white;
-        }
-        .courses-container {
-          display: flex;
-          justify-content: center;
-          background-color: white;
-          padding: 20px;
-        }
-        .course-list {
-          list-style: none;
-          padding: 0;
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 10px;
-          width: 100%;
-        }
-        .course-item {
-          background-color: #6F6F6;
-          border: 1px solid #ddd;
-          border-radius: 8px;
-          padding: 15px;
-          transition: background 0.3s;
-          display: flex;
-          flex-direction: column;
-          position: relative;
-        }
-        .course-item:hover {
-          background: black;
-        }
-        .course-details {
-          display: flex;
-          flex-direction: column;
-        }
-        .course-name {
-          font-size: 16px;
-          color: #000;
-          font-weight: bold;
-          margin: 10px 0;
-        }
-        .course-code, .university {
-          font-size: 12px;
-        }
-        .favorite-button {
-          position: absolute;
-          top: 10px;
-          right: 10px;
-          background: none;
-          border: none;
-          cursor: pointer;
-          font-size: 19px;
-          color: #FFD700;
-        }
-        .explore-link {
-          color: #47ABFE;
-          text-decoration: underline;
-          cursor: pointer;
-        }
-        @media (max-width: 768px) {
-          .welcome-title {
-            font-size: 20px;
-            margin: 20px;
-          }
-          .tab {
-            font-size: 14px;
-          }
-          .course-list {
-            grid-template-columns: 1fr;
-            font-size: 10px;
-          }
-          .course-item {
+        <style jsx>{`
+          .container {
+            margin-top: 20px;
             padding: 10px;
           }
-          .course-name {
-            font-size: 14px;
+          .welcome-title {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin: 30px;
+            color: white;
           }
-          .course-code, .university {
-            font-size: 10px;
+          .selection-container {
+            display: flex;
+            justify-content: center;
+            height: 40px;
+            margin-bottom: 5px;
           }
-          .favorite-button {
-            font-size: 18px;
+          .tab {
+            flex: 1;
+            padding: 10px 20px;
+            margin: 0;
+            border: none;
+            background: none;
+            color: #D9D9D8;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            cursor: pointer;
+            background-color: #F6F6F6;
           }
-        }
-      `}</style>
+          .tab.active {
+            background-color: #47ABFE;
+            color: white;
+          }
+          .courses-container {
+            display: flex;
+            justify-content: center;
+            background-color: white;
+            padding: 20px;
+          }
+          .course-list {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            width: 100%;
+          }
+          .explore-link {
+            color: #47ABFE;
+            text-decoration: underline;
+            cursor: pointer;
+          }
+          @media (max-width: 768px) {
+            .welcome-title {
+              font-size: 16px;
+              margin: 20px;
+            }
+            .selection-container {
+              height: 25px;
+              margin-bottom: 5px;
+            }
+            .tab {
+              font-size: 10px;
+              padding: 4px 10px;
+            }
+            .course-list {
+              grid-template-columns: 1fr;
+              font-size: 10px;
+            }
+            .course-item {
+              padding: 10px;
+            }
+          }
+        `}</style>
+      </div>
     </ProtectedRoute>
   );
-}
+};
 
 export default HomePage;
