@@ -22,10 +22,11 @@ interface UploadFormData {
 
 const documentTypes = [
   "Examination",
-  "Summation",
+  "Summations",
+  "Lectures",
   "Notes",
-  "Assignment",
-  "Formula collection",
+  "Assignments",
+  "Formula collections",
 ];
 
 const examTypes = [
