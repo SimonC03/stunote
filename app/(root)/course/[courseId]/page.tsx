@@ -211,8 +211,8 @@ const CoursePage = () => {
               onChange={(e) => setSortOrder(e.target.value)}
               className="filter-select"
             >
-              <option value="latest">Date - latest</option>
-              <option value="oldest">Date - oldest</option>
+              <option value="latest">Uploaded - latest</option>
+              <option value="oldest">Uploaded - oldest</option>
             </select>
           </div>
         </div>
