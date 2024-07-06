@@ -117,18 +117,54 @@ const CoursePage = () => {
   }
 
   const renderDocuments = (documentsToRender: Document[]) => {
+    const isMobile = window.innerWidth <= 768;
+
     return documentsToRender.map((document) => (
-      <li key={document.$id} className="document-item">
-        <div className="document-details" onClick={() => openPdfModal(document.fileUrl, document.documentType)}>
-          <h2 className="document-type">{document.documentType}</h2>
-          <p className="uploaded-description">{document.description}</p>
+      <li key={document.$id} style={{
+        background: '#F6F6F6',
+        border: '1px solid #ddd',
+        borderRadius: '5px',
+        padding: isMobile ? '4px' : '10px',
+        transition: 'background 0.3s',
+        display: 'flex',
+        flexDirection: 'column',
+        position: 'relative',
+        cursor: 'pointer'
+      }}>
+        <div onClick={() => openPdfModal(document.fileUrl, document.description)} style={{
+          textDecoration: 'none',
+          color: 'inherit',
+          display: 'block'
+        }}>
+          <div style={{ marginBottom: '10px' }}>
+            <p style={{
+              fontSize: isMobile ? '10px' : '16px',
+              color: '#000',
+              fontWeight: 'bold',
+              margin: '1px 0'
+            }}>{document.documentType}</p>
+            <p style={{
+              color: '#333',
+              fontSize: isMobile ? '8px' : '14px',
+              margin: '1px 0'
+            }}>{document.description}</p>
+          </div>
         </div>
-        <div className="favorite-icon">
-          {favorites.some(fav => fav.$id === document.$id) ? (
-            <FaStar className="text-yellow-500" onClick={() => toggleFavorite(document)} />
-          ) : (
-            <FaRegStar className="text-gray-400" onClick={() => toggleFavorite(document)} />
-          )}
+        <div style={{
+          position: 'absolute',
+          top: '10px',
+          right: '10px',
+          display: 'flex',
+          gap: '10px'
+        }}>
+          <button onClick={() => toggleFavorite(document)} style={{
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            fontSize: isMobile ? '10px' : '14px',
+          }}>
+            {favorites.some(fav => fav.$id === document.$id) ? <FaStar className="text-yellow-500" /> : <FaRegStar className="text-gray-400" />}
+          </button>
         </div>
       </li>
     ));
@@ -230,22 +266,22 @@ const CoursePage = () => {
         .filter-section {
           display: flex;
           justify-content: space-between;
-          margin-bottom: 20px;
+          margin-bottom: 5px;
         }
         .filter-group {
+          margin-left: 10px;
           display: flex;
           flex-direction: column;
-          align-items: center;
-          width: 48%;
+          align-items: flex-start;
+          width: 50%;
         }
         .filter-label {
-          margin-bottom: 5px;
-          font-size: 16px;
+          font-size: 14px;
           color: #333;
         }
         .filter-select {
-          padding: 10px;
-          width: 100%;
+          padding: 5px;
+          width: 98%;
           border-radius: 4px;
           border: 1px solid #ddd;
           box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -272,59 +308,41 @@ const CoursePage = () => {
           border-radius: 8px;
           padding: 15px;
           display: flex;
-          justify-content: space-between;
+          flex-direction: column;
+          position: relative;
           transition: background 0.3s;
         }
         .document-item:hover {
           background-color: #eeeeee;
         }
-        .document-details {
-          cursor: pointer;
-        }
-        .document-type {
-          font-size: 16px;
-          font-weight: bold;
-        }
-        .uploaded-description, .upload-time {
-          font-size: 12px;
-          color: #777;
-        }
-        .favorite-icon {
-          display: flex;
-          align-items: center;
-          cursor: pointer;
-        }
-        
         @media (max-width: 768px) {
           .welcome-title {
-            font-size: 20px;
+            font-size: 16px;
             margin: 20px;
           }
           .document-list {
             grid-template-columns: 1fr;
           }
-          .document-item {
-            padding: 10px;
-          }
-          .document-type {
-            font-size: 14px;
-          }
-          .uploaded-description, .upload-time {
-            font-size: 10px;
+          .selection-container {
+            height: 25px;
+            margin-bottom: 5px;
           }
           .tab {
-            font-size: 14px;
-            padding: 8px 10px;
+            font-size: 10px;
+            padding: 4px 10px;
           }
           .filter-section {
-            font-size: 12px;
+            font-size: 8px;
           }
           .filter-group {
+            margin-left: 4px;
             width: 100%;
-            margin-bottom: 10px;
           }
           .filter-label{
-            font-size: 12px;
+            font-size: 6px;
+          }
+          .filter-select {
+            padding: 2px;
           }
         }
       `}</style>
