@@ -150,16 +150,13 @@ const Modal: React.FC<ModalProps> = ({
                   )
                 ))}
               </div>
-              <div className="course-icon">
-                <Image src="/icons/documentsIcon.svg" alt="Course materials icon" width={100} height={100}/>
-              </div>
             </div>
             {loadingSubscription ? (
               <p>Updating Course...</p>
             ) : (
-              <Button onClick={handleSubscription} variant="default" size="default" className="subscription-button">
-              {hasSubscription ? 'Remove Course' : 'Add Course'}
-            </Button>
+              <Button onClick={handleSubscription} variant="default" size="sm" className="subscription-button">
+                {hasSubscription ? 'Remove Course' : 'Add Course'}
+              </Button>
             )}
           </>
         )}
@@ -185,7 +182,7 @@ const Modal: React.FC<ModalProps> = ({
           border-radius: 8px;
           box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
           width: 600px;
-          max-width: 100%;
+          max-width: 90%;
           z-index: 1001;
           text-align: center;
         }
@@ -211,11 +208,13 @@ const Modal: React.FC<ModalProps> = ({
           justify-content: space-between;
           align-items: center;
           margin-bottom: 20px;
+          flex-wrap: wrap;
         }
 
         .course-info {
           text-align: left;
           font-size: 16px;
+          flex: 1 1 100%;
         }
 
         .university-name {
@@ -231,8 +230,9 @@ const Modal: React.FC<ModalProps> = ({
           font-weight: bold;
         }
 
-        .course-icon img {
-          max-width: 150px;
+        .course-icon {
+          margin-top: 20px;
+          flex: 0 1 100px;
         }
 
         .subscription-button {
@@ -242,6 +242,30 @@ const Modal: React.FC<ModalProps> = ({
           border-radius: 5px;
           font-size: 16px;
           cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+          .modal-content {
+            padding: 15px;
+          }
+
+          h1 {
+            font-size: 20px;
+            margin-bottom: 15px;
+          }
+
+          .course-details {
+            align-items: flex-start;
+          }
+
+          .course-info {
+            font-size: 14px;
+          }
+
+          .subscription-button {
+            font-size: 14px;
+            padding: 8px 16px;
+          }
         }
       `}</style>
     </div>
