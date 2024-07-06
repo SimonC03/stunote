@@ -146,7 +146,7 @@ const CoursePage = () => {
             <p style={{
               color: '#333',
               fontWeight: 'bold',
-              fontSize: isMobile ? '8px' : '14px',
+              fontSize: isMobile ? '10px' : '16px',
               margin: '1px 0'
             }}>{document.description}</p>
           </div>
