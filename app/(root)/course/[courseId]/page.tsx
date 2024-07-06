@@ -123,8 +123,12 @@ const CoursePage = () => {
           <h2 className="document-type">{document.documentType}</h2>
           <p className="uploaded-description">{document.description}</p>
         </div>
-        <div className="favorite-icon" onClick={() => toggleFavorite(document)}>
-          {favorites.some(fav => fav.$id === document.$id) ? <FaStar className="text-yellow-500" /> : <FaRegStar className="text-gray-400" />}
+        <div className="favorite-icon">
+          {favorites.some(fav => fav.$id === document.$id) ? (
+            <FaStar className="text-yellow-500" onClick={() => toggleFavorite(document)} />
+          ) : (
+            <FaRegStar className="text-gray-400" onClick={() => toggleFavorite(document)} />
+          )}
         </div>
       </li>
     ));
