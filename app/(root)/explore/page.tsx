@@ -95,22 +95,52 @@ const ExplorePage = () => {
     );;
   }
 
+  const isMobile = window.innerWidth <= 768;
+
   const renderCourses = (coursesToRender: Course[], onSelectCourse: (courseId: string) => void) => {
     return coursesToRender.map(course => (
-      <li key={course.$id} className="course-item">
-        <div className="course-link" onClick={() => onSelectCourse(course.$id)}>
-          <div className="course-details">
-              <span className="course-name">{course.courseName}</span><br/>
-              <span className="course-code">{course.courseCode}</span><br/>
-              <span className="university">{course.university}</span><br/>
+      <li key={course.$id} style={{
+        background: '#F6F6F6',
+        border: '1px solid #ddd',
+        borderRadius: '5px',
+        padding: isMobile ? '4px' : '10px',
+        transition: 'background 0.3s',
+        display: 'flex',
+        flexDirection: 'column',
+        cursor: 'pointer'
+      }}>
+        <div onClick={() => onSelectCourse(course.$id)} style={{
+          textDecoration: 'none',
+          color: 'inherit',
+          display: 'block'
+        }}>
+          <div style={{ marginBottom: '10px' }}>
+            <p style={{
+              fontSize: isMobile ? '10px' : '16px',
+              color: '#000',
+              fontWeight: 'bold',
+              margin: '1px 0'
+            }}>{course.courseName}</p>
+            <p style={{
+              fontWeight: 'bold',
+              color: '#333',
+              fontSize: isMobile ? '8px' : '14px',
+              margin: '1px 0'
+            }}>{course.courseCode}</p>
+            <p style={{
+              fontStyle: 'italic',
+              color: '#777',
+              fontSize: isMobile ? '8px' : '12px',
+              margin: '1px 0'
+            }}>{course.university}</p>
           </div>
         </div>
       </li>
     ));
   };
   
-
   
+
   const renderMyEducation = () => {
     if (!userData) {
       return null;
@@ -260,26 +290,6 @@ const ExplorePage = () => {
           .course-item:hover {
             background: #eeeeee;
           }
-          .course-details {
-            text-decoration: none;
-            color: inherit;
-            display: block;
-          }
-          .course-code {
-            font-weight: bold;
-            color: #333;
-            font-size: 14px;
-          }
-          .course-name {
-            font-size: 16px;
-            color: #000;
-            font-weight: bold;
-            margin: 10px 0;
-          }
-          .university {
-            font-style: italic;
-            color: #777;
-          }
           .my-education {
             text-align: center;
           }
@@ -294,7 +304,7 @@ const ExplorePage = () => {
           }
           @media (max-width: 768px) {
             .welcome-title {
-              font-size: 20px;
+              font-size: 16px;
               margin: 20px;
             }
             .search-box {
@@ -304,24 +314,16 @@ const ExplorePage = () => {
             .course-list {
               grid-template-columns: 1fr;
             }
-            .course-item {
-              padding: 10px;
+            .selection-container {
+              height: 25px;
+              margin-bottom: 5px;
             }
             .tab {
-              font-size: 14px;
-              padding: 8px 10px;
+              font-size: 10px;
+              padding: 4px 10px;
             }
             .search-bar {
               margin-bottom: 10px;
-            }
-            .course-code {
-              font-size: 12px;
-            }
-            .course-name {
-              font-size: 14px;
-            }
-            .university {
-              font-size: 10px;
             }
             .my-education {
               font-size: 12px;
