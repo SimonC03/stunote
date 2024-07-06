@@ -339,7 +339,7 @@ const ProfilePage: React.FC = () => {
             />
           </div>
           <div style={getStyles().subscriptionPlan}>
-            <div style={getStyles().subscriptionText}>Membership: {profile.memberType}</div>
+            <div style={getStyles().subscriptionText}>Account: {profile.memberType}</div>
           </div>
         </div>
         <div style={getStyles().profileFormContainer}>
