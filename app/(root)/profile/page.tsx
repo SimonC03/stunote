@@ -25,6 +25,8 @@ const ProfilePage: React.FC = () => {
   const [phoneVerificationCode, setPhoneVerificationCode] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isMobile, setIsMobile] = useState<boolean>(false);
+  const [isPhoneNumberSaved, setIsPhoneNumberSaved] = useState<boolean>(false);
+
 
   useEffect(() => {
     const handleResize = () => {
@@ -64,6 +66,7 @@ const ProfilePage: React.FC = () => {
           setPhoneNumber(data.phoneNumber || '');
           setSelectedSchool(data.school || '');
           setSelectedEducation(data.education || '');
+          setIsPhoneNumberSaved(!!data.phoneNumber);
 
           const emailVerifiedStatus = await isEmailVerified();
           const phoneVerifiedStatus = await isPhoneVerified();
@@ -391,15 +394,21 @@ const ProfilePage: React.FC = () => {
                   readOnly={phoneVerified}
                   style={getStyles().formInput}
                 />
-                {phoneVerified ? (
-                  <span style={getStyles().verifiedBadge}>
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-green-500" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414L8.414 15 4 10.586a1 1 0 111.414-1.414L8.414 12.172l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                  </span>
-                ) : (
-                  <Button type="button" variant="default" size="sm" style={getStyles().verifyButton} onClick={verifyPhoneNumber}>Verify</Button>
-                )}
+                {phoneNumber ? (
+                  phoneVerified ? (
+                    <span style={getStyles().verifiedBadge}>
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-green-500" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414L8.414 15 4 10.586a1 1 0 111.414-1.414L8.414 12.172l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                      </svg>
+                    </span>
+                  ) : (
+                    phoneNumber && isPhoneNumberSaved && (
+                      <Button type="button" variant="default" size="sm" style={getStyles().verifyButton} onClick={verifyPhoneNumber}>
+                        Verify
+                      </Button>
+                    )
+                  )
+                ) : null}
               </div>
             </div>
             {showPhoneVerificationField && (
