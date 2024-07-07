@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import { useUserContext } from '@/context/UserContext';
 import { getUserData, UserProfile, Subscription, removeFavoriteCourse, addFavoriteCourse, Course, removeSubscription } from '@/lib/api';

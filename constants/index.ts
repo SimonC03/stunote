@@ -18,6 +18,12 @@ export const sidebarLinks = [
         admin: true,
     },
     {
+        route: '/market',
+        label: 'Market',
+        imgURL: '/icons/marketIcon.svg',
+        admin: true,
+    },
+    {
         route: '/create-course',
         label: 'Create Course',
         imgURL: '/icons/createIcon.svg',

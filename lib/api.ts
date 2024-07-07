@@ -9,6 +9,8 @@ const subscriptionsCollectionId = process.env.NEXT_PUBLIC_APPWRITE_SUBSCRIPTIONS
 const applicationsCollectionId = process.env.NEXT_PUBLIC_APPWRITE_APPLICATIONS_COLLECTION_ID!;
 const messagesCollectionId = process.env.NEXT_PUBLIC_APPWRITE_MESSAGES_COLLECTION_ID!;
 const userIconStorageId = process.env.NEXT_PUBLIC_APPWRITE_USERICON_ID!;
+const adsCollectionId = process.env.NEXT_PUBLIC_APPWRITE_BOOKADS_COLLECTION_ID!;
+const adsStorageId = process.env.NEXT_PUBLIC_APPWRITE_MARKETMEDIA_ID!;
 
 export interface UserProfile {
   $id: string;
@@ -64,6 +66,20 @@ export interface Message {
   email: string;
   type: string;
   message: string;
+}
+
+export interface Ad {
+  $id?: string;
+  bookName: string;
+  user: UserProfile;
+  courses: Course;
+  price: number;
+  condition: string;
+  city: string;
+  shippingMethod: string;
+  date: string;
+  imageUrl?: string;
+  imageId?: string;
 }
 
 // Central felhanteringsfunktion
@@ -518,5 +534,109 @@ export const createMessage = async (messageData: Message) => {
   } catch (error: any) {
     console.error('Failed to create message', error);
     throw new Error('Failed to create message');
+  }
+};
+
+export const uploadAdImage = async (file: File) => {
+  try {
+    const response = await storage.createFile(
+      adsStorageId,
+      ID.unique(),
+      file,
+      [
+        Permission.read(Role.any()), // Om du vill att alla ska kunna se bilden
+        Permission.write(Role.any())
+      ]
+    );
+
+    const imageUrl = `https://cloud.appwrite.io/v1/storage/buckets/${adsStorageId}/files/${response.$id}/view?project=${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`;
+    const imageId = response.$id;
+
+    return { imageUrl, imageId };
+  } catch (error: any) {
+    console.error('Failed to upload ad image', error);
+    throw new Error('Failed to upload ad image');
+  }
+};
+
+export const createAd = async (ad: Ad) => {
+  try {
+    const user = await getUserData(ad.user.$id);
+    const course = await getCourseData(ad.courses.$id);
+
+    const response = await databases.createDocument(
+      databaseId,
+      adsCollectionId,
+      ID.unique(), // Genererar ett unikt ID för dokumentet
+      {
+        bookName: ad.bookName,
+        user: user.$id, // Referens till användaren
+        courses: course.$id, // Referens till kursen
+        price: ad.price,
+        condition: ad.condition,
+        city: ad.city,
+        shippingMethod: ad.shippingMethod,
+        date: ad.date,
+        imageUrl: ad.imageUrl,
+        imageId: ad.imageId
+      },
+      [
+        Permission.read(Role.any()), // Justera behörigheterna efter behov
+        Permission.write(Role.user(ad.user.$id)),
+        Permission.update(Role.user(ad.user.$id)),
+        Permission.delete(Role.user(ad.user.$id))
+      ]
+    );
+
+    return { message: 'Ad uploaded', response };
+  } catch (error: any) {
+    console.error('Failed to create ad', error);
+    throw new Error('Failed to create ad');
+  }
+};
+
+export const getUserAds = async (userId: string): Promise<Ad[]> => {
+  try {
+    const response = await databases.listDocuments(databaseId, adsCollectionId, [
+      Query.equal('user', userId)
+    ]);
+    return response.documents.map((doc: any) => ({
+      $id: doc.$id,
+      bookName: doc.bookName,
+      user: doc.user,
+      courses: doc.courses,
+      price: doc.price,
+      condition: doc.condition,
+      city: doc.city,
+      shippingMethod: doc.shippingMethod,
+      date: doc.date,
+      imageUrl: doc.imageUrl,
+      imageId: doc.imageId,
+    })) as Ad[];
+  } catch (error: any) {
+    console.error('Failed to fetch user ads', error);
+    throw new Error('Failed to fetch user ads');
+  }
+};
+
+export const getAds = async (): Promise<Ad[]> => {
+  try {
+    const response = await databases.listDocuments(databaseId, adsCollectionId);
+    return response.documents.map((doc: any) => ({
+      $id: doc.$id,
+      bookName: doc.bookName,
+      user: doc.user,
+      courses: doc.courses,
+      price: doc.price,
+      condition: doc.condition,
+      city: doc.city,
+      shippingMethod: doc.shippingMethod,
+      date: doc.date,
+      imageUrl: doc.imageUrl,
+      imageId: doc.imageId,
+    })) as Ad[];
+  } catch (error: any) {
+    console.error('Failed to fetch ads', error);
+    throw new Error('Failed to fetch ads');
   }
 };
