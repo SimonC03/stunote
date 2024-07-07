@@ -206,7 +206,7 @@ const HomePage = () => {
             margin: 0;
             border: none;
             background: none;
-            color: #D9D9D8;
+            color: #8c8c8c;
             font-size: 16px;
             font-weight: bold;
             text-align: center;
