@@ -103,8 +103,9 @@ const SellModal: React.FC<SellModalProps> = ({ show, onClose, user, courses }) =
             onChange={(e) => setPrice(e.target.value)}
           />
           <select value={condition} onChange={(e) => setCondition(e.target.value)}>
-            <option value="new">New</option>
-            <option value="used">Used</option>
+            <option value="new">Brand New</option>
+            <option value="used">Gently Used</option>
+            <option value="new">Well Worn</option>
           </select>
           <input
             type="text"
