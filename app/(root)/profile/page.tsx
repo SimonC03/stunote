@@ -135,24 +135,20 @@ const ProfilePage: React.FC = () => {
         console.error('Failed to update profile picture', error);
       }
     }
-  };
+  }; 
 
   const handleProfilePictureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      saveProfilePicture(e.target.files[0]);
+    const file = e.target.files && e.target.files[0];
+    const validImageExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+    const fileExtension = file?.name.split('.').pop()?.toLowerCase();
+  
+    if (file && fileExtension && validImageExtensions.includes(fileExtension)) {
+      saveProfilePicture(file);
+    } else {
+      toast.error('Please upload a valid image file.');
     }
   };
-
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      saveProfilePicture(e.dataTransfer.files[0]);
-    }
-  };
-
-  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-  };
+  
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (profile) {
@@ -313,8 +309,6 @@ const ProfilePage: React.FC = () => {
         <div style={getStyles().profileSidebar}>
           <div
             style={getStyles().profileImageContainer}
-            onDrop={handleDrop}
-            onDragOver={handleDragOver}
           >
             <Image
               src={profile.iconUrl || '/icons/avatar.svg'}
