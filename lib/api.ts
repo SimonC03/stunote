@@ -317,12 +317,6 @@ export const updateUserProfile = async (documentId: string, updatedData: Partial
   }
 };
 
-
-
-
-
-
-
 export const updatePhoneNumber = async (userId: string, phoneNumber: string, documentId: string) => {
   try {
     await account.updatePrefs({ phone: phoneNumber });
