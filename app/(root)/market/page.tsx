@@ -1,4 +1,4 @@
-'use client';
+'use client'
 
 import React, { useState, useEffect } from 'react';
 import ProtectedRoute from '@/components/ProtectedRoute';
@@ -57,15 +57,19 @@ const MarketPage: React.FC = () => {
   });
 
   useEffect(() => {
-    const schools = Array.from(new Set(allAds.map(ad => ad.courses.university)));
-    const cities = Array.from(new Set(allAds.map(ad => ad.city)));
-    const conditions = Array.from(new Set(allAds.map(ad => ad.condition)));
-    setFilterOptions({
-      schools,
-      cities,
-      conditions,
-    });
-  }, [allAds]);
+    if (user) {
+      const filteredAds = allAds.filter(ad => ad.user.userId !== user.$id);
+      const schools = Array.from(new Set(filteredAds.map(ad => ad.courses.university)));
+      const cities = Array.from(new Set(filteredAds.map(ad => ad.city)));
+      const conditions = Array.from(new Set(filteredAds.map(ad => ad.condition)));
+      setFilterOptions({
+        schools,
+        cities,
+        conditions,
+      });
+    }
+  }, [allAds, user]);
+  
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -83,11 +87,12 @@ const MarketPage: React.FC = () => {
     const matchesSchool = !filters.school || ad.courses.university === filters.school;
     const matchesCity = !filters.city || ad.city === filters.city;
     const matchesCondition = !filters.condition || ad.condition === filters.condition;
+    const isNotUserAd = user && ad.user.userId !== user.$id;
   
-    return matchesSearchText && matchesSchool && matchesCity && matchesCondition && ad.user.userId !== user.$id;
+    return matchesSearchText && matchesSchool && matchesCity && matchesCondition && isNotUserAd;
   });
   
-  // Add this sorting logic
+
   const sortedAds = filteredAds.sort((a, b) => {
     if (filters.sortBy === 'newest') {
       return new Date(b.date).getTime() - new Date(a.date).getTime();
@@ -101,8 +106,7 @@ const MarketPage: React.FC = () => {
     return 0;
   });
 
-  const userAds = allAds.filter(ad => ad.user.userId === user.$id);
-
+  const userAds = user ? allAds.filter(ad => ad.user.userId === user.$id) : [];
   return (
     <ProtectedRoute>
       <div className="container">
