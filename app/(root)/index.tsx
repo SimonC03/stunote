@@ -165,10 +165,11 @@ const HomePage = () => {
                 renderCourses(subscriptions.map(sub => sub.course))
               ) : (
                 <p>
-                  No courses found.{' '}
+                Go to {' '}
                   <Link href="/explore" legacyBehavior>
-                    <a className="explore-link">Go to Explore and add courses</a>
+                    <a className="explore-link">Explore</a>
                   </Link>
+                  {' '}and add courses.
                 </p>
               )}
             </ul>
