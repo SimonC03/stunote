@@ -10,6 +10,12 @@ export const sidebarLinks = [
         label: 'Explore',
         imgURL: '/icons/exploreIcon.svg',
         admin: false,
+    }, 
+    {
+        route: '/market',
+        label: 'StuMarket',
+        imgURL: '/icons/marketIcon.svg',
+        admin: false,
     },
     {
         route: '/upload',
@@ -17,12 +23,7 @@ export const sidebarLinks = [
         imgURL: '/icons/documentIcon.svg',
         admin: true,
     },
-    {
-        route: '/market',
-        label: 'StuMarket',
-        imgURL: '/icons/marketIcon.svg',
-        admin: false,
-    },
+   
     {
         route: '/create-course',
         label: 'Create Course',

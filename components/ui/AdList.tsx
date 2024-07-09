@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { Ad } from '@/lib/api';
 import { Button } from './button';
 import ContactModal from './ContactModal';
-
+import '@/components/animations/spinner.css';
 interface AdListProps {
   ads: Ad[];
   activeTab: string;
@@ -14,6 +14,7 @@ const AdList: React.FC<AdListProps> = ({ ads, activeTab, onDeleteAd }) => {
   const [showContactModal, setShowContactModal] = useState(false);
   const [contactInfo, setContactInfo] = useState({ email: '', phoneNumber: '', contactMethods: [] as string[] });
   const [loading, setLoading] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   const handleButtonClick = async (ad: Ad) => {
     setLoading(true);
@@ -26,18 +27,29 @@ const AdList: React.FC<AdListProps> = ({ ads, activeTab, onDeleteAd }) => {
     setLoading(false);
   };
 
+  const handleImageError = () => {
+    setImageLoaded(true);
+  };
+
   return (
     <div className="ads-list">
       {ads.map(ad => (
         <div key={ad.$id} className="ad-item">
           <div className="ad-image-container">
+            {!imageLoaded && (
+              <div className="loading-animation">
+                <div className="spinner" style={{ borderRightColor: '#2268CD' }}></div>
+              </div>
+            )}
             <Image
-              src={ad.imageUrl || '/default-image.jpg'}
+              src={ad.imageUrl || 'public\icons\default-book.jpg'}
               alt={ad.bookName}
               layout="fill"
               objectFit="cover"
               quality={100}
-              className="ad-image"
+              className={`ad-image ${imageLoaded ? 'loaded' : ''}`}
+              onError={handleImageError}
+              onLoad={() => setImageLoaded(true)}
             />
           </div>
           <div className="ad-details">
@@ -132,6 +144,12 @@ const AdList: React.FC<AdListProps> = ({ ads, activeTab, onDeleteAd }) => {
         }
         .ad-details p {
           margin: 0;
+        }
+        .loading-animation {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 1%;
         }
         .shipping-title {
           font-weight: bold;
