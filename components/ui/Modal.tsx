@@ -4,6 +4,7 @@ import { useUserContext } from '@/context/UserContext';
 import { toast } from 'react-hot-toast';
 import Image from 'next/image';
 import { Button } from './button';
+import '@/components/animations/spinner.css';
 
 interface ModalProps {
   show: boolean;
@@ -43,8 +44,8 @@ const Modal: React.FC<ModalProps> = ({
   const modalRef = useRef<HTMLDivElement>(null);
   const { user } = useUserContext();
   const [hasSubscription, setHasSubscription] = useState(false);
-  const [loadingSubscription, setLoadingSubscription] = useState(true);
   const [loadingData, setLoadingData] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [documentCounts, setDocumentCounts] = useState(() =>
     documentTypes.reduce((acc, type) => {
       acc[type] = 0;
@@ -69,7 +70,7 @@ const Modal: React.FC<ModalProps> = ({
   useEffect(() => {
     const fetchSubscriptionAndDocuments = async () => {
       if (user && user.$id && courseId) {
-        setLoadingSubscription(true);
+        setLoading(true);
         setLoadingData(true);
         try {
           const [subscriptionResult, courseData] = await Promise.all([
@@ -86,7 +87,7 @@ const Modal: React.FC<ModalProps> = ({
             console.error('Failed to fetch data:', error);
           }
         } finally {
-          setLoadingSubscription(false);
+          setLoading(false);
           setLoadingData(false);
         }
       } else {
@@ -104,9 +105,8 @@ const Modal: React.FC<ModalProps> = ({
       alert('You need to be logged in to subscribe to a course.');
       return;
     }
-
+    setLoading(true);
     try {
-      setLoadingSubscription(true);
       if (hasSubscription) {
         await removeSubscription(user.$id, courseId);
         toast.success('Course removed successfully!');
@@ -124,7 +124,7 @@ const Modal: React.FC<ModalProps> = ({
         console.error('Failed to manage subscription:', error);
       }
     } finally {
-      setLoadingSubscription(false);
+      setLoading(false);
     }
   };
 
@@ -137,7 +137,7 @@ const Modal: React.FC<ModalProps> = ({
       <div className="modal-content" ref={modalRef}>
         <button className="close-button" onClick={onClose}>&times;</button>
         {loadingData ? (
-          <p>Loading...</p>
+          <div className="spinner" style={{ borderRightColor: '#2268CD' }}></div>
         ) : (
           <>
             <h1>{course?.courseName} - {course?.courseCode}</h1>
@@ -152,13 +152,9 @@ const Modal: React.FC<ModalProps> = ({
                 ))}
               </div>
             </div>
-            {loadingSubscription ? (
-              <p>Updating Course...</p>
-            ) : (
-              <Button onClick={handleSubscription} variant="default" size="sm" className="subscription-button">
+              <Button onClick={handleSubscription} variant="default" size="sm" loading={loading} className="subscription-button">
                 {hasSubscription ? 'Remove Course' : 'Add Course'}
               </Button>
-            )}
           </>
         )}
       </div>

@@ -13,14 +13,17 @@ interface AdListProps {
 const AdList: React.FC<AdListProps> = ({ ads, activeTab, onDeleteAd }) => {
   const [showContactModal, setShowContactModal] = useState(false);
   const [contactInfo, setContactInfo] = useState({ email: '', phoneNumber: '', contactMethods: [] as string[] });
+  const [loading, setLoading] = useState(false);
 
   const handleButtonClick = async (ad: Ad) => {
+    setLoading(true);
     if (activeTab === 'buy') {
       setContactInfo({ email: ad.user.email, phoneNumber: ad.user.phoneNumber, contactMethods: ad.contactMethod });
       setShowContactModal(true);
     } else {
       await onDeleteAd(ad.$id!, ad.imageId);
     }
+    setLoading(false);
   };
 
   return (
@@ -54,7 +57,7 @@ const AdList: React.FC<AdListProps> = ({ ads, activeTab, onDeleteAd }) => {
             <div className="flex-grow"></div>
             <p className="ad-uploadDate">Uploaded: {new Date(ad.date).toLocaleDateString()}</p>
             <div className="button-container">
-              <Button variant="default" size="xs" onClick={() => handleButtonClick(ad)}>
+              <Button variant="default" size="xs" loading={loading} onClick={() => handleButtonClick(ad)}>
                 {activeTab === 'buy' ? 'Contact Seller' : 'Delete'}
               </Button>
             </div>

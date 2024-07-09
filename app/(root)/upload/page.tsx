@@ -299,9 +299,9 @@ const UploadPage = () => {
                 variant="default"
                 size="default"
                 className="w-full py-2 px-4 font-semibold shadow-sm"
-                disabled={loading}
+                loading={loading}
               >
-                {loading ? 'Uploading...' : 'Upload'}
+                Upload
               </Button>
             </form>
           </div>

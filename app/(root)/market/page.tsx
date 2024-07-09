@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { useUserContext } from '@/context/UserContext';
 import { getCoursesData, getUserAds, getAds, Course, Ad, deleteAd } from '@/lib/api';
 import AdList from '@/components/ui/AdList';
+import toast from 'react-hot-toast';
 
 const MarketPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState('buy');
@@ -15,6 +16,7 @@ const MarketPage: React.FC = () => {
   const [courses, setCourses] = useState<Course[]>([]);
   const [ads, setAds] = useState<Ad[]>([]);
   const [allAds, setAllAds] = useState<Ad[]>([]);
+  const [loading, setLoading] = useState(false);
   const { user } = useUserContext();
 
   useEffect(() => {
@@ -91,11 +93,15 @@ const MarketPage: React.FC = () => {
   });
 
   const handleDeleteAd = async (adId: string, imageId?: string) => {
+    setLoading(true); // Set loading state to true
     try {
       await deleteAd(adId, imageId);
       setAllAds(prevAds => prevAds.filter(ad => ad.$id !== adId));
+      toast.success("Ad was successfully deleted");
     } catch (error) {
       console.error('Failed to delete ad:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -202,7 +208,7 @@ const MarketPage: React.FC = () => {
                   <AdList ads={userAds} activeTab={activeTab} onDeleteAd={handleDeleteAd} />
                 )}
               </div>
-              <Button type="button" size="xs" onClick={openModal}>Create Ad</Button>
+              <Button type="button" size="xs" onClick={openModal} loading={loading}>Create Ad</Button>
             </div>
           )}
         </div>

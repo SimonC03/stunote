@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -27,6 +27,7 @@ const signInSchema = z.object({
 const LoginForm: React.FC = () => {
   const router = useRouter();
   const { setUser } = useUserContext();
+  const [loading, setLoading] = useState(false);
 
   const form = useForm({
     resolver: zodResolver(signInSchema),
@@ -38,11 +39,13 @@ const LoginForm: React.FC = () => {
 
   const onSubmit = async (values: any) => {
     try {
+      setLoading(true);
       // Create a session with email and password
       await account.createEmailPasswordSession(values.email, values.password);
       const userDetails = await account.get();
       setUser(userDetails); // Update user context
       toast.success('Login successful!');
+      setLoading(false);
       router.push('/'); // Redirect to the main page after login
     } catch (error: any) {
       form.setError('email', {
@@ -51,6 +54,7 @@ const LoginForm: React.FC = () => {
       });
       toast.error('Login failed. Please check your credentials and try again.');
       console.error('Login failed:', error.message);
+      setLoading(false);
     }
   };
 
@@ -89,7 +93,7 @@ const LoginForm: React.FC = () => {
             )}
           />
           <a href="/forgot-password" className="text-sm text-blue-600 hover:text-blue-800">Forgot your password?</a>
-          <Button type="submit" variant="default" size="sm" className="w-full">Login</Button>
+          <Button type="submit" variant="default" size="sm" className="w-full" loading={loading}>Login</Button>
         </form>
       </Form>
     </AuthBox>

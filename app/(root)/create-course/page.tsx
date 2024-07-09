@@ -97,9 +97,9 @@ const CreateCourse = () => {
                 variant="default"
                 size="default"
                 className="w-full py-2 px-4 font-semibold shadow-sm"
-                disabled={loading}
+                loading={loading}
               >
-                {loading ? 'Creating...' : 'Create Course'}
+                Create Course
               </Button>
 
             </form>

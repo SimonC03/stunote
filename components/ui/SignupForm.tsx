@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -26,6 +26,7 @@ const signUpSchema = z.object({
 
 const SignUpForm: React.FC = () => {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   const form = useForm({
     resolver: zodResolver(signUpSchema),
@@ -37,6 +38,7 @@ const SignUpForm: React.FC = () => {
   });
 
   const onSubmit = async (values: any) => {
+    setLoading(true);
     try {
       // Create user account
       const user = await account.create('unique()', values.email, values.password, values.username);
@@ -54,6 +56,7 @@ const SignUpForm: React.FC = () => {
       );
 
       toast.success('Registration successful! Please login.');
+      setLoading(false)
       router.push('/sign-in');
     } catch (error: any) {
       form.setError('email', {
@@ -62,6 +65,7 @@ const SignUpForm: React.FC = () => {
       });
       toast.error('Registration failed. Please try again.');
       console.error('Registration failed:', error.message);
+      setLoading(false)
     }
   };
 
@@ -111,7 +115,7 @@ const SignUpForm: React.FC = () => {
               </FormItem>
             )}
           />
-          <Button type="submit" variant="default" size="sm" className="w-full">Sign Up</Button>
+          <Button type="submit" variant="default" size="sm" className="w-full" loading={loading}>Sign Up</Button>
         </form>
       </Form>
     </AuthBox>

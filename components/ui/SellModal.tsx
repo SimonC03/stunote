@@ -29,7 +29,7 @@ const SellModal: React.FC<SellModalProps> = ({ show, onClose, user, courses }) =
   const [emailVerifiedState, setEmailVerifiedState] = useState(false);
   const [phoneVerifiedState, setPhoneVerifiedState] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
-
+  const [loading, setLoading] = useState(false);
   const shippingOptions = [' Shipping', ' Meetup'];
 
   
@@ -97,6 +97,7 @@ const SellModal: React.FC<SellModalProps> = ({ show, onClose, user, courses }) =
   
 
   const handleSubmit = async () => {
+    
     if (!file) {
       alert('Please upload an image');
       return;
@@ -111,7 +112,7 @@ const SellModal: React.FC<SellModalProps> = ({ show, onClose, user, courses }) =
       alert('You need to be logged in to create an ad.');
       return;
     }
-  
+    setLoading(true);
     try {
       const imageUploadResponse = await uploadAdImage(file);
       const { imageUrl, imageId } = imageUploadResponse;
@@ -129,7 +130,6 @@ const SellModal: React.FC<SellModalProps> = ({ show, onClose, user, courses }) =
         imageId,
         contactMethod: contactMethods, // Skicka som array
       };
-  
       const response = await createAd(newAd);
   
       toast.success('Ad created successfully');
@@ -137,6 +137,9 @@ const SellModal: React.FC<SellModalProps> = ({ show, onClose, user, courses }) =
     } catch (error) {
       console.error('Failed to create ad', error);
       toast.error('Failed to create ad');
+    }
+    finally {
+      setLoading(false);
     }
   };
   
@@ -270,7 +273,7 @@ const SellModal: React.FC<SellModalProps> = ({ show, onClose, user, courses }) =
               )}
             </div>
           </div>
-          <Button type="button" size="sm" onClick={handleSubmit} className="submit-button">Submit</Button>
+          <Button type="button" size="sm" onClick={handleSubmit} loading={loading} className="submit-button">Submit</Button>
           <p className="disclaimer-text">By uploading your ad, you agree that your email or phone number may be visible to other users.</p>
         </form>
       </div>
