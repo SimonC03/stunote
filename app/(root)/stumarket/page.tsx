@@ -9,6 +9,7 @@ import { useUserContext } from '@/context/UserContext';
 import { getCoursesData, getUserAds, getAds, Course, Ad, deleteAd } from '@/lib/api';
 import AdList from '@/components/ui/AdList';
 import toast from 'react-hot-toast';
+import { detectAdblock } from '@/components/util/adblockDetector';
 
 const MarketPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState('buy');
@@ -18,8 +19,13 @@ const MarketPage: React.FC = () => {
   const [allAds, setAllAds] = useState<Ad[]>([]);
   const [loading, setLoading] = useState(false);
   const { user } = useUserContext();
+  const [adblockDetected, setAdblockDetected] = useState(false);
 
   useEffect(() => {
+    detectAdblock((detected: boolean) => {
+      setAdblockDetected(detected);
+    });
+
     const fetchCourses = async () => {
       const coursesData: Course[] = await getCoursesData();
       setCourses(coursesData);
@@ -122,6 +128,11 @@ const MarketPage: React.FC = () => {
   return (
     <ProtectedRoute>
       <div className="container">
+        {adblockDetected && (
+          <div className="adblock-warning">
+            <p>Please disable your adblocker to see all content on this page.</p>
+          </div>
+        )}
         <h1 className="main-title">Buy and Sell Your Textbooks Easily</h1>
         <p className="welcome-message">Welcome to StuMarket - Save money and find the textbooks you need, or sell your used books to help others.</p>
         <div className="selection-container">
@@ -219,6 +230,15 @@ const MarketPage: React.FC = () => {
             max-width: 1600px;
             margin-left: auto;
             margin-right: auto;
+          }
+          .adblock-warning {
+            padding: 10px;
+            background-color: #ffcccc;
+            color: #cc0000;
+            text-align: center;
+            margin-bottom: 20px;
+            border: 1px solid #cc0000;
+            border-radius: 5px;
           }
           .main-title {
             font-size: 24px;
