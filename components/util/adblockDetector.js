@@ -3,15 +3,15 @@ export const detectAdblock = (callback) => {
     const adElement = document.createElement('div');
     adElement.className = 'ad-banner';
     adElement.style.height = '1px';
+    adElement.style.width = '1px';
+    adElement.style.position = 'absolute';
+    adElement.style.top = '-1000px';
     document.body.appendChild(adElement);
   
     setTimeout(() => {
-      if (adElement.offsetHeight === 0) {
-        callback(true);
-      } else {
-        callback(false);
-      }
+      const isAdblockActive = adElement.offsetHeight === 0 || adElement.offsetParent === null;
       document.body.removeChild(adElement);
+      callback(isAdblockActive);
     }, 100);
   };
   
