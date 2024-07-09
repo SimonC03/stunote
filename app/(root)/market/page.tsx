@@ -185,14 +185,22 @@ const MarketPage: React.FC = () => {
                   <option value="priceHighLow">Price: High to Low</option>
                 </select>
               </div>
-              <AdList ads={sortedAds} activeTab={activeTab} onDeleteAd={handleDeleteAd} />
+              {sortedAds.length === 0 ? (
+                <p className="no-ads-message">No ads available at the moment.</p>
+              ) : (
+                <AdList ads={sortedAds} activeTab={activeTab} onDeleteAd={handleDeleteAd} />
+              )}
             </div>
           ) : (
             <div className="sell-container">
               <SellModal show={isModalOpen} onClose={closeModal} user={user} courses={courses} />
               <div className="your-ads">
                 <p className="section-title">Your Ads</p>
-                <AdList ads={userAds} activeTab={activeTab} onDeleteAd={handleDeleteAd} />
+                {userAds.length === 0 ? (
+                  <p className="no-ads-message">You have not uploaded any ads yet.</p>
+                ) : (
+                  <AdList ads={userAds} activeTab={activeTab} onDeleteAd={handleDeleteAd} />
+                )}
               </div>
               <Button type="button" size="xs" onClick={openModal}>Create Ad</Button>
             </div>
@@ -271,6 +279,12 @@ const MarketPage: React.FC = () => {
             border: 1px solid #ddd;
             border-radius: 5px;
           }
+          .no-ads-message {
+            font-size: 16px;
+            color: #555;
+            text-align: center;
+            margin: 20px 0;
+          }
           .your-ads {
             margin-bottom: 20px;
             width: 100%;
@@ -308,6 +322,9 @@ const MarketPage: React.FC = () => {
               font-size: 12px;
               padding: 6px;
             }
+            .no-ads-message {
+              font-size: 14px;
+            }
           }
           @media (max-width: 480px) {
             .main-title {
@@ -340,6 +357,9 @@ const MarketPage: React.FC = () => {
             .filters select {
               font-size: 10px;
               padding: 5px;
+            }
+            .no-ads-message {
+              font-size: 12px;
             }
           }
         `}</style>
