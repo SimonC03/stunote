@@ -116,9 +116,11 @@ const ContactPage = () => {
   };
 
   const applyForJob = (jobId: number, jobTitle: string) => {
+    setLoading(true);
     setExpandedJobId(jobId);
     setApplyingJobTitle(jobTitle);
     setApplicationValue('jobTitle', jobTitle);
+    setLoading(false);
   };
 
   return (
@@ -233,9 +235,9 @@ const ContactPage = () => {
                 variant="default"
                 size="sm"
                 className="w-full py-2 px-4 font-semibold shadow-sm"
-                disabled={loading}
+                loading={loading}
               >
-                {loading ? 'Sending...' : 'Send Message'}
+                Send Message
               </Button>
             </form>
           )}
@@ -267,6 +269,7 @@ const ContactPage = () => {
                         <Button
                           variant="default"
                           size="sm"
+                          loading={loading}
                           onClick={() => applyForJob(job.id, job.title)}
                         >
                           Apply Now
@@ -334,9 +337,9 @@ const ContactPage = () => {
                   variant="default"
                   size="sm"
                   className="w-full py-2 px-4 font-semibold shadow-sm"
-                  disabled={loading}
+                  loading={loading}
                 >
-                  {loading ? 'Sending...' : 'Send Application'}
+                Send Application
                 </Button>
               </form>
             </div>

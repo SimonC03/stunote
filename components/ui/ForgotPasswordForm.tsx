@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -25,6 +25,7 @@ const forgotPasswordSchema = z.object({
 
 const ForgotPasswordForm: React.FC = () => {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   const form = useForm({
     resolver: zodResolver(forgotPasswordSchema),
@@ -34,9 +35,11 @@ const ForgotPasswordForm: React.FC = () => {
   });
 
   const onSubmit = async (values: any) => {
+    setLoading(true);
     try {
       await account.createRecovery(values.email, `${window.location.origin}/reset-password`);
       toast.success('Password reset link sent to your email');
+      setLoading(false);
       router.push('/sign-in');
     } catch (error: any) {
       if (error.code === 404) {
@@ -45,6 +48,7 @@ const ForgotPasswordForm: React.FC = () => {
         toast.error('Password recovery failed');
       }
       console.error('Password recovery failed:', error.message);
+      setLoading(false);
     }
   };
 
@@ -71,7 +75,7 @@ const ForgotPasswordForm: React.FC = () => {
               </FormItem>
             )}
           />
-          <Button type="submit" variant="default" size="sm" className="w-full">Reset Password</Button>
+          <Button type="submit" variant="default" size="sm" loading={loading} className="w-full">Reset Password</Button>
         </form>
       </Form>
     </AuthBox>
