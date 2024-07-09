@@ -1,19 +1,19 @@
 // adblockDetector.js
 export const detectAdblock = (callback) => {
-    const testAd = document.createElement('div');
-    testAd.innerHTML = '&nbsp;';
-    testAd.className = 'adsbox';
-    testAd.style.position = 'absolute';
-    testAd.style.top = '-1000px';
-    document.body.appendChild(testAd);
-  
-    window.setTimeout(() => {
-      if (testAd.offsetHeight === 0) {
-        callback(true);
-      } else {
+    const adUrl = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
+    
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', adUrl, true);
+    xhr.onload = () => {
+      if (xhr.status === 200) {
         callback(false);
+      } else {
+        callback(true);
       }
-      document.body.removeChild(testAd);
-    }, 100);
+    };
+    xhr.onerror = () => {
+      callback(true);
+    };
+    xhr.send();
   };
   

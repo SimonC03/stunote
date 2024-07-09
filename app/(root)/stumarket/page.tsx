@@ -32,7 +32,8 @@ const MarketPage: React.FC = () => {
     };
   
     fetchCourses();
-  }, []); 
+  }, []);
+  
 
   useEffect(() => {
     const fetchAds = async () => {
