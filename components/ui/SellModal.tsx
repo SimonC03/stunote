@@ -238,7 +238,7 @@ const SellModal: React.FC<SellModalProps> = ({ show, onClose, user, courses }) =
             )}
           </div>
           <div className="form-group">
-            <label className="input-label">Upload Image on Book</label>
+            <label className="input-label">Photo</label>
             <input type="file" onChange={handleFileChange} className="input-field" />
           </div>
           <div className="form-group">
@@ -390,6 +390,34 @@ const SellModal: React.FC<SellModalProps> = ({ show, onClose, user, courses }) =
 
         .dropdown-item:hover {
           background-color: #f0f0f0;
+        }
+
+        @media (max-width: 600px) {
+        .modal-content {
+          width: 90%;
+          padding: 15px;
+        }
+
+        h2 {
+          font-size: 20px;
+        }
+
+        .input-label {
+          font-size: 12px;
+        }
+
+        .input-field {
+          padding: 5px;
+          font-size: 12px;
+        }
+
+        .submit-button {
+          padding: 8px;
+          font-size: 14px;
+        }
+
+        .disclaimer-text {
+          font-size: 10px;
         }
       `}</style>
     </div>
