@@ -25,14 +25,14 @@ const MarketPage: React.FC = () => {
     detectAdblock((detected: boolean) => {
       setAdblockDetected(detected);
     });
-
+  
     const fetchCourses = async () => {
       const coursesData: Course[] = await getCoursesData();
       setCourses(coursesData);
     };
-
+  
     fetchCourses();
-  }, []);
+  }, []);  
 
   useEffect(() => {
     const fetchAds = async () => {

@@ -1,7 +1,7 @@
 // adblockDetector.js
 export const detectAdblock = (callback) => {
     const adElement = document.createElement('div');
-    adElement.className = 'ad-banner';
+    adElement.className = 'adsbox';
     adElement.style.height = '1px';
     adElement.style.width = '1px';
     adElement.style.position = 'absolute';
