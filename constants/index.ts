@@ -21,7 +21,7 @@ export const sidebarLinks = [
         route: '/market',
         label: 'StuMarket',
         imgURL: '/icons/marketIcon.svg',
-        admin: true,
+        admin: false,
     },
     {
         route: '/create-course',
