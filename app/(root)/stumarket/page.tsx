@@ -32,7 +32,7 @@ const MarketPage: React.FC = () => {
     };
   
     fetchCourses();
-  }, []);  
+  }, []); 
 
   useEffect(() => {
     const fetchAds = async () => {
@@ -239,6 +239,12 @@ const MarketPage: React.FC = () => {
             margin-bottom: 20px;
             border: 1px solid #cc0000;
             border-radius: 5px;
+          }
+          .adsbox {
+            width: 1px !important;
+            height: 1px !important;
+            position: absolute !important;
+            top: -1000px !important;
           }
           .main-title {
             font-size: 24px;
