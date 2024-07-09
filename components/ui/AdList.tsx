@@ -5,9 +5,21 @@ import { Button } from './button';
 
 interface AdListProps {
   ads: Ad[];
+  activeTab: string;
+  onDeleteAd: (adId: string, imageId?: string) => void; // Uppdatera denna prop
 }
 
-const AdList: React.FC<AdListProps> = ({ ads }) => {
+
+const AdList: React.FC<AdListProps> = ({ ads, activeTab, onDeleteAd }) => {
+  const handleButtonClick = async (ad: Ad) => {
+    if (activeTab === 'buy') {
+      alert(`Contact seller at: ${ad.user.email}`); // Visa kontaktinformationen
+    } else {
+      await onDeleteAd(ad.$id!, ad.imageId); // Passera imageId också
+    }
+  };  
+  
+
   return (
     <div className="ads-list">
       {ads.map(ad => (
@@ -28,19 +40,28 @@ const AdList: React.FC<AdListProps> = ({ ads }) => {
             <p className="ad-seller">Seller: {ad.user.username}</p>
             <p className="ad-condition">Condition: {ad.condition}</p>
             <p className="ad-city">Location: {ad.city}</p>
-            <p className="ad-shipping">Shipping Method: {ad.shippingMethod.join(', ')}</p>
+            <div className="ad-shipping">
+              <p className="shipping-title">Delivery methods</p>
+              <ul className="shipping-list">
+                {ad.shippingMethod.map((method, index) => (
+                  <li key={index}>- {method}</li>
+                ))}
+              </ul>
+            </div>
+            <div className="flex-grow"></div>
             <p className="ad-uploadDate">Uploaded: {new Date(ad.date).toLocaleDateString()}</p>
-            <p className="ad-contact">Contact Method: {ad.contactMethod.join(', ')}</p>
             <div className="button-container">
-              <Button variant="default" size="xs">Contact Seller</Button>
+            <Button variant="default" size="xs" onClick={() => handleButtonClick(ad)}>
+              {activeTab === 'buy' ? 'Contact Seller' : 'Delete Ad'}
+            </Button>
             </div>
           </div>
         </div>
       ))}
       <style jsx>{`
         .ads-list {
-          display: flex;
-          flex-wrap: wrap;
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);  /* Ändra från flex till grid layout */
           gap: 20px;
           justify-content: center;
         }
@@ -50,7 +71,8 @@ const AdList: React.FC<AdListProps> = ({ ads }) => {
           border-radius: 10px;
           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
           overflow: hidden;
-          width: 200px;
+          width: 100%;
+          max-width: 250px;
           transition: transform 0.2s, box-shadow 0.2s;
           display: flex;
           flex-direction: column;
@@ -66,20 +88,22 @@ const AdList: React.FC<AdListProps> = ({ ads }) => {
           padding-top: 100%; /* 1:1 Aspect Ratio */
           overflow: hidden;
         }
-        .ad-image {
-          object-fit: cover;
-        }
         .ad-details {
           padding: 15px;
           text-align: left;
           width: 100%;
           box-sizing: border-box;
+          display: flex;
+          flex-direction: column;
+          height: 100%;
         }
         .ad-title {
           font-size: 16px;
           font-weight: bold;
           margin: 10px 0;
           text-align: center;
+          min-height: 40px; /* Ensures a consistent height */
+          word-wrap: break-word; /* Break long words */
         }
         .ad-price {
           font-size: 14px;
@@ -87,7 +111,7 @@ const AdList: React.FC<AdListProps> = ({ ads }) => {
           margin: 5px 0;
           font-weight: bold;
         }
-        .ad-seller, .ad-condition, .ad-city, .ad-shipping, .ad-uploadDate, .ad-contact {
+        .ad-seller, .ad-condition, .ad-city, .ad-shipping, .ad-uploadDate {
           font-size: 12px;
           color: #555;
           margin: 2px 0;
@@ -98,10 +122,53 @@ const AdList: React.FC<AdListProps> = ({ ads }) => {
         .ad-details p {
           margin: 0;
         }
+        .shipping-title {
+          font-weight: bold;
+        }
+        .shipping-list {
+          margin-top: 5px;
+          list-style-type: none;
+          padding: 0;
+        }
+        .shipping-list li {
+          font-size: 12px;
+          margin-bottom: 2px;
+        }
+        .flex-grow {
+          flex-grow: 1;
+        }
         .button-container {
           display: flex;
           justify-content: center;
           margin-top: 10px;
+          margin-bottom: 5px;
+        }
+        @media (max-width: 1200px) {
+          .ads-list {
+            grid-template-columns: repeat(3, 1fr);
+          }
+          .ad-item {
+            width: 100%;
+            max-width: 1200px;
+          }
+        }
+        @media (max-width: 900px) {
+          .ads-list {
+            grid-template-columns: repeat(2, 1fr);
+          }
+          .ad-item {
+            width: 100%;
+            max-width: 900px;
+          }
+        }
+        @media (max-width: 600px) {
+          .ads-list {
+            grid-template-columns: 1fr;
+          }
+          .ad-item {
+            width: 100%;
+            max-width: 600px;
+          }
         }
       `}</style>
     </div>

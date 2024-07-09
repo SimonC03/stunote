@@ -6,7 +6,7 @@ import SellModal from '@/components/ui/SellModal';
 import '@/components/animations/spinner.css';
 import { Button } from '@/components/ui/button';
 import { useUserContext } from '@/context/UserContext';
-import { getCoursesData, getUserAds, getAds, Course, Ad } from '@/lib/api';
+import { getCoursesData, getUserAds, getAds, Course, Ad, deleteAd } from '@/lib/api';
 import AdList from '@/components/ui/AdList';
 
 const MarketPage: React.FC = () => {
@@ -35,7 +35,6 @@ const MarketPage: React.FC = () => {
       const allAdsData: Ad[] = await getAds();
       setAllAds(allAdsData);
     };
-
     fetchAds();
   }, [user]);
 
@@ -91,7 +90,15 @@ const MarketPage: React.FC = () => {
   
     return matchesSearchText && matchesSchool && matchesCity && matchesCondition && isNotUserAd;
   });
-  
+
+  const handleDeleteAd = async (adId: string, imageId?: string) => {
+    try {
+      await deleteAd(adId, imageId);
+      setAllAds(prevAds => prevAds.filter(ad => ad.$id !== adId));
+    } catch (error) {
+      console.error('Failed to delete ad:', error);
+    }
+  };
 
   const sortedAds = filteredAds.sort((a, b) => {
     if (filters.sortBy === 'newest') {
@@ -178,16 +185,17 @@ const MarketPage: React.FC = () => {
                 <option value="priceHighLow">Price: High to Low</option>
               </select>
             </div>
-            <AdList ads={sortedAds} />
+            <AdList ads={sortedAds} activeTab={activeTab} onDeleteAd={handleDeleteAd} />
           </div>
         ) : (
           <div className="sell-container">
-            <Button type="button" size="sm" onClick={openModal}>Sell Textbook</Button>
+            
             <SellModal show={isModalOpen} onClose={closeModal} user={user} courses={courses} />
             <div className="your-ads">
               <h3>Your Ads</h3>
-              <AdList ads={userAds} />
+              <AdList ads={userAds} activeTab={activeTab} onDeleteAd={handleDeleteAd}/>
             </div>
+            <Button type="button" size="sm" onClick={openModal}>Create Ad</Button>
           </div>
         )}
       </div>
@@ -195,7 +203,11 @@ const MarketPage: React.FC = () => {
           .container {
             margin-top: 20px;
             padding: 10px;
+            max-width: 1600px;  /* Ändra från 1200px till 1600px */
+            margin-left: auto;
+            margin-right: auto;
           }
+
           .welcome-title {
             font-size: 24px;
             font-weight: bold;
@@ -231,7 +243,9 @@ const MarketPage: React.FC = () => {
             justify-content: center;
             background-color: #F6F6F6;
             padding: 20px;
+            flex-wrap: wrap;
           }
+
           .buy-container, .sell-container {
             width: 100%;
             text-align: center;
@@ -249,21 +263,15 @@ const MarketPage: React.FC = () => {
             border: 1px solid #ddd;
             border-radius: 5px;
           }
-          .sell-button {
-            padding: 10px 20px;
-            background-color: #47ABFE;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            margin-bottom: 20px;
-          }
           .your-ads {
-            margin-top: 20px;
+            margin-bottom: 20px;
+            width: 100%;
+            text-align: left;
           }
           .your-ads h3 {
             margin-bottom: 10px;
+            text-align: center;
+            font-size: 20px;
           }
           @media (max-width: 768px) {
             .welcome-title {

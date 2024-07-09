@@ -645,3 +645,20 @@ export const getAds = async (): Promise<Ad[]> => {
     throw new Error('Failed to fetch ads');
   }
 };
+
+export const deleteAd = async (adId: string, imageId?: string) => {
+  try {
+    // Ta bort annonsen från databasen
+    await databases.deleteDocument(databaseId, adsCollectionId, adId);
+
+    // Om annonsen har en bild, ta bort bilden från lagringen
+    if (imageId) {
+      await storage.deleteFile(adsStorageId, imageId);
+    }
+
+    return { message: 'Ad and image deleted successfully' };
+  } catch (error: any) {
+    console.error('Failed to delete ad or image:', error);
+    throw new Error('Failed to delete ad or image');
+  }
+};

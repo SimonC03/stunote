@@ -32,7 +32,11 @@ const SellModal: React.FC<SellModalProps> = ({ show, onClose, user, courses }) =
 
   const shippingOptions = [' Shipping', ' Meetup'];
 
+  
+
   useEffect(() => {
+    console.log(user.email);
+
     const handleClickOutside = (event: MouseEvent) => {
       if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
         onClose();
@@ -172,9 +176,9 @@ const SellModal: React.FC<SellModalProps> = ({ show, onClose, user, courses }) =
           <div className="form-group">
             <label className="input-label">Condition</label>
             <select value={condition} onChange={(e) => setCondition(e.target.value)} className="input-field">
-              <option value="new">Brand New</option>
-              <option value="used">Gently Used</option>
-              <option value="worn">Well Worn</option>
+              <option value="Brand New">Brand New</option>
+              <option value="Gently Used">Gently Used</option>
+              <option value="Well Worn">Well Worn</option>
             </select>
           </div>
           <div className="form-group">
@@ -224,8 +228,8 @@ const SellModal: React.FC<SellModalProps> = ({ show, onClose, user, courses }) =
                     className="dropdown-item"
                     onClick={() => {
                       setCourseId(course.$id);
-                      setCourseSearch(course.courseName); // Set the input value to the selected course name
-                      setShowDropdown(false); // Close the dropdown
+                      setCourseSearch(course.courseName);
+                      setShowDropdown(false); 
                     }}
                   >
                     {course.courseName} ({course.courseCode})
