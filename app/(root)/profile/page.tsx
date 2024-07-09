@@ -26,7 +26,7 @@ const ProfilePage: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [isPhoneNumberSaved, setIsPhoneNumberSaved] = useState<boolean>(false);
-
+  const [loadingbutton, setLoading] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -177,7 +177,9 @@ const ProfilePage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
     if (profile) {
+      setLoading(true);
       try {
         // Skapa ett objekt för uppdateringar med endast de fält som har ändrats
         const updatedProfileData: Partial<UserProfile> = {};
@@ -234,6 +236,7 @@ const ProfilePage: React.FC = () => {
         }
       }
     }
+    setLoading(false);
   };
 
   const formatPhoneNumber = (phoneNumber: string): string => {
@@ -476,6 +479,7 @@ const ProfilePage: React.FC = () => {
                 type="submit"
                 variant="default"
                 size="default"
+                loading={loadingbutton}
                 style={getStyles().saveButton}
               >
                 Save
