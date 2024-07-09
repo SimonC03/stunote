@@ -1,24 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import { Ad } from '@/lib/api';
 import { Button } from './button';
+import ContactModal from './ContactModal';
 
 interface AdListProps {
   ads: Ad[];
   activeTab: string;
-  onDeleteAd: (adId: string, imageId?: string) => void; // Uppdatera denna prop
+  onDeleteAd: (adId: string, imageId?: string) => void;
 }
 
-
 const AdList: React.FC<AdListProps> = ({ ads, activeTab, onDeleteAd }) => {
+  const [showContactModal, setShowContactModal] = useState(false);
+  const [contactInfo, setContactInfo] = useState({ email: '', phoneNumber: '', contactMethods: [] as string[] });
+
   const handleButtonClick = async (ad: Ad) => {
     if (activeTab === 'buy') {
-      alert(`Contact seller at: ${ad.user.email}`); // Visa kontaktinformationen
+      setContactInfo({ email: ad.user.email, phoneNumber: ad.user.phoneNumber, contactMethods: ad.contactMethod });
+      setShowContactModal(true);
     } else {
-      await onDeleteAd(ad.$id!, ad.imageId); // Passera imageId också
+      await onDeleteAd(ad.$id!, ad.imageId);
     }
-  };  
-  
+  };
 
   return (
     <div className="ads-list">
@@ -51,13 +54,18 @@ const AdList: React.FC<AdListProps> = ({ ads, activeTab, onDeleteAd }) => {
             <div className="flex-grow"></div>
             <p className="ad-uploadDate">Uploaded: {new Date(ad.date).toLocaleDateString()}</p>
             <div className="button-container">
-            <Button variant="default" size="xs" onClick={() => handleButtonClick(ad)}>
-              {activeTab === 'buy' ? 'Contact Seller' : 'Delete Ad'}
-            </Button>
+              <Button variant="default" size="xs" onClick={() => handleButtonClick(ad)}>
+                {activeTab === 'buy' ? 'Contact Seller' : 'Delete'}
+              </Button>
             </div>
           </div>
         </div>
       ))}
+      <ContactModal
+        show={showContactModal}
+        onClose={() => setShowContactModal(false)}
+        contactInfo={contactInfo}
+      />
       <style jsx>{`
         .ads-list {
           display: grid;
