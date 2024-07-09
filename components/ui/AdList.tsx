@@ -28,8 +28,9 @@ const AdList: React.FC<AdListProps> = ({ ads }) => {
             <p className="ad-seller">Seller: {ad.user.username}</p>
             <p className="ad-condition">Condition: {ad.condition}</p>
             <p className="ad-city">Location: {ad.city}</p>
-            <p className="ad-shipping">Shipping Method: {ad.shippingMethod}</p>
+            <p className="ad-shipping">Shipping Method: {ad.shippingMethod.join(', ')}</p>
             <p className="ad-uploadDate">Uploaded: {new Date(ad.date).toLocaleDateString()}</p>
+            <p className="ad-contact">Contact Method: {ad.contactMethod.join(', ')}</p>
             <div className="button-container">
               <Button variant="default" size="xs">Contact Seller</Button>
             </div>
@@ -86,7 +87,7 @@ const AdList: React.FC<AdListProps> = ({ ads }) => {
           margin: 5px 0;
           font-weight: bold;
         }
-        .ad-seller, .ad-condition, .ad-city, .ad-shipping, .ad-uploadDate {
+        .ad-seller, .ad-condition, .ad-city, .ad-shipping, .ad-uploadDate, .ad-contact {
           font-size: 12px;
           color: #555;
           margin: 2px 0;

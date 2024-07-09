@@ -76,10 +76,11 @@ export interface Ad {
   price: number;
   condition: string;
   city: string;
-  shippingMethod: string;
+  shippingMethod: string[];
   date: string;
   imageUrl?: string;
   imageId?: string;
+  contactMethod: string[];
 }
 
 // Central felhanteringsfunktion
@@ -544,7 +545,7 @@ export const uploadAdImage = async (file: File) => {
       ID.unique(),
       file,
       [
-        Permission.read(Role.any()), // Om du vill att alla ska kunna se bilden
+        Permission.read(Role.any()),
         Permission.write(Role.any())
       ]
     );
@@ -567,21 +568,22 @@ export const createAd = async (ad: Ad) => {
     const response = await databases.createDocument(
       databaseId,
       adsCollectionId,
-      ID.unique(), // Genererar ett unikt ID för dokumentet
+      ID.unique(),
       {
         bookName: ad.bookName,
-        user: user.$id, // Referens till användaren
-        courses: course.$id, // Referens till kursen
+        user: user.$id,
+        courses: course.$id,
         price: ad.price,
         condition: ad.condition,
         city: ad.city,
         shippingMethod: ad.shippingMethod,
         date: ad.date,
         imageUrl: ad.imageUrl,
-        imageId: ad.imageId
+        imageId: ad.imageId,
+        contactMethod: ad.contactMethod
       },
       [
-        Permission.read(Role.any()), // Justera behörigheterna efter behov
+        Permission.read(Role.any()),
         Permission.write(Role.user(ad.user.$id)),
         Permission.update(Role.user(ad.user.$id)),
         Permission.delete(Role.user(ad.user.$id))
@@ -612,12 +614,14 @@ export const getUserAds = async (userId: string): Promise<Ad[]> => {
       date: doc.date,
       imageUrl: doc.imageUrl,
       imageId: doc.imageId,
+      contactMethod: doc.contactMethod
     })) as Ad[];
   } catch (error: any) {
     console.error('Failed to fetch user ads', error);
     throw new Error('Failed to fetch user ads');
   }
 };
+
 
 export const getAds = async (): Promise<Ad[]> => {
   try {
@@ -634,6 +638,7 @@ export const getAds = async (): Promise<Ad[]> => {
       date: doc.date,
       imageUrl: doc.imageUrl,
       imageId: doc.imageId,
+      contactMethod: doc.contactMethod
     })) as Ad[];
   } catch (error: any) {
     console.error('Failed to fetch ads', error);
