@@ -328,11 +328,11 @@ const MarketPage: React.FC = () => {
           }
           @media (max-width: 480px) {
             .main-title {
-              font-size: 18px;
+              font-size: 16px;
               margin: 15px;
             }
             .welcome-message {
-              font-size: 12px;
+              font-size: 10px;
               margin-bottom: 10px;
             }
             .section-title {
