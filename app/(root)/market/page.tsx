@@ -68,7 +68,6 @@ const MarketPage: React.FC = () => {
       });
     }
   }, [allAds, user]);
-  
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -87,7 +86,7 @@ const MarketPage: React.FC = () => {
     const matchesCity = !filters.city || ad.city === filters.city;
     const matchesCondition = !filters.condition || ad.condition === filters.condition;
     const isNotUserAd = user && ad.user.userId !== user.$id;
-  
+
     return matchesSearchText && matchesSchool && matchesCity && matchesCondition && isNotUserAd;
   });
 
@@ -117,7 +116,8 @@ const MarketPage: React.FC = () => {
   return (
     <ProtectedRoute>
       <div className="container">
-        <h1 className="welcome-title">Marketplace to Buy and Sell Used Textbooks</h1>
+        <h1 className="main-title">Buy and Sell Your Textbooks Easily</h1>
+        <p className="welcome-message">Welcome to StuMarket - Save money and find the textbooks you need, or sell your used books to help others.</p>
         <div className="selection-container">
           <button
             className={`tab ${activeTab === 'buy' ? 'active' : ''}`}
@@ -133,87 +133,96 @@ const MarketPage: React.FC = () => {
           </button>
         </div>
         <div className="content-container">
-        {activeTab === 'buy' ? (
-          <div className="buy-container">
-            <div className="filters">
-              <input
-                type="text"
-                name="searchText"
-                value={filters.searchText}
-                onChange={handleInputChange}
-                placeholder="Search by book name, course code, or course name"
-              />
-              <select
-                name="school"
-                value={filters.school}
-                onChange={handleInputChange}
-              >
-                <option value="">School</option>
-                {filterOptions.schools.map(school => (
-                  <option key={school} value={school}>{school}</option>
-                ))}
-              </select>
-              <select
-                name="city"
-                value={filters.city}
-                onChange={handleInputChange}
-              >
-                <option value="">City</option>
-                {filterOptions.cities.map(city => (
-                  <option key={city} value={city}>{city}</option>
-                ))}
-              </select>
-              <select
-                name="condition"
-                value={filters.condition}
-                onChange={handleInputChange}
-              >
-                <option value="">Condition</option>
-                {filterOptions.conditions.map(condition => (
-                  <option key={condition} value={condition}>{condition}</option>
-                ))}
-              </select>
-              <select
-                name="sortBy"
-                value={filters.sortBy}
-                onChange={handleInputChange}
-              >
-                <option value="">Sort By</option>
-                <option value="newest">Newest</option>
-                <option value="oldest">Oldest</option>
-                <option value="priceLowHigh">Price: Low to High</option>
-                <option value="priceHighLow">Price: High to Low</option>
-              </select>
+          {activeTab === 'buy' ? (
+            <div className="buy-container">
+              <div className="filters">
+                <input
+                  type="text"
+                  name="searchText"
+                  value={filters.searchText}
+                  onChange={handleInputChange}
+                  placeholder="Search by book name, course code, or course name"
+                />
+                <select
+                  name="school"
+                  value={filters.school}
+                  onChange={handleInputChange}
+                >
+                  <option value="">School</option>
+                  {filterOptions.schools.map(school => (
+                    <option key={school} value={school}>{school}</option>
+                  ))}
+                </select>
+                <select
+                  name="city"
+                  value={filters.city}
+                  onChange={handleInputChange}
+                >
+                  <option value="">City</option>
+                  {filterOptions.cities.map(city => (
+                    <option key={city} value={city}>{city}</option>
+                  ))}
+                </select>
+                <select
+                  name="condition"
+                  value={filters.condition}
+                  onChange={handleInputChange}
+                >
+                  <option value="">Condition</option>
+                  {filterOptions.conditions.map(condition => (
+                    <option key={condition} value={condition}>{condition}</option>
+                  ))}
+                </select>
+                <select
+                  name="sortBy"
+                  value={filters.sortBy}
+                  onChange={handleInputChange}
+                >
+                  <option value="">Sort By</option>
+                  <option value="newest">Newest</option>
+                  <option value="oldest">Oldest</option>
+                  <option value="priceLowHigh">Price: Low to High</option>
+                  <option value="priceHighLow">Price: High to Low</option>
+                </select>
+              </div>
+              <AdList ads={sortedAds} activeTab={activeTab} onDeleteAd={handleDeleteAd} />
             </div>
-            <AdList ads={sortedAds} activeTab={activeTab} onDeleteAd={handleDeleteAd} />
-          </div>
-        ) : (
-          <div className="sell-container">
-            
-            <SellModal show={isModalOpen} onClose={closeModal} user={user} courses={courses} />
-            <div className="your-ads">
-              <h3>Your Ads</h3>
-              <AdList ads={userAds} activeTab={activeTab} onDeleteAd={handleDeleteAd}/>
+          ) : (
+            <div className="sell-container">
+              <SellModal show={isModalOpen} onClose={closeModal} user={user} courses={courses} />
+              <div className="your-ads">
+                <p className="section-title">Your Ads</p>
+                <AdList ads={userAds} activeTab={activeTab} onDeleteAd={handleDeleteAd} />
+              </div>
+              <Button type="button" size="xs" onClick={openModal}>Create Ad</Button>
             </div>
-            <Button type="button" size="sm" onClick={openModal}>Create Ad</Button>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
         <style jsx>{`
           .container {
             margin-top: 20px;
             padding: 10px;
-            max-width: 1600px;  /* Ändra från 1200px till 1600px */
+            max-width: 1600px;
             margin-left: auto;
             margin-right: auto;
           }
-
-          .welcome-title {
+          .main-title {
             font-size: 24px;
             font-weight: bold;
             text-align: center;
             margin: 30px;
             color: white;
+          }
+          .welcome-message {
+            font-size: 16px;
+            text-align: center;
+            margin-bottom: 20px;
+            color: white;
+          }
+          .section-title {
+            font-size: 18px;
+            text-align: center;
+            margin-bottom: 5px;
           }
           .selection-container {
             display: flex;
@@ -245,7 +254,6 @@ const MarketPage: React.FC = () => {
             padding: 20px;
             flex-wrap: wrap;
           }
-
           .buy-container, .sell-container {
             width: 100%;
             text-align: center;
@@ -268,33 +276,69 @@ const MarketPage: React.FC = () => {
             width: 100%;
             text-align: left;
           }
-          .your-ads h3 {
-            margin-bottom: 10px;
-            text-align: center;
-            font-size: 20px;
-          }
           @media (max-width: 768px) {
-            .welcome-title {
-              font-size: 16px;
+            .main-title {
+              font-size: 20px;
               margin: 20px;
             }
+            .welcome-message {
+              font-size: 14px;
+              margin-bottom: 15px;
+            }
+            .section-title {
+              font-size: 16px;
+              margin-bottom: 5px;
+            }
             .selection-container {
-              height: 25px;
+              height: 35px;
               margin-bottom: 5px;
             }
             .tab {
-              font-size: 10px;
-              padding: 4px 10px;
+              font-size: 14px;
+              padding: 8px 16px;
             }
             .buy-container, .sell-container {
-              font-size: 10px;
+              font-size: 14px;
+            }
+            .filters {
+              gap: 8px;
+            }
+            .filters input,
+            .filters select {
+              font-size: 12px;
+              padding: 6px;
+            }
+          }
+          @media (max-width: 480px) {
+            .main-title {
+              font-size: 18px;
+              margin: 15px;
+            }
+            .welcome-message {
+              font-size: 12px;
+              margin-bottom: 10px;
+            }
+            .section-title {
+              font-size: 14px;
+              margin-bottom: 5px;
+            }
+            .selection-container {
+              height: 30px;
+              margin-bottom: 5px;
+            }
+            .tab {
+              font-size: 12px;
+              padding: 6px 12px;
+            }
+            .buy-container, .sell-container {
+              font-size: 12px;
             }
             .filters {
               gap: 5px;
             }
             .filters input,
             .filters select {
-              font-size: 12px;
+              font-size: 10px;
               padding: 5px;
             }
           }
