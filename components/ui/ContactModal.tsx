@@ -65,7 +65,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ show, onClose, contactInfo 
           border-radius: 8px;
           box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
           width: 90%;
-          max-width: 500px;
+          max-width: 400px;
           text-align: center;
           z-index: 1001;
         }
