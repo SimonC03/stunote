@@ -12,7 +12,7 @@ export const sidebarLinks = [
         admin: false,
     }, 
     {
-        route: '/market',
+        route: '/stumarket',
         label: 'StuMarket',
         imgURL: '/icons/marketIcon.svg',
         admin: false,
