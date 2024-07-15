@@ -19,7 +19,7 @@ const SellModal: React.FC<SellModalProps> = ({ show, onClose, user }) => {
   const [price, setPrice] = useState('');
   const [schools, setSchools] = useState<string[]>([]);
   const [selectedSchool, setSelectedSchool] = useState<string>('');
-  const [condition, setCondition] = useState('new');
+  const [condition, setCondition] = useState('Brand New');
   const [city, setCity] = useState('');
   const [shippingMethods, setShippingMethods] = useState<string[]>([]);
   const [file, setFile] = useState<File | null>(null);
