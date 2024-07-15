@@ -1,5 +1,6 @@
 import { ID, Role, Permission, Query } from 'appwrite';
 import { databases, storage, account } from './appwrite';
+import { University } from 'lucide-react';
 
 const databaseId = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
 const usersCollectionId = process.env.NEXT_PUBLIC_APPWRITE_USERS_COLLECTION_ID!;
@@ -72,7 +73,7 @@ export interface Ad {
   $id?: string;
   bookName: string;
   user: UserProfile;
-  courses: Course;
+  university: string;
   price: number;
   condition: string;
   city: string;
@@ -563,7 +564,6 @@ export const uploadAdImage = async (file: File) => {
 export const createAd = async (ad: Ad) => {
   try {
     const user = await getUserData(ad.user.$id);
-    const course = await getCourseData(ad.courses.$id);
 
     const response = await databases.createDocument(
       databaseId,
@@ -572,7 +572,7 @@ export const createAd = async (ad: Ad) => {
       {
         bookName: ad.bookName,
         user: user.$id,
-        courses: course.$id,
+        university: ad.university,
         price: ad.price,
         condition: ad.condition,
         city: ad.city,
@@ -606,7 +606,7 @@ export const getUserAds = async (userId: string): Promise<Ad[]> => {
       $id: doc.$id,
       bookName: doc.bookName,
       user: doc.user,
-      courses: doc.courses,
+      university: doc.university,
       price: doc.price,
       condition: doc.condition,
       city: doc.city,
@@ -630,7 +630,7 @@ export const getAds = async (): Promise<Ad[]> => {
       $id: doc.$id,
       bookName: doc.bookName,
       user: doc.user,
-      courses: doc.courses,
+      university: doc.university,
       price: doc.price,
       condition: doc.condition,
       city: doc.city,

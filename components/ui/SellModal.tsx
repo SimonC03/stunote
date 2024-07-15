@@ -1,38 +1,34 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { uploadAdImage, createAd, Ad } from '@/lib/api';
-import { UserProfile, Course } from '@/lib/api';
+import { UserProfile } from '@/lib/api';
 import { useUserContext } from '@/context/UserContext';
 import { toast } from 'react-hot-toast';
 import { Button } from '@/components/ui/button';
 import { isEmailVerified, isPhoneVerified } from '@/lib/appwrite';
+import { getSchools } from '@/lib/schools';
 
 interface SellModalProps {
   show: boolean;
   onClose: () => void;
   user: UserProfile;
-  courses: Course[];
 }
 
-const SellModal: React.FC<SellModalProps> = ({ show, onClose, user, courses }) => {
+const SellModal: React.FC<SellModalProps> = ({ show, onClose, user }) => {
   const modalRef = useRef<HTMLDivElement>(null);
   const [bookName, setBookName] = useState('');
   const [price, setPrice] = useState('');
+  const [schools, setSchools] = useState<string[]>([]);
+  const [selectedSchool, setSelectedSchool] = useState<string>('');
   const [condition, setCondition] = useState('new');
   const [city, setCity] = useState('');
   const [shippingMethods, setShippingMethods] = useState<string[]>([]);
-  const [courseId, setCourseId] = useState('');
-  const [courseSearch, setCourseSearch] = useState('');
-  const [selectedCourseName, setSelectedCourseName] = useState('');
-  const [filteredCourses, setFilteredCourses] = useState<Course[]>(courses);
   const [file, setFile] = useState<File | null>(null);
   const [contactMethods, setContactMethods] = useState<string[]>([]);
   const [emailVerifiedState, setEmailVerifiedState] = useState(false);
   const [phoneVerifiedState, setPhoneVerifiedState] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const [loading, setLoading] = useState(false);
-  const shippingOptions = [' Shipping', ' Meetup'];
-
-  
+  const shippingOptions = ['Shipping', 'Meetup'];
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -59,23 +55,17 @@ const SellModal: React.FC<SellModalProps> = ({ show, onClose, user, courses }) =
   }, []);
 
   useEffect(() => {
-    const filtered = courses.filter(course =>
-      course.courseName.toLowerCase().includes(courseSearch.toLowerCase()) ||
-      course.courseCode.toLowerCase().includes(courseSearch.toLowerCase())
-    );
-    setFilteredCourses(filtered);
-  
-    // Check if the courseSearch exactly matches any course name
-    const exactMatch = filtered.find(course => course.courseName.toLowerCase() === courseSearch.toLowerCase());
-    if (exactMatch) {
-      setCourseId(exactMatch.$id);
-      setSelectedCourseName(exactMatch.courseName);
-    } else {
-      setCourseId('');
-      setSelectedCourseName('');
+    fetchSchools();
+  }, []);
+
+  const fetchSchools = async () => {
+    try {
+      const schoolsData = await getSchools();
+      setSchools(schoolsData);
+    } catch (error) {
+      console.error('Failed to fetch schools', error);
     }
-  }, [courseSearch, courses]);
-  
+  };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -94,17 +84,15 @@ const SellModal: React.FC<SellModalProps> = ({ show, onClose, user, courses }) =
       prev.includes(method) ? prev.filter(m => m !== method) : [...prev, method]
     );
   };
-  
 
   const handleSubmit = async () => {
-    
     if (!file) {
       alert('Please upload an image');
       return;
     }
   
-    if (!courseId) {
-      alert('Please select a valid course');
+    if (!selectedSchool) {
+      alert('Please select a valid school');
       return;
     }
   
@@ -112,37 +100,36 @@ const SellModal: React.FC<SellModalProps> = ({ show, onClose, user, courses }) =
       alert('You need to be logged in to create an ad.');
       return;
     }
+
     setLoading(true);
     try {
       const imageUploadResponse = await uploadAdImage(file);
       const { imageUrl, imageId } = imageUploadResponse;
-  
+
       const newAd: Omit<Ad, '$id'> = {
         bookName,
         user,
-        courses: courses.find(course => course.$id === courseId) as Course,
+        university: selectedSchool,
         price: Number(price),
         condition,
         city,
-        shippingMethod: shippingMethods, // Skicka som array
+        shippingMethod: shippingMethods, // Send as array
         date: new Date().toISOString(),
         imageUrl,
         imageId,
-        contactMethod: contactMethods, // Skicka som array
+        contactMethod: contactMethods, // Send as array
       };
       const response = await createAd(newAd);
-  
+
       toast.success('Ad created successfully');
       onClose();
     } catch (error) {
       console.error('Failed to create ad', error);
       toast.error('Failed to create ad');
-    }
-    finally {
+    } finally {
       setLoading(false);
     }
   };
-  
 
   if (!show) {
     return null;
@@ -209,13 +196,13 @@ const SellModal: React.FC<SellModalProps> = ({ show, onClose, user, courses }) =
             </div>
           </div>
           <div className="form-group">
-            <label className="input-label">Select Course</label>
+            <label className="input-label">Select School</label>
             <input
               type="text"
-              placeholder="Search course"
-              value={courseSearch}
+              placeholder="Search school"
+              value={selectedSchool}
               onChange={(e) => {
-                setCourseSearch(e.target.value);
+                setSelectedSchool(e.target.value);
                 setShowDropdown(true);
               }}
               onFocus={() => setShowDropdown(true)}
@@ -223,21 +210,22 @@ const SellModal: React.FC<SellModalProps> = ({ show, onClose, user, courses }) =
             />
             {showDropdown && (
               <div className="dropdown">
-                {filteredCourses.map(course => (
-                  <div
-                    key={course.$id}
-                    className="dropdown-item"
-                    onClick={() => {
-                      setCourseId(course.$id);
-                      setCourseSearch(course.courseName);
-                      setShowDropdown(false); 
-                    }}
-                  >
-                    {course.courseName} ({course.courseCode})
-                  </div>
-                ))}
-                {filteredCourses.length === 0 && (
-                  <div className="dropdown-item">No courses found</div>
+                {schools
+                  .filter(school => school.toLowerCase().includes(selectedSchool.toLowerCase()))
+                  .map(school => (
+                    <div
+                      key={school}
+                      className="dropdown-item"
+                      onClick={() => {
+                        setSelectedSchool(school);
+                        setShowDropdown(false);
+                      }}
+                    >
+                      {school}
+                    </div>
+                  ))}
+                {schools.length === 0 && (
+                  <div className="dropdown-item">No schools found</div>
                 )}
               </div>
             )}

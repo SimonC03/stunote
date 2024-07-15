@@ -6,7 +6,7 @@ import SellModal from '@/components/ui/SellModal';
 import '@/components/animations/spinner.css';
 import { Button } from '@/components/ui/button';
 import { useUserContext } from '@/context/UserContext';
-import { getCoursesData, getUserAds, getAds, Course, Ad, deleteAd } from '@/lib/api';
+import { getUserAds, getAds, Course, Ad, deleteAd } from '@/lib/api';
 import AdList from '@/components/ui/AdList';
 import toast from 'react-hot-toast';
 import { detectAdblock } from '@/components/util/adblockDetector';
@@ -14,7 +14,6 @@ import { detectAdblock } from '@/components/util/adblockDetector';
 const MarketPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState('buy');
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [courses, setCourses] = useState<Course[]>([]);
   const [ads, setAds] = useState<Ad[]>([]);
   const [allAds, setAllAds] = useState<Ad[]>([]);
   const [loading, setLoading] = useState(false);
@@ -25,13 +24,6 @@ const MarketPage: React.FC = () => {
     detectAdblock((detected: boolean) => {
       setAdblockDetected(detected);
     });
-  
-    const fetchCourses = async () => {
-      const coursesData: Course[] = await getCoursesData();
-      setCourses(coursesData);
-    };
-  
-    fetchCourses();
   }, []);
   
 
@@ -67,7 +59,7 @@ const MarketPage: React.FC = () => {
   useEffect(() => {
     if (user) {
       const filteredAds = allAds.filter(ad => ad.user.userId !== user.$id);
-      const schools = Array.from(new Set(filteredAds.map(ad => ad.courses.university)));
+      const schools = Array.from(new Set(filteredAds.map(ad => ad.university)));
       const cities = Array.from(new Set(filteredAds.map(ad => ad.city)));
       const conditions = Array.from(new Set(filteredAds.map(ad => ad.condition)));
       setFilterOptions({
@@ -89,7 +81,7 @@ const MarketPage: React.FC = () => {
   const filteredAds = allAds.filter(ad => {
     const matchesSearchText =
       ad.bookName.toLowerCase().includes(filters.searchText.toLowerCase())
-    const matchesSchool = !filters.school || ad.courses.university === filters.school;
+    const matchesSchool = !filters.school || ad.university === filters.school;
     const matchesCity = !filters.city || ad.city === filters.city;
     const matchesCondition = !filters.condition || ad.condition === filters.condition;
     const isNotUserAd = user && ad.user.userId !== user.$id;
@@ -209,7 +201,7 @@ const MarketPage: React.FC = () => {
             </div>
           ) : (
             <div className="sell-container">
-              <SellModal show={isModalOpen} onClose={closeModal} user={user} courses={courses} />
+              <SellModal show={isModalOpen} onClose={closeModal} user={user}/>
               <div className="your-ads">
                 <p className="section-title">Your Ads</p>
                 {userAds.length === 0 ? (
