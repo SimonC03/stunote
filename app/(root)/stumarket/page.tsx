@@ -88,9 +88,7 @@ const MarketPage: React.FC = () => {
 
   const filteredAds = allAds.filter(ad => {
     const matchesSearchText =
-      ad.bookName.toLowerCase().includes(filters.searchText.toLowerCase()) ||
-      ad.courses.courseCode.toLowerCase().includes(filters.searchText.toLowerCase()) ||
-      ad.courses.courseName.toLowerCase().includes(filters.searchText.toLowerCase());
+      ad.bookName.toLowerCase().includes(filters.searchText.toLowerCase())
     const matchesSchool = !filters.school || ad.courses.university === filters.school;
     const matchesCity = !filters.city || ad.city === filters.city;
     const matchesCondition = !filters.condition || ad.condition === filters.condition;
@@ -159,7 +157,7 @@ const MarketPage: React.FC = () => {
                   name="searchText"
                   value={filters.searchText}
                   onChange={handleInputChange}
-                  placeholder="Search by book name, course code, or course name"
+                  placeholder="Search by book name"
                 />
                 <select
                   name="school"
