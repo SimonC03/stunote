@@ -173,6 +173,9 @@ const ExplorePage = () => {
   return (
     <ProtectedRoute>
       <div className="container">
+        <div className="message-box">
+          <p>We are currently working on uploading more courses. </p>
+        </div>
         <h1 className="welcome-title">Discover endless learning possibilities here!</h1>
         <div className="search-bar">
           <input
@@ -219,6 +222,14 @@ const ExplorePage = () => {
           .container {
             margin-top: 20px;
             padding: 10px;
+          }
+          .message-box {
+            padding: 10px;
+            background-color: white;
+            color: black;
+            text-align: center;
+            margin-bottom: 20px;
+            border-radius: 5px;
           }
           .welcome-title {
             font-size: 24px;
