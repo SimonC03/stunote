@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { Course, getCoursesData, getUserData, UserProfile } from '@/lib/api';
-import { getCourses } from '@/lib/schools';
+import { getCoursesByYear } from '@/lib/schools';
 import Modal from '@/components/ui/Modal';
 import { useUserContext } from '@/context/UserContext';
 import ProtectedRoute from '@/components/ProtectedRoute';
@@ -20,7 +20,8 @@ const ExplorePage = () => {
   const [courseCodes, setCourseCodes] = useState<string[]>([]);
   const [exploreCourses, setExploreCourses] = useState<Course[]>([]);
   const [myEducationCourses, setMyEducationCourses] = useState<Course[]>([]);
-  
+  const [selectedYear, setSelectedYear] = useState<number | null>(null);
+  const [availableYears, setAvailableYears] = useState<number[]>([]);
 
   const fetchCourses = useCallback(async () => {
     try {
@@ -33,7 +34,6 @@ const ExplorePage = () => {
       setLoading(false);
     }
   }, []);
-  
 
   const fetchUserData = useCallback(async () => {
     if (user && user.$id) {
@@ -41,15 +41,24 @@ const ExplorePage = () => {
         const data = await getUserData(user.$id);
         setUserData(data);
         if (data.education && data.school) {
-          const codes = getCourses(data.school, data.education);
-          setCourseCodes(codes);
+          const uniqueYears = new Set<number>();
+          let allCodes: string[] = [];
+          for (let year = 1; year <= 5; year++) {
+            const codes = getCoursesByYear(data.school, data.education, year);
+            if (codes.length > 0) {
+              uniqueYears.add(year);
+            }
+            allCodes = [...allCodes, ...codes];
+          }
+          setCourseCodes(allCodes);
+          setAvailableYears(Array.from(uniqueYears));
   
-          // Filtrera kurser baserat på kurskoderna
           const allCourses = await getCoursesData();
-          const filteredUserCourses = allCourses.filter(course => 
-            codes.includes(course.courseCode)
+          const filteredUserCourses = allCourses.filter(course =>
+            allCodes.includes(course.courseCode)
           );
           setMyEducationCourses(filteredUserCourses);
+          setFilteredCourses(filteredUserCourses); // Lägg till detta för att säkerställa att `filteredCourses` är korrekt initialiserad
         }
       } catch (error) {
         console.error('Error fetching user data:', error);
@@ -63,7 +72,7 @@ const ExplorePage = () => {
       fetchCourses();
       fetchUserData();
     }
-  }, [user, userLoading, fetchCourses, fetchUserData]);  
+  }, [user, userLoading, fetchCourses, fetchUserData]);
 
   useEffect(() => {
     if (searchTerm === '') {
@@ -79,11 +88,31 @@ const ExplorePage = () => {
       );
     }
   }, [searchTerm, exploreCourses]);
-  
+
+  useEffect(() => {
+    filterCoursesByYear(selectedYear);
+  }, [selectedYear, myEducationCourses]);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
   };
+
+  const filterCoursesByYear = (year: number | null) => {
+    if (year === null) {
+      setFilteredCourses(myEducationCourses);
+    } else {
+      if (!userData || !userData.school || !userData.education) {
+        setFilteredCourses([]);
+        return;
+      }
+  
+      const filtered = myEducationCourses.filter(course =>
+        getCoursesByYear(userData.school, userData.education, year).includes(course.courseCode)
+      );
+      setFilteredCourses(filtered);
+    }
+  };  
+  
 
   const handleCloseModal = () => setSelectedCourseId(null);
 
@@ -92,7 +121,7 @@ const ExplorePage = () => {
       <div className="loading-container">
         <div className="spinner"></div>
       </div>
-    );;
+    );
   }
 
   const isMobile = window.innerWidth <= 768;
@@ -138,6 +167,87 @@ const ExplorePage = () => {
       </li>
     ));
   };
+
+  const renderYearSelection = () => {
+    const isMobile = window.innerWidth <= 768;
+  
+    return isMobile ? (
+      <select
+        value={selectedYear === null ? '' : selectedYear}
+        onChange={(e) => setSelectedYear(e.target.value === '' ? null : parseInt(e.target.value))}
+        style={{
+          width: '100%',
+          padding: '4px',
+          border: '1px solid #ddd',
+          borderRadius: '5px',
+          fontSize: '10px',
+          marginBottom: '5px',
+        }}
+      >
+        <option value="">All Years</option>
+        {availableYears.map(year => (
+          <option key={year} value={year}>
+            {`Year ${year}`}
+          </option>
+        ))}
+      </select>
+    ) : (
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        width: '100%',
+        marginBottom: '20px',
+      }}>
+        <button 
+          className={`year-button ${selectedYear === null ? 'active' : ''}`} 
+          onClick={() => setSelectedYear(null)}
+          style={{
+            flex: 1,
+            padding: '10px 20px',
+            margin: '0',
+            border: 'none',
+            background: selectedYear === null ? '#47ABFE' : '#F6F6F6',
+            color: selectedYear === null ? 'white' : '#8c8c8c',
+            fontSize: '16px',
+            fontWeight: 'bold',
+            textAlign: 'center',
+            cursor: 'pointer',
+            borderRadius: '5px',
+            transition: 'background-color 0.3s, color 0.3s',
+          }}
+        >
+          All Years
+        </button>
+        {availableYears.map(year => (
+          <button 
+            key={year} 
+            className={`year-button ${selectedYear === year ? 'active' : ''}`} 
+            onClick={() => setSelectedYear(year)}
+            style={{
+              flex: 1,
+              padding: '10px 20px',
+              margin: '0',
+              border: 'none',
+              background: selectedYear === year ? '#47ABFE' : '#F6F6F6',
+              color: selectedYear === year ? 'white' : '#8c8c8c',
+              fontSize: '16px',
+              fontWeight: 'bold',
+              textAlign: 'center',
+              cursor: 'pointer',
+              borderRadius: '5px',
+              transition: 'background-color 0.3s, color 0.3s',
+            }}
+          >
+            {`Year ${year}`}
+          </button>
+        ))}
+      </div>
+    );
+  };
+  
+  
+  
+  
   
   
 
@@ -145,7 +255,7 @@ const ExplorePage = () => {
     if (!userData) {
       return null;
     }
-  
+
     if (!userData.education || !userData.school) {
       return (
         <p>
@@ -156,19 +266,21 @@ const ExplorePage = () => {
         </p>
       );
     }
-  
+
     return (
       <>
-        {courseCodes.length === 0 ? (
+        
+        {filteredCourses.length === 0 ? (
           <p>No Courses connected to your education yet</p>
         ) : (
           <>
-            {renderCourses(myEducationCourses, setSelectedCourseId)}
+            {renderCourses(filteredCourses, setSelectedCourseId)}
           </>
         )}
       </>
     );
   };
+
   return (
     <ProtectedRoute>
       <div className="container">
@@ -205,9 +317,15 @@ const ExplorePage = () => {
               {renderCourses(filteredCourses, setSelectedCourseId)}
             </ul>
           ) : (
-            <ul className="course-list">
-              {renderMyEducation()}
-            </ul>
+            <>
+              <div className='year-selection-container'>
+                {renderYearSelection()}
+              </div>
+              
+              <ul className="course-list">
+                {renderMyEducation()}
+              </ul>
+            </>
           )}
         </div>
         {selectedCourseId && (
@@ -274,7 +392,7 @@ const ExplorePage = () => {
             color: white;
           }
           .courses-container {
-            display: flex;
+            display: block;
             justify-content: center;
             background-color: #F6F6F6;
             padding: 20px;
@@ -302,17 +420,21 @@ const ExplorePage = () => {
           }
           .my-education {
             text-align: center;
+            text-align: left;
+            font-size: 14px;
           }
           .profile-link {
             color: #47ABFE;
             text-decoration: underline;
             cursor: pointer;
           }
-          .my-education {
-            text-align: left;
-            font-size: 14px;
-          }
+          
           @media (max-width: 768px) {
+          .message-box {
+            font-size: 10px;
+            padding: 5px;
+            margin-bottom: 10px;
+          }
             .welcome-title {
               font-size: 16px;
               margin: 20px;
