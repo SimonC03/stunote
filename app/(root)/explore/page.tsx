@@ -169,7 +169,6 @@ const ExplorePage = () => {
       </>
     );
   };
-
   return (
     <ProtectedRoute>
       <div className="container">

@@ -28,7 +28,7 @@ export const schoolData: SchoolData = {
   "Chalmers Tekniska Högskola": [
     { name: "Arkitektur", codes: [] },
     { name: "Arkitektur och teknik", codes: [] },
-    { name: "Tekniskt basår", codes: ["MVE426", "SEE180", "MVE285", "IMS145", "KBT185", "TIF410", "LET924"] },
+    { name: "Tekniskt basår", codes: ["MVE426", "SEE180", "MVE285", "IMS145", "KBT185", "TIF410", "LET924", "MVE725", "TIF410"] },
     { name: "Automation och mekatronik, 300 hp", codes: [] },
     { name: "Bioteknik, 300 hp", codes: [] },
     { name: "Datateknik, 300 hp", codes: [] },
