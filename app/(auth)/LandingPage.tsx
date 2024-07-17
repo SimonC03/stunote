@@ -6,6 +6,9 @@ import { Button } from '@/components/ui/button';
 import Footer from '@/components/ui/Footer';
 
 const LandingPage: React.FC = () => {
+  const userCount = 100;
+  const documentCount = 100;
+
   return (
     <div className="flex flex-col justify-between min-h-screen text-white p-8">
       <div className="absolute top-14 left-14 max-lg:hidden">
@@ -26,7 +29,7 @@ const LandingPage: React.FC = () => {
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-2 md:mb-4 text-orange-1 w-full max-w-3xl">CREATED BY STUDENTS</h1>
         <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-8 w-full max-w-3xl">FOR STUDENTS!</h2>
         <p className="text-base md:text-lg lg:text-xl mb-4 md:mb-8 max-w-2xl">
-          Welcome to StuNote - your ultimate global student platform! We make studying easier by offering high-quality, course-relevant content. Join us today and let’s learn together!
+        Welcome to StuNote - The best student platform! Access high-quality, course-relevant content and buy or sell used textbooks.{<br/>}Join us and learn together!
         </p>
         <div className="flex space-x-4 mb-8 ">
           <Link href="/sign-in">
