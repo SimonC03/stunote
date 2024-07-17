@@ -116,9 +116,9 @@ export const schoolData: SchoolData = {
       1: ["MVE426", "SEE180", "MVE285", "IMS145", "KBT185", "TIF410", "LET924", "MVE725", "TIF410"]
     }},
     { name: "Automation och mekatronik, 300 hp", years: { 
-      1: [],
-      2: [],
-      3: [],
+      1: ["DAT425", "MVE605", "SSY331", "SEE055", "SSY331", "TMV139", "DAT430", "MVE610", "SEE100", "DAT430", "MMS135", "MVE615"],
+      2: ["DAT525", "EEN150", "MMS215", "EEN150", "MVE091", "SEE100", "EEN155", "IMS085", "SSY043", "MTF042", "IMS085", "LMU450", "SSY052"],
+      3: ["EEN175", "EEN220", "IMS080", "MTF053", "MVE295", "TDA384", "TMA947", "TMS150", "TMV200", "EEN175", "EEN220", "DAT516", "EEM015", "MHA021", "MMF092", "MTT031", "MVE550", "SEE020", "SJO955", "TDA452", "TDA567", "TEK741", "CLS045", "DAT610", "EDA322", "EDA344", "ETI147", "MTF155", "PPU061", "PPU201", "SSY305", "TDA357", "TEK125", "TMV029",],
       4: [],
       5: []
     }},
@@ -144,16 +144,16 @@ export const schoolData: SchoolData = {
       5: []
     }},
     { name: "Globala system, 300 hp", years: { 
-      1: [],
-      2: [],
-      3: [],
+      1: ["MVE620", "MVE626", "SEE070", "SEE075", "SEE086", "DAT435", "SEE070", "SEE081", "SEE060", "SEE065",],
+      2: ["DAT506", "DAT605", "SEE110", "MVE655", "TEL820", "MVE650", "SEE105", "DAT565", "TEK915",],
+      3: ["TEK761", "ACE235", "MTF053", "MVE295", "SSY051", "TIF395", "TMA947", "MVE680", "BOM345", "DAT038", "SEE020", "SEE055", "SEE155", "BOM360", "DAT341", "EEM155", "IEK415", "TMA982", "SEE150",],
       4: [],
       5: []
     }},
     { name: "Industriell ekonomi, 300 hp", years: { 
-      1: [],
-      2: [],
-      3: [],
+      1: ["MVE014", "TEK927", "TEK935", "MVE019", "TEK935", "TEK946", "MVE023", "TEK930", "TEK940", "MVE660", "TEK940", "TEK950"],
+      2: ["DAT555", "TMS137", "DAT516", "IMA044", "DAT565", "ITR234", "TEK615", "TIF233",],
+      3: ["IOE012", "TEK825", "MVE690",],
       4: [],
       5: []
     }},
@@ -207,9 +207,9 @@ export const schoolData: SchoolData = {
       5: []
     }},
     { name: "Teknisk fysik, 300 hp", years: { 
-      1: [],
-      2: [],
-      3: [],
+      1: ["MVE670", "TIF276", "TMA970", "FFM516", "SEE125", "TMA976", "FFM516", "MVE035", "SEE125", "TIF276", "SEE125", "TIF375", "TMA321",],
+      2: ["ESS117", "MVE025", "TIF083", "EEN190", "ERE091", "TIF083", "TIF385", "EEN190", "MVE030", "TIF083", "FFY091", "MMS260", "TIF083",],
+      3: ["FTF141", "TIF395", "TIF097", "TIF400", "DAT038", "DAT516", "EDA452", "EEK141", "EEM021", "ITS067", "KBT340", "MHA021", "MVE695", "SEE020", "SJO955", "TEK685", "TEK720", "TIF390", "MVE370", "FUF050", "TIF097", "MVE370", "TIF076", "TIF097", "MVE370",],
       4: [],
       5: []
     }},
@@ -221,9 +221,9 @@ export const schoolData: SchoolData = {
       5: []
     }},
     { name: "Datateknik, 180 hp", years: { 
-      1: ["MVE675", "MVE545", "LEU470", "EDA387", "TDA452", "DAT610", "LEU432", "TDA352", "LEU483", "LSP581", "DAT341", "DAT565", "TDA384", "LET627", "TDA567", "TDA596", "EDA234", "MVE535", "DAT390", "TDA357", "EDA093", "DAT151", "EDA264", "CLS050", "TMV211","DAT055", "DAT050", "LEU237", "SSY326", "EDA387", "TDA452", "DAT610", "LMA521", "DAT257", "TDA352", "FFR102", "DAT565", "TDA384", "TDA567", "LMA201", "TDA596", "EDA234", "EDA322", "DAT390", "DAT356", "LEU062", "LMU450", "TDA357", "DAT326", "EDA093", "DAT151", "EDA264", "TMV211", "DAT495","DAT050", "EDA387", "LMTX38", "TDA452", "DAT610", "LSP127", "DAT068", "LMA521", "DAT076", "DAT257", "TDA352", "TEK486", "DAT341", "DAT565", "TDA384", "TDA567", "SSY011", "LMA201", "TDA596", "EDA234", "EDA322", "DAT356", "EENX20", "LEU062", "LMU450", "TDA357", "DAT326", "EDA093", "DAT151", "EDA264", "LMA017", "DAT495"],
-      2: [],
-      3: []
+      1: ["CLS050", "LEU432", "LEU470", "MVE675", "LEU483", "DAT390", "MVE535", "LET627", "LSP581", "MVE545",],
+      2: ["DAT050", "TMV211", "LEU237", "TDA357", "DAT055", "LEU062", "SSY326", "DAT495", "FFR102", "SSY326",],
+      3: ["DAT257", "EDA093", "EDA093", "EDA387", "LMA017", "SSY011", "TDA384", "DAT068", "DAT151", "DAT356", "EDA234", "LMA521", "TDA352", "TDA452", "TDA567", "TDA596", "TEK486", "LSP127", "DAT076", "DAT326", "DAT610", "EDA264", "EDA322", "LMA201", "TDA384", "LMU450",]
     }},
     { name: "Design och produktutveckling, 180 hp", years: { 
       1: [],
@@ -231,14 +231,14 @@ export const schoolData: SchoolData = {
       3: [] 
     }},
     { name: "Ekonomi och produktionsteknik, 180 hp", years: { 
-      1: [],
-      2: [],
-      3: []
+      1: ["MVE575", "TEK345", "MVE570", "TEK685", "LMT202", "TEK336", "EEN065", "TEK375",],
+      2: ["IMS070", "TEK341", "LMA521", "LMT991", "MMS270", "TEK380", "TEK371", "TEK400",],
+      3: ["TEK630", "DAT565", "LMA017", "LMU056", "PPU032", "SSY295", "PPU055", "DAT516", "LMU113", "SJO955", "TEK600", "TEK700", "TEK691", "TEK391",]
     }},
     { name: "Elektroteknik, 180 hp", years: { 
-      1: ["MVE675", "MVE545", "LEU470", "ENM061", "ENM097", "LEU432", "LEU483", "LSP581", "TME095", "EDA234", "MVE535", "DAT390", "LET086", "MTT060", "ENM056", "ENM052", "MTT035", "SSY305", "CLS050","SSY326", "ENM061", "ENM097", "SEE035", "FFR102", "TME095", "LMA201", "EDA234", "LEU236", "EDA322", "DAT390", "ENM056", "LET271", "EEK565", "LEU062", "ENM052", "RRY011", "LMU450", "SSY020", "LMTX38", "ENM061", "ENM097", "LSP127", "DAT068", "EEN225", "EEN095", "SSY251", "SSY011", "TME095", "LMA201", "EDA234", "EDA322", "MCCX05", "MTT060", "ENM056", "EENX20", "LEU340", "LEU062", "ENM052", "LMU450", "MTT035", "SEEX20", "LET564", "SSY305", "LMA017"],
-      2: [],
-      3: []
+      1: ["MVE675", "MVE545", "LEU470", "LEU432", "LEU483", "LSP581", "TME095", "EDA234", "MVE535", "DAT390", "LET086"],
+      2: ["SEE035", "SSY020", "LEU236", "RRY011", "LET271", "LMA201", "SSY326", "EEK565", "FFR201"],
+      3: ["LSP127", "LMU450", "SSY011", "EEN095", "LMA017", "DAT068", "ENM061", "LET564", "SSY251", "EDA322", "EEN225", "LEU062", "LEU340", "LMU450",]
     }},
     { name: "Maskinteknik, 180 hp", years: { 
       1: ["LMA401", "LMU421", "PPU127", "MVE580", "LMT202", "MMS275", "MVE645", "TME255",],
