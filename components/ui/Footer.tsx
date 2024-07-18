@@ -25,7 +25,7 @@ const Footer = () => {
         </Link>
       </div>
       <div className="text-white text-sm sm:text-base mt-4">
-        © 2023 StuNote. All Rights Reserved.
+        © 2024 StuNote. All Rights Reserved.
       </div>
     </footer>
   );
