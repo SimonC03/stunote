@@ -20,7 +20,7 @@ const Footer = () => {
         </Link>
         <Link href="https://www.trustpilot.com/review/stunote.se" target="_blank" rel="noopener noreferrer">
           <div className="social-icon w-4 h-4 sm:w-6 sm:h-6">
-            <Image src={TrustpilotLogo} width={25} height={25} alt="Trustpilot Icon" />
+            <Image src={TrustpilotLogo} height={25} alt="Trustpilot Icon" />
           </div>
         </Link>
       </div>
