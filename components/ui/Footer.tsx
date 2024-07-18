@@ -5,9 +5,6 @@ import Image from "next/image";
 
 const Footer = () => {
   return (
-    <head>
-      <script type="text/javascript" src="//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js" async></script>
-    <head/>
     <footer className="flex flex-col items-center justify-center text-center p-4 bg-transparent mt-auto w-full">
       <div className="flex space-x-10 sm:space-x-20 mb-4">
         <Link href="https://www.instagram.com/stunote/" target="_blank" rel="noopener noreferrer">
