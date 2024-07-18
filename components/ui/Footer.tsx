@@ -17,7 +17,7 @@ const Footer = () => {
             <Image src="/icons/linkedinLogo.svg" width={25} height={25} alt="LinkedIn Icon" />
           </div>
         </Link>
-       <div className="trustpilot-widget" data-locale="en-US" data-template-id="56278e9abfbbba0bdcd568bc" data-businessunit-id="6698a6bb4f3dfbc3a06f8906" data-style-height="54px" data-style-width="100%">
+       <div className="trustpilot-widget" data-locale="en-US" data-template-id="56278e9abfbbba0bdcd568bc" data-businessunit-id="6698a6bb4f3dfbc3a06f8906" data-style-height="25px" data-style-width="50%">
           <a href="https://www.trustpilot.com/review/stunote.se" target="_blank" rel="noopener">Trustpilot</a>
       </div>
       </div>
