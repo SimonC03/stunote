@@ -9,18 +9,18 @@ const Footer = () => {
     <footer className="flex flex-col items-center justify-center text-center p-4 bg-transparent mt-auto w-full">
       <div className="flex space-x-10 sm:space-x-20 mb-4">
         <Link href="https://www.instagram.com/stunote/" target="_blank" rel="noopener noreferrer">
-          <div className="social-icon w-4 h-4 sm:w-6 sm:h-6">
-            <Image src="/icons/instagramLogo.svg" width={25} height={25} alt="Instagram Icon" />
+          <div className="w-6 h-6 sm:w-8 sm:h-8">
+            <Image src="/icons/instagramLogo.svg" width={32} height={32} alt="Instagram Icon" />
           </div>
         </Link>
         <Link href="https://www.linkedin.com/company/stunote/" target="_blank" rel="noopener noreferrer">
-          <div className="social-icon w-4 h-4 sm:w-6 sm:h-6">
-            <Image src="/icons/linkedinLogo.svg" width={25} height={25} alt="LinkedIn Icon" />
+          <div className="w-6 h-6 sm:w-8 sm:h-8">
+            <Image src="/icons/linkedinLogo.svg" width={32} height={32} alt="LinkedIn Icon" />
           </div>
         </Link>
         <Link href="https://www.trustpilot.com/review/stunote.se" target="_blank" rel="noopener noreferrer">
-          <div className="social-icon w-4 h-4 sm:w-6 sm:h-6">
-            <Image src="/icons/trustpilotLogo.svg" width={100} height={25} alt="Trustpilot Icon" />
+          <div className="w-32 h-8 sm:w-48 sm:h-12">
+            <Image src="/icons/trustpilotLogo.svg" width={192} height={48} alt="Trustpilot Icon" />
           </div>
         </Link>
       </div>
