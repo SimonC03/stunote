@@ -19,7 +19,7 @@ const Footer = () => {
         </Link>
        <div className="trustpilot-widget" data-locale="en-US" data-template-id="56278e9abfbbba0bdcd568bc" data-businessunit-id="6698a6bb4f3dfbc3a06f8906" data-style-height="25px" data-style-width="50%">
           <a href="https://www.trustpilot.com/review/stunote.se" target="_blank" rel="noopener">
-            <Image src="/icons/trustpilotLogo.svg" width={25} height={25} alt="Trustpilot Icon" />
+            <Image src="/icons/trustpilotLogo.svg" width={54} height={54} alt="Trustpilot Icon" />
           </a>
       </div>
       </div>
