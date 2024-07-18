@@ -5,6 +5,9 @@ import Image from "next/image";
 
 const Footer = () => {
   return (
+    <head>
+      <script type="text/javascript" src="//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js" async></script>
+    <head/>
     <footer className="flex flex-col items-center justify-center text-center p-4 bg-transparent mt-auto w-full">
       <div className="flex space-x-10 sm:space-x-20 mb-4">
         <Link href="https://www.instagram.com/stunote/" target="_blank" rel="noopener noreferrer">
@@ -17,6 +20,9 @@ const Footer = () => {
             <Image src="/icons/linkedinLogo.svg" width={25} height={25} alt="LinkedIn Icon" />
           </div>
         </Link>
+        <div class="trustpilot-widget" data-locale="sv-SE" data-template-id="56278e9abfbbba0bdcd568bc" data-businessunit-id="6698a6bb4f3dfbc3a06f8906" data-style-height="52px" data-style-width="100%">
+          <a href="https://se.trustpilot.com/review/stunote.se" target="_blank" rel="noopener">Trustpilot</a>
+        </div>
       </div>
       <div className="text-xxs sm:text-xs md:text-sm text-white">
         <p>Stunote is not affiliated with or supported by any school, college, or university.</p>
