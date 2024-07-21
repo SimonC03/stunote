@@ -8,6 +8,8 @@ import { useRouter } from 'next/navigation';
 import { getSchools } from '@/lib/schools'; // Importera getSchools-funktionen
 import { Button } from '@/components/ui/button';
 import AdminRoute from '@/components/AdminRoute';
+import { Query } from 'appwrite'; // Importera Query från Appwrite SDK
+import toast from 'react-hot-toast';
 
 interface CourseFormData {
   courseCode: string;
@@ -29,13 +31,31 @@ const CreateCourse = () => {
 
   const onSubmit: SubmitHandler<CourseFormData> = async (data) => {
     setLoading(true);
-    const courseData = {
-      courseCode: data.courseCode,
-      courseName: data.courseName,
-      university: data.university,
-    };
 
     try {
+      // Kontrollera om en kurs med samma kurskod, kursnamn och universitet redan finns
+      const existingCourses = await databases.listDocuments(
+        process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!, // Byt till ditt databaseId
+        process.env.NEXT_PUBLIC_APPWRITE_COURSES_COLLECTION_ID!, // Byt till din collectionId
+        [
+          Query.equal('courseCode', data.courseCode),
+          Query.equal('courseName', data.courseName),
+          Query.equal('university', data.university)
+        ]
+      );
+
+      if (existingCourses.total > 0) {
+        toast.error('The course already exists.');
+        setLoading(false);
+        return;
+      }
+
+      const courseData = {
+        courseCode: data.courseCode,
+        courseName: data.courseName,
+        university: data.university,
+      };
+
       await databases.createDocument(
         process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!, // Byt till ditt databaseId
         process.env.NEXT_PUBLIC_APPWRITE_COURSES_COLLECTION_ID!, // Byt till din collectionId
@@ -101,7 +121,6 @@ const CreateCourse = () => {
               >
                 Create Course
               </Button>
-
             </form>
           </div>
         </div>
