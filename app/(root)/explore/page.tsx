@@ -271,7 +271,7 @@ const ExplorePage = () => {
       <>
         
         {filteredCourses.length === 0 ? (
-          <p>No Courses connected to your education yet</p>
+          <p>No courses found</p>
         ) : (
           <>
             {renderCourses(filteredCourses, setSelectedCourseId)}
