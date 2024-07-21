@@ -36,6 +36,10 @@ const countDocumentTypes = (course: Course) => {
   return counts;
 };
 
+const hasNoDocuments = (documentCounts: Record<string, number>) => {
+  return Object.values(documentCounts).every(count => count === 0);
+};
+
 const Modal: React.FC<ModalProps> = ({
   show,
   onClose,
@@ -145,11 +149,15 @@ const Modal: React.FC<ModalProps> = ({
               <div className="course-info">
                 <p className="university-name">School: {course?.university}</p>
                 <p>This course includes:</p>
-                {documentTypes.map((type) => (
-                  documentCounts[type] > 0 && (
-                    <p key={type}>{type} <span>{documentCounts[type]}</span></p>
-                  )
-                ))}
+                {hasNoDocuments(documentCounts) ? (
+                  <p>No documents available for this course.</p>
+                ) : (
+                  documentTypes.map((type) => (
+                    documentCounts[type] > 0 && (
+                      <p key={type}>{type} <span>{documentCounts[type]}</span></p>
+                    )
+                  ))
+                )}
               </div>
             </div>
               <Button onClick={handleSubscription} variant="default" size="sm" loading={loading} className="subscription-button">
