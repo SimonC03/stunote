@@ -73,7 +73,7 @@ const CoursePage = () => {
       filtered = filtered.filter(doc => doc.documentType === selectedDocumentType);
     }
 
-    if (sortOrder === 'latest') {
+    if (sortOrder === 'oldest') {
       filtered = filtered.sort((a, b) => new Date(b.uploadTime).getTime() - new Date(a.uploadTime).getTime());
     } else {
       filtered = filtered.sort((a, b) => new Date(a.uploadTime).getTime() - new Date(b.uploadTime).getTime());
