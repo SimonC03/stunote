@@ -35,6 +35,7 @@ const examTypes = [
   "Tentamen Solution",
   "Dugga Solution",
   "Practice Tentamen",
+  "Tentamen Collection"
 ];
 
 const UploadPage = () => {
