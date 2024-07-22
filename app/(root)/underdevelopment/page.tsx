@@ -5,7 +5,7 @@ import './animationstyle.css';
 import startAnimation from './animation';
 import { useEffect } from 'react';
 
-const GamesPage = () => {
+const DevelopmentPage = () => {
   useEffect(() => {
     startAnimation();
   }, []);
@@ -180,4 +180,4 @@ const GamesPage = () => {
   );
 };
 
-export default GamesPage;
+export default DevelopmentPage;

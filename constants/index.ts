@@ -12,7 +12,7 @@ export const sidebarLinks = [
         admin: false,
     },
     {
-        route: '/games',
+        route: '/underdevelopment',
         label: 'Games',
         imgURL: '/icons/quizIcon.svg',
         admin: false,
