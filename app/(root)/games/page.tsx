@@ -19,11 +19,11 @@ const GamesPage = () => {
             <g id="Group">
             <g id="working">
             <g id="lines_bg">
-            <path id="line01" d="M457.63 201.279H47.6359" stroke="darkgray" stroke-width="34.3083" stroke-linecap="round"/>
-            <path id="line02" d="M398.984 169.141H103.968" stroke="darkgray" stroke-width="34.3083" stroke-linecap="round"/>
-            <path id="line03" d="M387.467 233.88H145.072" stroke="darkgray" stroke-width="34.3083" stroke-linecap="round"/>
-            <path id="line04" d="M338.286 107.709H291.663" stroke="darkgray" stroke-width="34.3083" stroke-linecap="round"/>
-            <path id="line05" d="M87.2574 244.963H55.9893" stroke="darkgray" stroke-width="34.3083" stroke-linecap="round"/>
+            <path id="line01" d="M457.63 201.279H47.6359" stroke="gray" stroke-width="34.3083" stroke-linecap="round"/>
+            <path id="line02" d="M398.984 169.141H103.968" stroke="gray" stroke-width="34.3083" stroke-linecap="round"/>
+            <path id="line03" d="M387.467 233.88H145.072" stroke="gray" stroke-width="34.3083" stroke-linecap="round"/>
+            <path id="line04" d="M338.286 107.709H291.663" stroke="gray" stroke-width="34.3083" stroke-linecap="round"/>
+            <path id="line05" d="M87.2574 244.963H55.9893" stroke="gray" stroke-width="34.3083" stroke-linecap="round"/>
             </g>
             <g id="Group 5.3">
             <path id="Stroke 2130" fill-rule="evenodd" clip-rule="evenodd" d="M110.316 201.431C110.316 205.577 113.468 208.942 117.361 208.942H149.065C152.957 208.942 156.11 205.577 156.11 201.431V160.118H110.316V201.431Z" fill="white" stroke="black" stroke-width="4.28854" stroke-linecap="round" stroke-linejoin="round"/>
