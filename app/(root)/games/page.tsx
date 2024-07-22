@@ -126,12 +126,12 @@ const GamesPage = () => {
             <line id="pong_red_bar" x1="317.379" y1="148.442" x2="317.379" y2="172.439" stroke="#47abfe" stroke-width="4.28854" stroke-linecap="round"/>
             <circle id="pong_ball" cx="206.844" cy="130.421" r="4.02038" fill="white" stroke="black" stroke-width="4.28854"/>
             <g id="smoke_group">
-            <path id="smoke_b" d="M369.541 126.981C349.59 107.03 389.354 100.24 369.817 80.7027" stroke="#60a5fa" stroke-width="4.28854" stroke-linecap="round" stroke-linejoin="round"/>
-            <path id="smoke_w" d="M374.02 131.725C343.464 106.664 395.192 99.4272 365.308 76.3763" stroke="#47abfe" stroke-width="6.43281" stroke-linejoin="round"/>
+            <path id="smoke_b" d="M369.541 126.981C349.59 107.03 389.354 100.24 369.817 80.7027" stroke="#47abfe" stroke-width="4.28854" stroke-linecap="round" stroke-linejoin="round"/>
+            <path id="smoke_w" d="M374.02 131.725C343.464 106.664 395.192 99.4272 365.308 76.3763" stroke="#2268CD" stroke-width="6.43281" stroke-linejoin="round"/>
             </g>
             <g id="smoke_group2">
-            <path id="smoke_b2" d="M386.766 111.972C406.717 92.0212 366.953 85.2306 386.49 65.6936" stroke="#60a5fa" stroke-width="4.28854" stroke-linecap="round" stroke-linejoin="round"/>
-            <path id="smoke_w2" d="M382.286 116.716C412.843 91.655 361.114 84.4181 390.999 61.3672" stroke="#47abfe" stroke-width="6.43281" stroke-linejoin="round"/>
+            <path id="smoke_b2" d="M386.766 111.972C406.717 92.0212 366.953 85.2306 386.49 65.6936" stroke="#47abfe" stroke-width="4.28854" stroke-linecap="round" stroke-linejoin="round"/>
+            <path id="smoke_w2" d="M382.286 116.716C412.843 91.655 361.114 84.4181 390.999 61.3672" stroke="#2268CD" stroke-width="6.43281" stroke-linejoin="round"/>
             </g>
             </g>
             <g id="Group_2">
