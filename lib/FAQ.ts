@@ -19,6 +19,6 @@ export const FAQ_DATA = [
   },
   {
     question: "How can i delete my account?",
-    answer: "Send us a massage on the 'Contact Us' tab"  
+    answer: "Send us a massage on the 'Contact Us' tab"
   }
 ];

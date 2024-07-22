@@ -1,0 +1,28 @@
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+    margin: 0;
+    text-align: center;
+}
+
+#Frame1 { 
+    transform-origin: center center; 
+    transform-box: fill-box; 
+}
+
+#dot1 { 
+    transform-origin: center center; 
+    transform-box: fill-box; 
+}
+
+#dot2 { 
+    transform-origin: center center; 
+    transform-box: fill-box; 
+}
+
+#dot3 { 
+    transform-origin: center center; 
+    transform-box: fill-box; 
+}

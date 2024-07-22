@@ -10,6 +10,12 @@ export const sidebarLinks = [
         label: 'Explore',
         imgURL: '/icons/exploreIcon.svg',
         admin: false,
+    },
+    {
+        route: '/games',
+        label: 'Games',
+        imgURL: '/icons/quizIcon.svg',
+        admin: false,
     }, 
     {
         route: '/stumarket',
