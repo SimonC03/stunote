@@ -1,10 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { createSubscription, removeSubscription, checkUserSubscription, getCourseData, Course, Document } from '@/lib/api';
+import { createSubscription, removeSubscription, checkUserSubscription, getCourseData, Course } from '@/lib/api';
 import { useUserContext } from '@/context/UserContext';
 import { toast } from 'react-hot-toast';
-import Image from 'next/image';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faLock, faLockOpen } from '@fortawesome/free-solid-svg-icons';
 import { Button } from './button';
 import '@/components/animations/spinner.css';
+import { checkEmailVerificationAndLabel } from '@/lib/appwrite';
 
 interface ModalProps {
   show: boolean;
@@ -50,6 +52,9 @@ const Modal: React.FC<ModalProps> = ({
   const [hasSubscription, setHasSubscription] = useState(false);
   const [loadingData, setLoadingData] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [emailVerified, setEmailVerified] = useState(false);
+  const [userRole, setUserRole] = useState<string | null>(null);
+
   const [documentCounts, setDocumentCounts] = useState(() =>
     documentTypes.reduce((acc, type) => {
       acc[type] = 0;
@@ -77,13 +82,23 @@ const Modal: React.FC<ModalProps> = ({
         setLoading(true);
         setLoadingData(true);
         try {
-          const [subscriptionResult, courseData] = await Promise.all([
+          const [subscriptionResult, courseData, emailVerificationAndLabel] = await Promise.all([
             checkUserSubscription(user.$id, courseId),
             getCourseData(courseId),
+            checkEmailVerificationAndLabel(),
           ]);
+          
           setHasSubscription(subscriptionResult);
           setCourse(courseData);
           setDocumentCounts(countDocumentTypes(courseData));
+  
+          if (show && !emailVerificationAndLabel.emailVerified) {
+            setEmailVerified(false);
+          } else {
+            setUserRole(emailVerificationAndLabel.userLabel);
+            setEmailVerified(emailVerificationAndLabel.emailVerified);
+          }
+          
         } catch (error: unknown) {
           if (error instanceof Error) {
             console.error('Failed to fetch data:', error.message);
@@ -98,7 +113,7 @@ const Modal: React.FC<ModalProps> = ({
         console.log('User or userId or courseId not defined');
       }
     };
-
+  
     if (show) {
       fetchSubscriptionAndDocuments();
     }
@@ -106,7 +121,11 @@ const Modal: React.FC<ModalProps> = ({
 
   const handleSubscription = async () => {
     if (!user || !user.$id) {
-      alert('You need to be logged in to subscribe to a course.');
+      alert('You need to be logged in to add a course.');
+      return;
+    }
+    if (!emailVerified) {
+      toast.error('You need to verify your email to add a course.');
       return;
     }
     setLoading(true);
@@ -160,9 +179,33 @@ const Modal: React.FC<ModalProps> = ({
                 )}
               </div>
             </div>
-              <Button onClick={handleSubscription} variant="default" size="sm" loading={loading} className="subscription-button">
-                {hasSubscription ? 'Remove Course' : 'Add Course'}
-              </Button>
+
+            {!hasSubscription && userRole !== 'premium' && emailVerified &&(
+              <div className="free-access-info">
+                <p>You can access this course for free!</p>
+              </div>
+            )}
+            
+            {!emailVerified && (
+              <div className="email-verification-info">
+                <p>You need to verify your email to access this course.</p>
+                <a href="/profile" className="profile-link">Verify your email here</a>
+              </div>
+            )}
+            <Button
+              onClick={handleSubscription}
+              variant="default"
+              size="sm"
+              loading={loading}
+              className="subscription-button"
+              disabled={!emailVerified}
+              title={!emailVerified ? 'You need to verify your email to add course' : ''}
+            >
+              {!hasSubscription && (
+                <FontAwesomeIcon icon={emailVerified ? faLockOpen : faLock} className="button-icon" />
+              )}
+              {hasSubscription ? 'Remove Course' : 'Add Course'}
+            </Button>
           </>
         )}
       </div>
@@ -179,7 +222,7 @@ const Modal: React.FC<ModalProps> = ({
           align-items: center;
           z-index: 1000;
         }
-
+  
         .modal-content {
           position: relative;
           padding: 30px;
@@ -191,7 +234,7 @@ const Modal: React.FC<ModalProps> = ({
           z-index: 1001;
           text-align: center;
         }
-
+  
         .close-button {
           position: absolute;
           top: 10px;
@@ -201,13 +244,13 @@ const Modal: React.FC<ModalProps> = ({
           font-size: 24px;
           cursor: pointer;
         }
-
+  
         h1 {
           font-size: 24px;
           font-weight: bold;
           margin-bottom: 20px;
         }
-
+  
         .course-details {
           display: flex;
           justify-content: space-between;
@@ -215,31 +258,26 @@ const Modal: React.FC<ModalProps> = ({
           margin-bottom: 20px;
           flex-wrap: wrap;
         }
-
+  
         .course-info {
           text-align: left;
           font-size: 16px;
           flex: 1 1 100%;
         }
-
+  
         .university-name {
           font-style: italic;
         }
-
+  
         .course-info p {
           margin: 8px 0;
         }
-
+  
         .course-info span {
           float: right;
           font-weight: bold;
         }
-
-        .course-icon {
-          margin-top: 20px;
-          flex: 0 1 100px;
-        }
-
+  
         .subscription-button {
           padding: 10px 20px;
           background-color: #0070f3;
@@ -247,26 +285,72 @@ const Modal: React.FC<ModalProps> = ({
           border-radius: 5px;
           font-size: 16px;
           cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px; /* Avstånd mellan ikon och text */
         }
 
+        .subscription-button:disabled {
+          background-color: #ccc; /* Grå bakgrundsfärg */
+          color: #666; /* Grå textfärg */
+          cursor: not-allowed; /* Visa inte tillåten pekare */
+          border: 1px solid #aaa; /* Lätt grå kantlinje */
+        }
+
+        .subscription-button:disabled:hover {
+          background-color: #ccc; /* Behåll samma färg på hover */
+        }
+
+        .button-icon {
+          font-size: 20px;
+        }
+        .email-verification-info {
+          margin-bottom: 20px;
+          color: #d9534f; /* Röd textfärg för varningar */
+          font-size: 14px;
+        }
+        
+        .free-access-info {
+          margin-bottom: 20px;
+          padding: 10px;
+          background-color: #e0ffe0; /* Ljusgrön bakgrund för gratisinformation */
+          color: #2e7d32; /* Grön textfärg */
+          border-radius: 5px;
+          font-size: 14px;
+          text-align: center;
+        }
+
+        .profile-link {
+          display: inline-block;
+          margin-top: 10px;
+          color: #0070f3;
+          text-decoration: underline;
+        }
+  
+        .profile-link:hover {
+          text-decoration: none;
+          color: #005bb5;
+        }
+  
         @media (max-width: 768px) {
           .modal-content {
             padding: 15px;
           }
-
+  
           h1 {
             font-size: 20px;
             margin-bottom: 15px;
           }
-
+  
           .course-details {
             align-items: flex-start;
           }
-
+  
           .course-info {
             font-size: 14px;
           }
-
+  
           .subscription-button {
             font-size: 14px;
             padding: 8px 16px;
@@ -275,6 +359,7 @@ const Modal: React.FC<ModalProps> = ({
       `}</style>
     </div>
   );
+  
 };
 
 export default Modal;

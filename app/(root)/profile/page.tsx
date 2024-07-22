@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useUserContext } from '@/context/UserContext';
 import { getUserData, uploadUserProfilePicture, updateUserProfile, UserProfile } from '@/lib/api';
 import ProtectedRoute from '@/components/ProtectedRoute';
-import { account, isPhoneVerified, isEmailVerified, updatePhoneNumber, updateEmail, updateUsername, verifyEmail } from '@/lib/appwrite';
+import { account, isPhoneVerified, isEmailVerified, updatePhoneNumber, updateEmail, updateUsername, verifyEmail, getUserRole } from '@/lib/appwrite';
 import { toast } from 'react-hot-toast';
 import { getSchools, getEducations } from '@/lib/schools';
 import Image from 'next/image';
@@ -21,6 +21,7 @@ const ProfilePage: React.FC = () => {
   const [selectedSchool, setSelectedSchool] = useState<string>('');
   const [educations, setEducations] = useState<string[]>([]);
   const [selectedEducation, setSelectedEducation] = useState<string>('');
+  const [memberType, setMemberType] = useState<string | null>(null);
   const [showPhoneVerificationField, setShowPhoneVerificationField] = useState<boolean>(false);
   const [phoneVerificationCode, setPhoneVerificationCode] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -44,15 +45,18 @@ const ProfilePage: React.FC = () => {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      if (user && user.$id) {
+      if (user) {
         try {
+          // Hämta användardata
           const data = await getUserData(user.$id);
-          setProfile({
+          const userRoles = await getUserRole();  // Fetch user roles as an array
+          
+          // Skapa ett profilobjekt
+          const profileData = {
             $id: data.$id,
             username: data.username,
             email: data.email,
             userId: data.userId,
-            memberType: data.memberType,
             education: data.education,
             school: data.school,
             iconUrl: data.iconUrl,
@@ -62,12 +66,19 @@ const ProfilePage: React.FC = () => {
             subscriptions: data.subscriptions || [],
             favorite_courses: data.favorite_courses || [],
             favorite_documents: data.favorite_documents || [],
-          });
+          };
+  
+          // Kontrollera om användaren har rollen "premium"
+          const hasPremiumRole = userRoles.includes('premium');
+          setMemberType(hasPremiumRole ? 'premium' : 'free');  // Ställ in medlemskapstyp
+  
+          setProfile(profileData);
+
           setPhoneNumber(data.phoneNumber || '');
           setSelectedSchool(data.school || '');
           setSelectedEducation(data.education || '');
           setIsPhoneNumberSaved(!!data.phoneNumber);
-
+  
           const emailVerifiedStatus = await isEmailVerified();
           const phoneVerifiedStatus = await isPhoneVerified();
           setEmailVerified(emailVerifiedStatus);
@@ -77,7 +88,7 @@ const ProfilePage: React.FC = () => {
         }
       }
     };
-
+  
     const fetchSchools = async () => {
       try {
         const schoolsData = await getSchools();
@@ -86,12 +97,16 @@ const ProfilePage: React.FC = () => {
         console.error('Failed to fetch schools', error);
       }
     };
-
+  
     if (!loading) {
       fetchUserData();
       fetchSchools();
     }
   }, [user, loading]);
+  
+  
+  
+  
 
   useEffect(() => {
     const fetchEducations = async () => {
@@ -325,7 +340,9 @@ const ProfilePage: React.FC = () => {
             />
           </div>
           <div style={getStyles().subscriptionPlan}>
-            <div style={getStyles().subscriptionText}>Account: {profile.memberType}</div>
+            <div style={getStyles().subscriptionText}>
+              Account: {memberType === 'premium' ? 'Premium' : 'Free'}
+            </div>
           </div>
         </div>
         <div style={getStyles().profileFormContainer}>

@@ -16,12 +16,18 @@ const LeftSidebar = () => {
     const [isAdmin, setIsAdmin] = useState(false);
 
     useEffect(() => {
-        const fetchUserRole = async () => {
-            const role = await getUserRole();
-            setIsAdmin(role === 'admin');
+        const fetchUserRoles = async () => {
+            try {
+                const roles = await getUserRole();
+                // Sätt isAdmin till true om 'admin' finns i rollerna
+                setIsAdmin(roles.includes('admin'));
+            } catch (error) {
+                console.error('Failed to fetch user roles:', error);
+                // Hantera eventuella fel här
+            }
         };
 
-        fetchUserRole();
+        fetchUserRoles();
     }, []);
 
     return (

@@ -18,7 +18,6 @@ export interface UserProfile {
   username: string;
   email: string;
   userId: string;
-  memberType: string;
   education: string;
   school: string;
   iconUrl: string;
@@ -107,7 +106,6 @@ export const getUserData = async (userId: string): Promise<UserProfile> => {
       username: doc.username,
       email: doc.email,
       userId: doc.userId,
-      memberType: doc.memberType,
       education: doc.education,
       school: doc.school,
       iconUrl: doc.iconUrl,

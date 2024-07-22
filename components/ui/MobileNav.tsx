@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react';
-import { Sheet, SheetClose, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { Sheet, SheetClose, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { sidebarLinks } from "@/constants"
 import { cn } from "@/lib/utils"
 import Image from "next/image"
@@ -16,13 +16,19 @@ const MobileNav = () => {
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    const fetchUserRole = async () => {
-      const role = await getUserRole();
-      setIsAdmin(role === 'admin');
+    const fetchUserRoles = async () => {
+        try {
+            const roles = await getUserRole();
+            // Sätt isAdmin till true om 'admin' finns i rollerna
+            setIsAdmin(roles.includes('admin'));
+        } catch (error) {
+            console.error('Failed to fetch user roles:', error);
+            // Hantera eventuella fel här
+        }
     };
 
-    fetchUserRole();
-  }, []);
+    fetchUserRoles();
+}, []);
 
   return (
     <section>
@@ -31,6 +37,8 @@ const MobileNav = () => {
           <Image src="/icons/hamburger.svg" width={30} height={30} alt="menu" className="cursor-pointer"/>
         </SheetTrigger>
         <SheetContent side="left" className="border-none bg-black-1">
+          <SheetTitle></SheetTitle>
+          <SheetDescription></SheetDescription>
           <Link href="/" className="flex cursor-pointer items-center gap-1 pb-10 pl-4">
             <Image src="/icons/logo.svg" alt="logo" width={27} height={27}/>
             <h1 className="text-24 font-extrabold text-white-1 ml-2">STUNOTE</h1>

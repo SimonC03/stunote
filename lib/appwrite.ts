@@ -87,21 +87,26 @@ export const updateEmail = async (email: string, password: string, documentId: s
   }
 };
 
-// Funktion för att hämta användarens roll via Labels
-export const getUserRole = async (): Promise<string | null> => {
+// Function for fetching all user roles via Labels
+export const getUserRole = async (): Promise<string[]> => {
   try {
     const user = await account.get();
+    const roles: string[] = [];
 
     if (user.labels.includes('admin')) {
-      return 'admin';
-    } else {
-      return null;
+      roles.push('admin');
     }
+    if (user.labels.includes('premium')) {
+      roles.push('premium');
+    }
+    
+    return roles;
   } catch (error: any) {
-    console.error('Failed to fetch user role:', error);
-    throw new Error('Failed to fetch user role');
+    console.error('Failed to fetch user roles:', error);
+    throw new Error('Failed to fetch user roles');
   }
 };
+
 
 export const verifyEmail = async (): Promise<boolean> => {
   try {
@@ -116,5 +121,19 @@ export const verifyEmail = async (): Promise<boolean> => {
     toast.error('Failed to send verification email');
     console.error('Failed to send verification email', error);
     return false;
+  }
+};
+
+// Kontrollera om email är verifierad och vilken label användaren har
+export const checkEmailVerificationAndLabel = async (): Promise<{ emailVerified: boolean, userLabel: string | null }> => {
+  try {
+    const user = await account.get();
+    const emailVerified = user.emailVerification;
+    const userLabel = user.labels.includes('premium') ? 'premium' : null;
+
+    return { emailVerified, userLabel };
+  } catch (error: any) {
+    console.error('Failed to check email verification and user label:', error);
+    throw new Error('Failed to check email verification and user label');
   }
 };
