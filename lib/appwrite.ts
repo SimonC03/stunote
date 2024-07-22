@@ -1,11 +1,12 @@
 import { Client, Account, Databases, Storage } from 'appwrite';
+import toast from 'react-hot-toast';
 
 export const client = new Client();
 
 client
   .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!)
   .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID!)
-
+  
 export const account = new Account(client);
 export const databases = new Databases(client);
 export const storage = new Storage(client);
@@ -99,5 +100,21 @@ export const getUserRole = async (): Promise<string | null> => {
   } catch (error: any) {
     console.error('Failed to fetch user role:', error);
     throw new Error('Failed to fetch user role');
+  }
+};
+
+export const verifyEmail = async (): Promise<boolean> => {
+  try {
+    const verificationUrl = process.env.NEXT_PUBLIC_APPWRITE_VERIFICATION_URL;
+    if (!verificationUrl) {
+      throw new Error('Verification URL is not defined');
+    }
+    await account.createVerification(verificationUrl);
+    toast.success('Verification email sent');
+    return true;
+  } catch (error) {
+    toast.error('Failed to send verification email');
+    console.error('Failed to send verification email', error);
+    return false;
   }
 };

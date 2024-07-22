@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useUserContext } from '@/context/UserContext';
 import { getUserData, uploadUserProfilePicture, updateUserProfile, UserProfile } from '@/lib/api';
 import ProtectedRoute from '@/components/ProtectedRoute';
-import { account, isPhoneVerified, isEmailVerified, updatePhoneNumber, updateEmail, updateUsername } from '@/lib/appwrite';
+import { account, isPhoneVerified, isEmailVerified, updatePhoneNumber, updateEmail, updateUsername, verifyEmail } from '@/lib/appwrite';
 import { toast } from 'react-hot-toast';
 import { getSchools, getEducations } from '@/lib/schools';
 import Image from 'next/image';
@@ -277,20 +277,6 @@ const ProfilePage: React.FC = () => {
     } catch (error) {
       toast.error('Phone verification failed');
       console.error('Phone verification failed', error);
-    }
-  };
-
-  const verifyEmail = async () => {
-    try {
-      const verificationUrl = process.env.NEXT_PUBLIC_APPWRITE_VERIFICATION_URL;
-      if (!verificationUrl) {
-        throw new Error('Verification URL is not defined');
-      }
-      await account.createVerification(verificationUrl);
-      toast.success('Verification email sent');
-    } catch (error) {
-      toast.error('Failed to send verification email');
-      console.error('Failed to send verification email', error);
     }
   };
 
