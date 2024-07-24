@@ -13,7 +13,7 @@ export const sidebarLinks = [
     },
     {
         route: '/underdevelopment',
-        label: 'Games',
+        label: 'Take Quiz',
         imgURL: '/icons/quizIcon.svg',
         admin: false,
     }, 
