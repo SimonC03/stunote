@@ -1,5 +1,11 @@
 export const sidebarLinks = [
     {
+        route: '/subscription',
+        label: 'Upgrade to Premium',
+        imgURL: "/icons/home.svg",
+        admin: true,
+    },
+    {
         route: '/',
         label: 'Home',
         imgURL: "/icons/home.svg",

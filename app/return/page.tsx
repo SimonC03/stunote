@@ -1,0 +1,41 @@
+import { stripe } from "../utils/stripe";
+
+interface SearchParams {
+  session_id: string;
+}
+
+async function getSession(sessionId: string) {
+  const session = await stripe.checkout.sessions.retrieve(sessionId);
+  return session;
+}
+
+export default async function CheckoutReturn({ searchParams }: { searchParams: SearchParams }) {
+  const sessionId = searchParams.session_id;
+  const session = await getSession(sessionId);
+
+  console.log(session);
+
+  return (
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md text-center">
+        {session?.status === "open" ? (
+          <div>
+            <h2 className="text-2xl font-bold mb-4">Payment Failed</h2>
+            <p className="text-red-500">Payment did not work. Please try again.</p>
+          </div>
+        ) : session?.status === "complete" ? (
+          <div>
+            <h2 className="text-2xl font-bold mb-4">Thank You!</h2>
+            <p className="text-green-500">We appreciate your subscription!</p>
+            <p>Your Stripe customer ID is: <span className="font-mono">{session.customer as string}</span></p>
+          </div>
+        ) : (
+          <div>
+            <h2 className="text-2xl font-bold mb-4">Processing Payment</h2>
+            <p>Please wait while we process your payment.</p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
