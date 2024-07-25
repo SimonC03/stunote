@@ -6,12 +6,14 @@ const plans = [
         price: 19,
         currency: 'SEK',
         frequency: '/month',
+        description: 'Pay monthly, cancel anytime.',
         priceId: 'price_1Pg7v1Rq7k4dESwAS2pqyeiT',
         featured: false,
         features: [
-            '7 Days Free Trial',
-            'bla asdasd',
-            'bla',
+            'Unlock all documents',
+            'Unlimited quizzes',
+            'Free ad uploads',
+            '7-day free trial',
         ]
     },
     {
@@ -19,12 +21,14 @@ const plans = [
         price: 49,
         currency: 'SEK',
         frequency: '/3-months',
+        description: 'Save with quarterly billing',
         priceId: 'price_1Pg7t0Rq7k4dESwALfL6McdI',
         featured: true,
         features: [
-            '7 Days Free Trial',
-            'bla',
-            'bla',
+            'Unlock all documents',
+            'Unlimited quizzes',
+            'Free ad uploads',
+            '7-day free trial',
         ]
     },
     {
@@ -32,12 +36,14 @@ const plans = [
         price: 189,
         currency: 'SEK',
         frequency: '/year',
+        description: 'Best value for annual use.',
         priceId: 'price_1Pg7tkRq7k4dESwAYMcpGEEi',
         featured: false,
         features: [
-            '7 Days Free Trial',
-            'bla',
-            'bla',
+            'Unlock all documents',
+            'Unlimited quizzes',
+            'Free ad uploads',
+            '7-day free trial',
         ]
     },
 ]

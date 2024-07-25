@@ -7,6 +7,7 @@ const Card = ({
     price = 0, 
     currency='SEK', 
     frequency='month',
+    description= '',
     priceId='',
     featured = false,
     features = [],
@@ -29,6 +30,7 @@ const Card = ({
                 </div>
                 <p className="frequency">{frequency}</p>
             </div>
+            <p className='description'>{description}</p>
         </div>
         {/* Card body */}
         <div className="card-body">
