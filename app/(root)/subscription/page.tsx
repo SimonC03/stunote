@@ -10,7 +10,7 @@ const plans = [
         featured: false,
         features: [
             '7 Days Free Trial',
-            'bla',
+            'bla asdasd',
             'bla',
         ]
     },
@@ -44,7 +44,7 @@ const plans = [
 
 const SubscriptionPage = () => {
   return (
-    <div className="h-full py-16 lg:flex lg:justify-center">
+    <div className="h-full py-36 lg:flex lg:justify-center lg:items-center">
         <div className="grid lg:grid-cols-3 gap-12 lg:gap-0">
             {plans.map(plan => (
             <div key={plan.name} className={`w-full max-w-md mx-auto ${

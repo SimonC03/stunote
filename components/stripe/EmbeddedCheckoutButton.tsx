@@ -63,7 +63,7 @@ const EmbeddedCheckoutButton: React.FC<EmbeddedCheckoutButtonProps> = ({ priceId
   return (
     <div id="checkout" className="my-4">
       <button className={`mt-12 w-full py-4 px-8 rounded-lg text-lg whitespace-nowrap focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 transition-all flex justify-center items-center ${
-        featured ? "bg-blue-500 hover:bg-blue-1 text-white-1 hover:scale-105 transform" : "bg-white text-blue-1 hover:bg-gray-50"
+        featured ? "bg-blue-500 hover:bg-blue-1 text-white-1 hover:scale-105 transform" : "bg-white text-blue-1 hover:bg-gray-400 hover:text-white-1"
       }`} onClick={handleCheckoutClick}>
         Start your free trial
       </button>
