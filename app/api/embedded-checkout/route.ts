@@ -1,11 +1,10 @@
-// app/api/embedded-checkout/route.ts
 import { NextResponse } from 'next/server';
 import { stripe } from '../../utils/stripe';
 
 export async function POST(request: Request) {
     try {
-        const { priceId } = await request.json();
-        console.log("Received priceId:", priceId);
+        const { priceId, userId } = await request.json();
+        console.log("Received priceId:", priceId, "and userId:", userId);
 
         const session = await stripe.checkout.sessions.create({
             ui_mode: 'embedded',
@@ -16,8 +15,12 @@ export async function POST(request: Request) {
                     quantity: 1,
                 },
             ],
-            mode: 'subscription', // Ändra till 'payment' om det är en engångsbetalning
-            return_url: `${request.headers.get('origin')}/return?session_id={CHECKOUT_SESSION_ID}`,
+            mode: 'subscription',
+            subscription_data: {
+                trial_period_days: 7,
+            },
+            client_reference_id: userId,
+            return_url: `${request.headers.get('origin')}/return?session_id={CHECKOUT_SESSION_ID}&user_id=${userId}`,
         });
 
         console.log("Created session:", session);

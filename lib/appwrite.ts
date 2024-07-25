@@ -1,4 +1,5 @@
 import { Client, Account, Databases, Storage } from 'appwrite';
+import { Users } from 'node-appwrite';
 import toast from 'react-hot-toast';
 
 export const client = new Client();
@@ -124,6 +125,16 @@ export const verifyEmail = async (): Promise<boolean> => {
   }
 };
 
+export const getUser = async () => {
+  try {
+    const user = await account.get();
+    return user;
+  } catch (error) {
+    console.error('Failed to get User:', error);
+    throw new Error('Failed to get User');
+  }
+}
+
 // Kontrollera om email är verifierad och vilken label användaren har
 export const checkEmailVerificationAndLabel = async (): Promise<{ emailVerified: boolean, userLabel: string | null }> => {
   try {
@@ -137,3 +148,4 @@ export const checkEmailVerificationAndLabel = async (): Promise<{ emailVerified:
     throw new Error('Failed to check email verification and user label');
   }
 };
+

@@ -9,9 +9,10 @@ import { useCallback, useRef, useState } from "react";
 interface EmbeddedCheckoutButtonProps {
   priceId: string;
   featured: boolean;
+  userId: string;
 }
 
-const EmbeddedCheckoutButton: React.FC<EmbeddedCheckoutButtonProps> = ({ priceId, featured }) => {
+const EmbeddedCheckoutButton: React.FC<EmbeddedCheckoutButtonProps> = ({ priceId, featured, userId }) => {
   const stripePromise = loadStripe(
     process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
   );
@@ -25,7 +26,7 @@ const EmbeddedCheckoutButton: React.FC<EmbeddedCheckoutButtonProps> = ({ priceId
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({ priceId }),
+        body: JSON.stringify({ priceId, userId }),
     })
     .then((res) => res.json())
     .then((data) => {
@@ -40,7 +41,7 @@ const EmbeddedCheckoutButton: React.FC<EmbeddedCheckoutButtonProps> = ({ priceId
         setError("Failed to fetch client secret");
         console.error("fetchClientSecret error:", error);
     });
-}, [priceId]);
+}, [priceId, userId]);
 
   const options = { fetchClientSecret };
 

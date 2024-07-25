@@ -1,7 +1,9 @@
 import { stripe } from "../utils/stripe";
+import { addPremiumLabelToUser } from "@/lib/sdk"; // Importera funktionen
 
 interface SearchParams {
   session_id: string;
+  user_id: string; // Lägg till user_id här
 }
 
 async function getSession(sessionId: string) {
@@ -11,23 +13,33 @@ async function getSession(sessionId: string) {
 
 export default async function CheckoutReturn({ searchParams }: { searchParams: SearchParams }) {
   const sessionId = searchParams.session_id;
+  const userId = searchParams.user_id; // Hämta userId från searchParams
   const session = await getSession(sessionId);
 
-  console.log(session);
+  // Lägg till premiumetikett om betalningen är genomförd
+  if (session?.payment_status === "paid") {
+    try {
+      await addPremiumLabelToUser(userId);
+      console.log(`Premium label added to user ${userId}`);
+    } catch (error) {
+      console.error(`Failed to add premium label to user ${userId}:`, error);
+    }
+  }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex items-center justify-center min-h-screen">
       <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md text-center">
-        {session?.status === "open" ? (
+        {session?.payment_status === "unpaid" ? (
           <div>
             <h2 className="text-2xl font-bold mb-4">Payment Failed</h2>
             <p className="text-red-500">Payment did not work. Please try again.</p>
           </div>
-        ) : session?.status === "complete" ? (
+        ) : session?.payment_status === "paid" ? (
           <div>
             <h2 className="text-2xl font-bold mb-4">Thank You!</h2>
             <p className="text-green-500">We appreciate your subscription!</p>
             <p>Your Stripe customer ID is: <span className="font-mono">{session.customer as string}</span></p>
+            <p>Your User ID is: <span className="font-mono">{userId}</span></p>
           </div>
         ) : (
           <div>
