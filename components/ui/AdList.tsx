@@ -71,13 +71,13 @@ const AdList: React.FC<AdListProps> = ({ ads, activeTab, onDeleteAd }) => {
             <p className="ad-uploadDate">Uploaded: {new Date(ad.date).toLocaleDateString()}</p>
             <div className="button-container">
               <Button variant="default" size="xs" loading={loading} onClick={() => handleButtonClick(ad)}>
-                {activeTab === 'buy' ? 'Contact Seller' : 'Delete'}
+                {activeTab === 'buy' ? 'Add to cart' : 'Delete'}
               </Button>
             </div>
           </div>
         </div>
       ))}
-      
+
       <style jsx>{`
         .ads-list {
           display: grid;
