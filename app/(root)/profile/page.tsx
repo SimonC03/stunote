@@ -311,10 +311,10 @@ const ProfilePage: React.FC = () => {
               {phoneNumber ? (
                 phoneVerified ? (
                   <span style={getStyles().verifiedBadge}>
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-green-500" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414L8.414 15 4 10.586a1 1 111.414-1.414L8.414 12.172l7.293-7.293a1 1 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                  </span>
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-green-500" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414L8.414 15 4 10.586a1 1 0 111.414-1.414L8.414 12.172l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                </span>
                 ) : (
                   phoneNumber && (
                     <Button type="button" variant="default" size="sm" style={getStyles().verifyButton} onClick={verifyPhoneNumber}>
