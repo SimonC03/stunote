@@ -1,6 +1,5 @@
 import { ID, Role, Permission, Query } from 'appwrite';
 import { databases, storage, account } from './appwrite';
-import { University } from 'lucide-react';
 
 const databaseId = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
 const usersCollectionId = process.env.NEXT_PUBLIC_APPWRITE_USERS_COLLECTION_ID!;
@@ -15,15 +14,12 @@ const adsStorageId = process.env.NEXT_PUBLIC_APPWRITE_MARKETMEDIA_ID!;
 
 export interface UserProfile {
   $id: string;
-  username: string;
-  email: string;
   userId: string;
   education: string;
   school: string;
   iconUrl: string;
   iconId: string;
   documentId: string;
-  phoneNumber: string;
   subscriptions: Subscription[];
   favorite_courses: Course[];
   favorite_documents: Document[];
@@ -89,6 +85,82 @@ const handleError = (message: string, error: any) => {
   throw new Error(message);
 };
 
+export const checkUserExists = async (userId: string): Promise<boolean> => {
+  try {
+    const response = await databases.listDocuments(databaseId, usersCollectionId, [
+      Query.equal('userId', userId)
+    ]);
+
+    return response.total > 0;
+  } catch (error: any) {
+    console.error('Failed to check if user exists:', error);
+    throw new Error('Failed to check if user exists');
+  }
+};
+
+export const createUserProfile = async (userId: string) => {
+  try {
+    const response = await databases.createDocument(
+      databaseId,
+      usersCollectionId,
+      ID.unique(),
+      {
+        userId: userId,
+      },
+      [
+        Permission.read(Role.user(userId)),
+        Permission.update(Role.user(userId)),
+        Permission.delete(Role.user(userId))
+      ]
+    );
+    return {
+      $id: response.$id,
+      userId: userId,
+      education: '',
+      school: '',
+      iconUrl: '',
+      iconId: '',
+      documentId: response.$id,
+      subscriptions: [],
+      favorite_courses: [],
+      favorite_documents: [],
+    };
+  } catch (error: any) {
+    console.error('Failed to create user profile:', error);
+    throw new Error('Failed to create user profile');
+  }
+};
+
+export const updateEducation = async (selectedSchool: string, selectedEducation: string, userId: string) => {
+  try {
+    // Hämta dokumentet som motsvarar userId
+    const userDocuments = await databases.listDocuments(
+      databaseId,
+      usersCollectionId,
+      [Query.equal('userId', userId)]
+    );
+
+    if (userDocuments.total === 0) {
+      throw new Error('User document not found');
+    }
+
+    const documentId = userDocuments.documents[0].$id;
+
+    // Uppdatera dokumentet
+    const response = await databases.updateDocument(
+      databaseId,
+      usersCollectionId,
+      documentId,
+      { school: selectedSchool, education: selectedEducation }
+    );
+
+    return response;
+  } catch (error: any) {
+    console.error('Failed to update education:', error);
+    throw new Error('Failed to update education');
+  }
+};
+
 export const getUserData = async (userId: string): Promise<UserProfile> => {
   try {
     const response = await databases.listDocuments(databaseId, usersCollectionId, [
@@ -98,30 +170,25 @@ export const getUserData = async (userId: string): Promise<UserProfile> => {
     if (response.total === 0) {
       throw new Error('User document not found');
     }
-
     const doc = response.documents[0];
 
     return {
       $id: doc.$id,
-      username: doc.username,
-      email: doc.email,
       userId: doc.userId,
-      education: doc.education,
-      school: doc.school,
-      iconUrl: doc.iconUrl,
-      iconId: doc.iconId,
+      education: doc.education || '',
+      school: doc.school || '',
+      iconUrl: doc.iconUrl || '',
+      iconId: doc.iconId || '',
       documentId: doc.$id,
-      phoneNumber: doc.phoneNumber || '',
       subscriptions: doc.subscriptions || [],
       favorite_courses: doc.favorite_courses || [],
       favorite_documents: doc.favorite_documents || [],
     };
   } catch (error: any) {
-    handleError('Failed to fetch user data', error);
-    throw new Error('Failed to fetch user data'); // Lägg till detta för att säkerställa att vi alltid kastar ett fel
+    console.error('Failed to fetch user data:', error);
+    throw new Error('Failed to fetch user data');
   }
 };
-
 
 export const getCourseData = async (courseId: string): Promise<Course> => {
   try {
@@ -140,10 +207,9 @@ export const getCourseData = async (courseId: string): Promise<Course> => {
     };
   } catch (error: any) {
     handleError('Failed to fetch course data', error);
-    throw new Error('Failed to fetch course data'); // Lägg till detta för att säkerställa att vi alltid kastar ett fel
+    throw new Error('Failed to fetch course data');
   }
 };
-
 
 export const getCoursesData = async (): Promise<Course[]> => {
   try {
@@ -155,10 +221,9 @@ export const getCoursesData = async (): Promise<Course[]> => {
     );
   } catch (error: any) {
     handleError('Failed to fetch courses data', error);
-    throw new Error('Failed to fetch courses data'); // Lägg till detta för att säkerställa att vi alltid kastar ett fel
+    throw new Error('Failed to fetch courses data');
   }
 };
-
 
 export const getCourseDocuments = async (courseId: string) => {
   try {
@@ -188,11 +253,11 @@ export const getCourseDataByCode = async (courseCode: string): Promise<Course> =
 
     const courseDoc = response.documents[0];
     const documentsResponse = await databases.listDocuments(databaseId, documentsCollectionId, [
-      Query.equal('courses', courseDoc.$id)  // Assuming 'courses' is the field name linking documents to the course
+      Query.equal('courses', courseDoc.$id)
     ]);
 
     const documents: Document[] = documentsResponse.documents
-      .filter((doc: any) => doc && doc.$id)  // Filter out null or invalid documents
+      .filter((doc: any) => doc && doc.$id)
       .map((doc: any) => ({
         $id: doc.$id,
         documentType: doc.documentType,
@@ -215,23 +280,19 @@ export const getCourseDataByCode = async (courseCode: string): Promise<Course> =
   }
 };
 
-
-
-
 export const checkUserSubscription = async (userId: string, courseId: string): Promise<boolean> => {
   try {
     const user = await getUserData(userId);
     const response = await databases.listDocuments(databaseId, subscriptionsCollectionId, [
       Query.equal('user', user.$id),
-      Query.equal('course', courseId) // Använd courseId istället för courseCode
+      Query.equal('course', courseId)
     ]);
     return response.total > 0;
   } catch (error: any) {
     handleError('Failed to check subscription', error);
-    throw new Error('Failed to check subscription'); // Lägg till detta för att säkerställa att vi alltid kastar ett fel
+    throw new Error('Failed to check subscription');
   }
 };
-
 
 // createSubscription
 export const createSubscription = async (userId: string, courseId: string) => {
@@ -258,6 +319,7 @@ export const createSubscription = async (userId: string, courseId: string) => {
     throw new Error('Failed to create subscription');
   }
 };
+
 // removeSubscription
 export const removeSubscription = async (userId: string, courseId: string) => {
   try {
@@ -307,62 +369,6 @@ export const uploadUserProfilePicture = async (userId: string, file: File, oldIc
   }
 };
 
-export const updateUserProfile = async (documentId: string, updatedData: Partial<UserProfile>, password: string) => {
-  try {
-    if (updatedData.phoneNumber) {
-      await account.updatePhone(updatedData.phoneNumber, password);
-    }
-
-    if (updatedData.email) {
-      await account.updateEmail(updatedData.email, password);
-    }
-
-    // Filter out empty fields
-    const profileUpdateData = Object.fromEntries(
-      Object.entries(updatedData).filter(([_, value]) => value !== undefined && value !== '')
-    );
-
-    return await databases.updateDocument(
-      databaseId,
-      usersCollectionId,
-      documentId,
-      profileUpdateData
-    );
-  } catch (error: any) {
-    handleError('Failed to update profile', error);
-  }
-};
-
-export const updatePhoneNumber = async (userId: string, phoneNumber: string, documentId: string) => {
-  try {
-    await account.updatePrefs({ phone: phoneNumber });
-
-    await databases.updateDocument(
-      databaseId,
-      usersCollectionId,
-      documentId,
-      { phoneNumber }
-    );
-  } catch (error: any) {
-    handleError('Failed to update phone number', error);
-  }
-};
-
-export const updateEmail = async (userId: string, email: string, password: string, documentId: string) => {
-  try {
-    await account.updateEmail(email, password);
-
-    await databases.updateDocument(
-      databaseId,
-      usersCollectionId,
-      documentId,
-      { email }
-    );
-  } catch (error: any) {
-    handleError('Failed to update email', error);
-  }
-};
-
 export const getSubscriptionData = async (subscriptionId: string): Promise<Subscription> => {
   try {
     const response = await databases.getDocument(databaseId, subscriptionsCollectionId, subscriptionId);
@@ -383,11 +389,9 @@ export const getSubscriptionData = async (subscriptionId: string): Promise<Subsc
     return subscription;
   } catch (error: any) {
     handleError('Failed to fetch subscription data', error);
-    // Här returnerar vi aldrig undefined, vi kastar alltid ett fel
     throw new Error('Failed to fetch subscription data');
   }
 };
-
 
 export const countDocumentTypes = (course: any): { [key: string]: number } => {
   const documentTypeCounts: { [key: string]: number } = {
@@ -619,7 +623,6 @@ export const getUserAds = async (userId: string): Promise<Ad[]> => {
     throw new Error('Failed to fetch user ads');
   }
 };
-
 
 export const getAds = async (): Promise<Ad[]> => {
   try {

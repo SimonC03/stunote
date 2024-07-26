@@ -4,7 +4,6 @@ import { stripe } from '../../utils/stripe';
 export async function POST(request: Request) {
     try {
         const { priceId, userId } = await request.json();
-        console.log("Received priceId:", priceId, "and userId:", userId);
 
         const session = await stripe.checkout.sessions.create({
             ui_mode: 'embedded',

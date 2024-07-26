@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import { useUserContext } from '@/context/UserContext';
-import { getUserData, UserProfile, Subscription, removeFavoriteCourse, addFavoriteCourse, Course, removeSubscription } from '@/lib/api';
+import { getUserData, UserProfile, Subscription, removeFavoriteCourse, addFavoriteCourse, Course, removeSubscription, createUserProfile, checkUserExists } from '@/lib/api';
 import Link from 'next/link';
 import { FaStar, FaRegStar, FaTrash } from 'react-icons/fa';
 import { toast } from 'react-hot-toast';
 import '@/components/animations/spinner.css';
+import { getUser } from '@/lib/appwrite';
 
 const HomePage = () => {
   const { user, loading: userLoading } = useUserContext();
@@ -17,14 +18,32 @@ const HomePage = () => {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      if (!user || !user.$id) {
-        setLoading(false);
-        return;
-      }
-
       try {
         setLoading(true);
-        const userData = await getUserData(user.$id);
+        const user = await getUser(); // Hämta den inloggade användaren
+
+        let userData: UserProfile;
+        const userExists = await checkUserExists(user.$id);
+
+        if (userExists) {
+          userData = await getUserData(user.$id);
+        } else {
+          ('User document not found, creating new profile...');
+          const response = await createUserProfile(user.$id);
+          userData = {
+            $id: response.$id,
+            userId: user.$id,
+            education: '',
+            school: '',
+            iconUrl: '',
+            iconId: '',
+            documentId: response.$id,
+            subscriptions: [],
+            favorite_courses: [],
+            favorite_documents: [],
+          };
+        }
+
         setUserData(userData);
         setSubscriptions(userData.subscriptions);
         setFavorites(userData.favorite_courses);
@@ -36,7 +55,7 @@ const HomePage = () => {
     };
 
     fetchUserData();
-  }, [user]);
+  }, []);
 
   const toggleFavorite = async (course: Course) => {
     try {
@@ -143,7 +162,7 @@ const HomePage = () => {
   return (
     <ProtectedRoute>
       <div className="container">
-        <h1 className="welcome-title">Welcome back, {userData?.username}</h1>
+        <h1 className="welcome-title">Welcome back, {user.name}</h1>
         <div className="selection-container">
           <button 
             className={`tab ${activeTab === 'yourCourses' ? 'active' : ''}`} 

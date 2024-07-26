@@ -42,20 +42,7 @@ const SignUpForm: React.FC = () => {
     setLoading(true);
     try {
       // Create user account
-      const user = await account.create('unique()', values.email, values.password, values.username);
-
-      // Save user data to database
-      await databases.createDocument(
-        process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID || '',
-        process.env.NEXT_PUBLIC_APPWRITE_USERS_COLLECTION_ID || '',
-        'unique()', // Generate a unique ID for the document
-        {
-          email: values.email,
-          username: values.username,
-          userId: user.$id, // Store the user ID
-        }
-      );
-
+      await account.create('unique()', values.email, values.password, values.username);
       toast.success('Registration successful! Please login.');
       setLoading(false)
       router.push('/sign-in');

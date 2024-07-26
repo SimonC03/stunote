@@ -1,18 +1,22 @@
-"use client";
+'use client'
 
 import React, { useState, useEffect, useRef } from 'react';
 import { useUserContext } from '@/context/UserContext';
-import { getUserData, uploadUserProfilePicture, updateUserProfile, UserProfile } from '@/lib/api';
-import ProtectedRoute from '@/components/ProtectedRoute';
-import { account, isPhoneVerified, isEmailVerified, updatePhoneNumber, updateEmail, updateUsername, verifyEmail, getUserRole } from '@/lib/appwrite';
+import {
+  account, isPhoneVerified, isEmailVerified, updatePhoneNumber,
+  updateEmail, updateUsername, verifyEmail, getUserRole, getUser
+} from '@/lib/appwrite';
 import { toast } from 'react-hot-toast';
 import { getSchools, getEducations } from '@/lib/schools';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
+import { getUserData, updateEducation, UserProfile } from '@/lib/api';
 
 const ProfilePage: React.FC = () => {
   const { user, loading } = useUserContext();
-  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [profile, setProfile] = useState<any | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
+  const [userData, setUserData] = useState<UserProfile | null>(null);
   const [phoneNumber, setPhoneNumber] = useState<string>('');
   const [phoneVerified, setPhoneVerified] = useState<boolean>(false);
   const [emailVerified, setEmailVerified] = useState<boolean>(false);
@@ -26,8 +30,7 @@ const ProfilePage: React.FC = () => {
   const [phoneVerificationCode, setPhoneVerificationCode] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isMobile, setIsMobile] = useState<boolean>(false);
-  const [isPhoneNumberSaved, setIsPhoneNumberSaved] = useState<boolean>(false);
-  const [loadingbutton, setLoading] = useState(false);
+  const [loadingButton, setLoadingButton] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -37,7 +40,7 @@ const ProfilePage: React.FC = () => {
     };
 
     if (typeof window !== 'undefined') {
-      setIsMobile(window.innerWidth < 768); // Sätt initialt värde
+      setIsMobile(window.innerWidth < 768);
       window.addEventListener('resize', handleResize);
       return () => window.removeEventListener('resize', handleResize);
     }
@@ -47,48 +50,38 @@ const ProfilePage: React.FC = () => {
     const fetchUserData = async () => {
       if (user) {
         try {
-          // Hämta användardata
-          const data = await getUserData(user.$id);
-          const userRoles = await getUserRole();  // Fetch user roles as an array
+          const userInfo = await getUser();
           
-          // Skapa ett profilobjekt
-          const profileData = {
-            $id: data.$id,
-            username: data.username,
-            email: data.email,
-            userId: data.userId,
-            education: data.education,
-            school: data.school,
-            iconUrl: data.iconUrl,
-            iconId: data.iconId,
-            documentId: data.documentId,
-            phoneNumber: data.phoneNumber || '',
-            subscriptions: data.subscriptions || [],
-            favorite_courses: data.favorite_courses || [],
-            favorite_documents: data.favorite_documents || [],
-          };
-  
-          // Kontrollera om användaren har rollen "premium"
-          const hasPremiumRole = userRoles.includes('premium');
-          setMemberType(hasPremiumRole ? 'premium' : 'free');  // Ställ in medlemskapstyp
-  
-          setProfile(profileData);
+          setUserId(userInfo.$id);
 
-          setPhoneNumber(data.phoneNumber || '');
-          setSelectedSchool(data.school || '');
-          setSelectedEducation(data.education || '');
-          setIsPhoneNumberSaved(!!data.phoneNumber);
-  
+          const userData = await getUserData(userInfo.$id);
+          setUserData(userData);
+
+          const userRoles = await getUserRole();
+          const hasPremiumRole = userRoles.includes('premium');
+          setMemberType(hasPremiumRole ? 'premium' : 'free');
+
           const emailVerifiedStatus = await isEmailVerified();
           const phoneVerifiedStatus = await isPhoneVerified();
           setEmailVerified(emailVerifiedStatus);
           setPhoneVerified(phoneVerifiedStatus);
+
+          setProfile({
+            username: user.name,
+            email: user.email,
+            phoneNumber: user.phone || '',
+            school: userData.school || '',
+            education: userData.education || '',
+          });
+          setPhoneNumber(user.phone || '');
+          setSelectedSchool(userData.school || '');
+          setSelectedEducation(userData.education || '');
         } catch (error) {
           console.error('Failed to fetch user data', error);
         }
       }
     };
-  
+
     const fetchSchools = async () => {
       try {
         const schoolsData = await getSchools();
@@ -97,16 +90,12 @@ const ProfilePage: React.FC = () => {
         console.error('Failed to fetch schools', error);
       }
     };
-  
+
     if (!loading) {
       fetchUserData();
       fetchSchools();
     }
   }, [user, loading]);
-  
-  
-  
-  
 
   useEffect(() => {
     const fetchEducations = async () => {
@@ -123,47 +112,17 @@ const ProfilePage: React.FC = () => {
     fetchEducations();
   }, [selectedSchool]);
 
-  const saveProfilePicture = async (newProfilePicture: File) => {
-    if (profile) {
-      try {
-        const uploadResult = await uploadUserProfilePicture(user.$id, newProfilePicture, profile.iconId);
-
-        if (!uploadResult) {
-          throw new Error('Upload result is undefined');
-        }
-
-        const updatedProfile = {
-          ...profile,
-          iconUrl: uploadResult.iconUrl,
-          iconId: uploadResult.iconId,
-        };
-
-        await updateUserProfile(profile.documentId, {
-          iconUrl: uploadResult.iconUrl,
-          iconId: uploadResult.iconId,
-        }, password);
-
-        setProfile(updatedProfile);
-        toast.success('Profile picture updated successfully');
-      } catch (error) {
-        toast.error('Failed to update profile picture');
-        console.error('Failed to update profile picture', error);
-      }
-    }
-  }; 
-
   const handleProfilePictureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files && e.target.files[0];
     const validImageExtensions = ['jpg', 'jpeg', 'png', 'gif'];
     const fileExtension = file?.name.split('.').pop()?.toLowerCase();
-  
+
     if (file && fileExtension && validImageExtensions.includes(fileExtension)) {
-      saveProfilePicture(file);
+      // saveProfilePicture(file);  // Update this function to match your requirements
     } else {
       toast.error('Please upload a valid image file.');
     }
   };
-  
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (profile) {
@@ -192,85 +151,47 @@ const ProfilePage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (profile) {
-      setLoading(true);
-      try {
-        // Skapa ett objekt för uppdateringar med endast de fält som har ändrats
-        const updatedProfileData: Partial<UserProfile> = {};
 
-        if (profile.username !== user?.username) {
-          updatedProfileData.username = profile.username;
+    if (profile && userId) {
+      setLoadingButton(true);
+      try {
+        if (profile.username !== user?.name) {
           await updateUsername(profile.username);
         }
-        if (profile.education !== selectedEducation) {
-          updatedProfileData.education = selectedEducation;
-        }
-        if (profile.school !== selectedSchool) {
-          updatedProfileData.school = selectedSchool;
-        }
-        if (profile.iconUrl && profile.iconUrl !== '') {
-          updatedProfileData.iconUrl = profile.iconUrl;
-        }
-        if (profile.iconId && profile.iconId !== '') {
-          updatedProfileData.iconId = profile.iconId;
-        }
         if (profile.phoneNumber !== phoneNumber) {
-          updatedProfileData.phoneNumber = phoneNumber;
+          await updatePhoneNumber(phoneNumber, password, userId);
+        }
+        if (profile.email !== user.email) {
+          await updateEmail(profile.email, password, userId);
+        }
+        if (selectedSchool && selectedEducation) {
+          await updateEducation(selectedSchool, selectedEducation, userId);
         }
 
-        // Kontrollera om det finns några ändringar att spara
-        if (Object.keys(updatedProfileData).length > 0) {
-          await updateUserProfile(profile.documentId, updatedProfileData, password);
-          toast.success('Profile updated successfully');
-        } else {
-          toast.success('No changes to update');
-        }
+        toast.success('Profile updated successfully');
       } catch (error) {
         toast.error('Failed to update profile');
         console.error('Failed to update profile', error);
-      }
-
-      if (!phoneVerified && phoneNumber !== profile.phoneNumber) {
-        try {
-          await updatePhoneNumber(phoneNumber, password, profile.documentId);
-          toast.success('Phone number updated successfully');
-        } catch (error) {
-          toast.error('Failed to update phone number');
-          console.error('Failed to update phone number', error);
-        }
-      }
-
-      if (!emailVerified && profile.email !== user.email) {
-        try {
-          await updateEmail(profile.email, password, profile.documentId);
-          toast.success('Email updated successfully');
-        } catch (error) {
-          toast.error('Failed to update email');
-          console.error('Failed to update email', error);
-        }
+      } finally {
+        setLoadingButton(false);
       }
     }
-    setLoading(false);
   };
 
   const formatPhoneNumber = (phoneNumber: string): string => {
-    // Tar bort alla icke-siffror
     const cleaned = phoneNumber.replace(/\D/g, '');
-
-    // Lägger till +46 prefixet och begränsar längden till 11 tecken (2 för landskod och 9 för numret)
     if (cleaned.startsWith('46')) {
-      return '+' + cleaned.slice(0, 11); // +46 följt av 9 siffror
+      return '+' + cleaned.slice(0, 11);
     } else if (cleaned.startsWith('0')) {
-      return '+46' + cleaned.slice(1, 10); // +46 följt av 9 siffror
+      return '+46' + cleaned.slice(1, 10);
     } else {
-      return '+46' + cleaned.slice(0, 9); // +46 följt av 9 siffror
+      return '+46' + cleaned.slice(0, 9);
     }
   };
 
   const verifyPhoneNumber = async () => {
     try {
-      await account.createPhoneVerification(); // Inget argument behövs
+      await account.createPhoneVerification();
       toast.success('Verification SMS sent');
       setShowPhoneVerificationField(true);
     } catch (error) {
@@ -281,11 +202,7 @@ const ProfilePage: React.FC = () => {
 
   const handlePhoneVerification = async () => {
     try {
-      const userId = profile?.userId; // Eller vad som passar din struktur
-      if (!userId) {
-        throw new Error('User ID is not defined');
-      }
-      await account.updatePhoneVerification(userId, phoneVerificationCode);
+      await account.updatePhoneVerification(userId!, phoneVerificationCode);
       toast.success('Phone verification successful');
       setPhoneVerified(true);
       setShowPhoneVerificationField(false);
@@ -308,190 +225,186 @@ const ProfilePage: React.FC = () => {
   };
 
   return (
-    <ProtectedRoute>
-      <div style={getStyles().profileContainer}>
-        <div style={getStyles().profileSidebar}>
-          <div
-            style={getStyles().profileImageContainer}
+    <div style={getStyles().profileContainer}>
+      <div style={getStyles().profileSidebar}>
+        <div style={getStyles().profileImageContainer}>
+          <Image
+            src={profile.iconUrl || '/icons/avatar.svg'}
+            alt="Profile"
+            style={getStyles().profileImage}
+            width={150}
+            height={150}
+          />
+          <Button
+            variant="default"
+            size="xs"
+            style={getStyles().changePictureButton}
+            onClick={() => fileInputRef.current?.click()}
           >
-            <Image
-              src={profile.iconUrl || '/icons/avatar.svg'}
-              alt="Profile"
-              style={getStyles().profileImage}
-              width={150}
-              height={150}
-            />
-            <Button
-              variant="default"
-              size="xs"
-              style={getStyles().changePictureButton}
-              onClick={() => fileInputRef.current?.click()}
-            >
-              Change Profile Picture
-            </Button>
-            <input
-              type="file"
-              id="iconUrl"
-              name="iconUrl"
-              accept="image/*"
-              onChange={handleProfilePictureChange}
-              style={{ display: 'none' }}
-              ref={fileInputRef}
-            />
-          </div>
-          <div style={getStyles().subscriptionPlan}>
-            <div style={getStyles().subscriptionText}>
-              Account: {memberType === 'premium' ? 'Premium' : 'Free'}
-            </div>
+            Change Profile Picture
+          </Button>
+          <input
+            type="file"
+            id="iconUrl"
+            name="iconUrl"
+            accept="image/*"
+            onChange={handleProfilePictureChange}
+            style={{ display: 'none' }}
+            ref={fileInputRef}
+          />
+        </div>
+        <div style={getStyles().subscriptionPlan}>
+          <div style={getStyles().subscriptionText}>
+            Account: {memberType === 'premium' ? 'Premium' : 'Free'}
           </div>
         </div>
-        <div style={getStyles().profileFormContainer}>
-          <form onSubmit={handleSubmit} style={getStyles().profileForm}>
-            <div style={getStyles().formGroup}>
-              <label htmlFor="username">Username</label>
+      </div>
+      <div style={getStyles().profileFormContainer}>
+        <form onSubmit={handleSubmit} style={getStyles().profileForm}>
+          <div style={getStyles().formGroup}>
+            <label htmlFor="username">Username</label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              value={profile.username}
+              onChange={handleInputChange}
+              required
+              style={getStyles().formInput}
+            />
+          </div>
+          <div style={getStyles().formGroup}>
+            <label htmlFor="email">Email</label>
+            <div style={getStyles().inputWrapper}>
               <input
                 type="text"
-                id="username"
-                name="username"
-                value={profile.username}
+                id="email"
+                name="email"
+                value={profile.email}
                 onChange={handleInputChange}
-                required
+                readOnly={emailVerified}
                 style={getStyles().formInput}
               />
+              {emailVerified ? (
+                <span style={getStyles().verifiedBadge}>
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-green-500" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414L8.414 15 4 10.586a1 1 0 111.414-1.414L8.414 12.172l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                </span>
+              ) : (
+                <Button type="button" variant="default" size="sm" style={getStyles().verifyButton} onClick={verifyEmail}>Verify</Button>
+              )}
             </div>
-            <div style={getStyles().formGroup}>
-              <label htmlFor="email">Email</label>
-              <div style={getStyles().inputWrapper}>
-                <input
-                  type="text"
-                  id="email"
-                  name="email"
-                  value={profile.email}
-                  onChange={handleInputChange}
-                  readOnly={emailVerified}
-                  style={getStyles().formInput}
-                />
-                {emailVerified ? (
+          </div>
+          <div style={getStyles().formGroup}>
+            <label htmlFor="phone">Phone</label>
+            <div style={getStyles().inputWrapper}>
+              <input
+                type="text"
+                id="phone"
+                name="phone"
+                value={phoneNumber}
+                onChange={handlePhoneNumberChange}
+                readOnly={phoneVerified}
+                style={getStyles().formInput}
+              />
+              {phoneNumber ? (
+                phoneVerified ? (
                   <span style={getStyles().verifiedBadge}>
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-green-500" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414L8.414 15 4 10.586a1 1 0 111.414-1.414L8.414 12.172l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414L8.414 15 4 10.586a1 1 111.414-1.414L8.414 12.172l7.293-7.293a1 1 011.414 0z" clipRule="evenodd" />
                     </svg>
                   </span>
                 ) : (
-                  <Button type="button" variant="default" size="sm" style={getStyles().verifyButton} onClick={verifyEmail}>Verify</Button>
-                )}
-              </div>
+                  phoneNumber && (
+                    <Button type="button" variant="default" size="sm" style={getStyles().verifyButton} onClick={verifyPhoneNumber}>
+                      Verify
+                    </Button>
+                  )
+                )
+              ) : null}
             </div>
+          </div>
+          {showPhoneVerificationField && (
             <div style={getStyles().formGroup}>
-              <label htmlFor="phone">Phone</label>
+              <label htmlFor="phone">Enter verification code</label>
               <div style={getStyles().inputWrapper}>
                 <input
                   type="text"
-                  id="phone"
-                  name="phone"
-                  value={phoneNumber}
-                  onChange={handlePhoneNumberChange}
-                  readOnly={phoneVerified}
+                  value={phoneVerificationCode}
+                  onChange={(e) => setPhoneVerificationCode(e.target.value)}
                   style={getStyles().formInput}
                 />
-                {phoneNumber ? (
-                  phoneVerified ? (
-                    <span style={getStyles().verifiedBadge}>
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-green-500" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414L8.414 15 4 10.586a1 1 0 111.414-1.414L8.414 12.172l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                      </svg>
-                    </span>
-                  ) : (
-                    phoneNumber && isPhoneNumberSaved && (
-                      <Button type="button" variant="default" size="sm" style={getStyles().verifyButton} onClick={verifyPhoneNumber}>
-                        Verify
-                      </Button>
-                    )
-                  )
-                ) : null}
+                <Button
+                  type="button"
+                  style={getStyles().verifyButton}
+                  onClick={handlePhoneVerification}
+                  size="sm"
+                >
+                  Enter
+                </Button>
               </div>
             </div>
-            {showPhoneVerificationField && (
-              <div style={getStyles().formGroup}>
-                <label htmlFor="phone">Enter verification code</label>
-                <div style={getStyles().inputWrapper}>
-                  <input
-                    type="text"
-                    value={phoneVerificationCode}
-                    onChange={(e) => setPhoneVerificationCode(e.target.value)}
-                    style={getStyles().formInput}
-                  />
-                  <Button
-                    type="button"
-                    style={getStyles().verifyButton}
-                    onClick={handlePhoneVerification}
-                    size="sm"
-                  >
-                    Enter
-                  </Button>
-                </div>
-              </div>
-            )}
-            <div style={getStyles().formGroup}>
-              <label htmlFor="school">School</label>
-              <select
-                id="school"
-                name="school"
-                value={selectedSchool}
-                onChange={handleSchoolChange}
-                style={getStyles().formInput}
-              >
-                <option value="">Select a school</option>
-                {schools.map((school) => (
-                  <option key={school} value={school}>
-                    {school}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div style={getStyles().formGroup}>
-              <label htmlFor="education">Education</label>
-              <select
-                id="education"
-                name="education"
-                value={selectedEducation}
-                onChange={handleEducationChange}
-                style={getStyles().formInput}
-                disabled={!selectedSchool}
-              >
-                <option value="">Select an education</option>
-                {educations.map((education) => (
-                  <option key={education} value={education}>
-                    {education}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div style={getStyles().formGroupRow}>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                value={password}
-                onChange={handlePasswordChange}
-                placeholder="Password"
-                style={getStyles().passwordInput}
-                required
-              />
-              <Button
-                type="submit"
-                variant="default"
-                size="default"
-                loading={loadingbutton}
-                style={getStyles().saveButton}
-              >
-                Save
-              </Button>
-            </div>
-          </form>
-        </div>
+          )}
+          <div style={getStyles().formGroup}>
+            <label htmlFor="school">School</label>
+            <select
+              id="school"
+              name="school"
+              value={selectedSchool}
+              onChange={handleSchoolChange}
+              style={getStyles().formInput}
+            >
+              <option value="">Select a school</option>
+              {schools.map((school) => (
+                <option key={school} value={school}>
+                  {school}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div style={getStyles().formGroup}>
+            <label htmlFor="education">Education</label>
+            <select
+              id="education"
+              name="education"
+              value={selectedEducation}
+              onChange={handleEducationChange}
+              style={getStyles().formInput}
+              disabled={!selectedSchool}
+            >
+              <option value="">Select an education</option>
+              {educations.map((education) => (
+                <option key={education} value={education}>
+                  {education}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div style={getStyles().formGroupRow}>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              value={password}
+              onChange={handlePasswordChange}
+              placeholder="Password"
+              style={getStyles().passwordInput}
+              required
+            />
+            <Button
+              type="submit"
+              variant="default"
+              size="default"
+              loading={loadingButton}
+              style={getStyles().saveButton}
+            >
+              Save
+            </Button>
+          </div>
+        </form>
       </div>
-    </ProtectedRoute>
+    </div>
   );
 };
 
@@ -653,7 +566,7 @@ const mobileStyles: { [key: string]: React.CSSProperties } = {
     textAlign: 'center',
     marginTop: '30px',
     fontSize: '14px',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   subscriptionInput: {
     width: '80px',

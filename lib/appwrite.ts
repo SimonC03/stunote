@@ -1,5 +1,4 @@
 import { Client, Account, Databases, Storage } from 'appwrite';
-import { Users } from 'node-appwrite';
 import toast from 'react-hot-toast';
 
 export const client = new Client();
@@ -11,6 +10,28 @@ client
 export const account = new Account(client);
 export const databases = new Databases(client);
 export const storage = new Storage(client);
+
+export const createUser = async (email: string, password: string, name: string) => {
+  try {
+    const user = await account.create('unique()', email, password, name);
+    toast.success('User created successfully');
+    return user;
+  } catch (error: any) {
+    console.error('Failed to create user:', error);
+    toast.error('Failed to create user');
+    throw new Error('Failed to create user');
+  }
+};
+
+export const getUser = async () => {
+  try {
+    const user = await account.get();
+    return user;
+  } catch (error) {
+    console.error('Failed to get User:', error);
+    throw new Error('Failed to get User');
+  }
+}
 
 // Uppdatera användarens namn
 export const updateUsername = async (name: string) => {
@@ -52,15 +73,6 @@ export const isPhoneVerified = async (): Promise<boolean> => {
 export const updatePhoneNumber = async (phoneNumber: string, password: string, documentId: string) => {
   try {
     await account.updatePhone(phoneNumber, password);
-
-    // Uppdatera telefonnummer i databasen
-    await databases.updateDocument(
-      process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!,
-      process.env.NEXT_PUBLIC_APPWRITE_USERS_COLLECTION_ID!,
-      documentId,
-      { phoneNumber: phoneNumber }
-    );
-
     return true;
   } catch (error: any) {
     console.error('Failed to update phone number:', error);
@@ -72,15 +84,6 @@ export const updatePhoneNumber = async (phoneNumber: string, password: string, d
 export const updateEmail = async (email: string, password: string, documentId: string) => {
   try {
     await account.updateEmail(email, password);
-
-    // Uppdatera email i databasen
-    await databases.updateDocument(
-      process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!,
-      process.env.NEXT_PUBLIC_APPWRITE_USERS_COLLECTION_ID!,
-      documentId,
-      { email: email }
-    );
-
     return true;
   } catch (error: any) {
     console.error('Failed to update email:', error);
@@ -125,15 +128,7 @@ export const verifyEmail = async (): Promise<boolean> => {
   }
 };
 
-export const getUser = async () => {
-  try {
-    const user = await account.get();
-    return user;
-  } catch (error) {
-    console.error('Failed to get User:', error);
-    throw new Error('Failed to get User');
-  }
-}
+
 
 // Kontrollera om email är verifierad och vilken label användaren har
 export const checkEmailVerificationAndLabel = async (): Promise<{ emailVerified: boolean, userLabel: string | null }> => {
