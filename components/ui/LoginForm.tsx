@@ -19,6 +19,7 @@ import AuthBox from './AuthBox';
 import { useUserContext } from '../../context/UserContext';
 import { toast } from 'react-hot-toast';
 import GoogleAuthButton from '@/components/GoogleAuth0/Login';
+import LinkedinAuthButton from '@/components/LinkedinAuth0/Login';
 
 const signInSchema = z.object({
   email: z.string().email(),
@@ -96,7 +97,11 @@ const LoginForm: React.FC = () => {
           <a href="/forgot-password" className="text-sm text-blue-600 hover:text-blue-800">Forgot your password?</a>
           <Button type="submit" variant="default" size="sm" className="w-full" loading={loading}>Login</Button>
         </form>
-        <GoogleAuthButton />
+        <div className="flex flex-col gap-1 min-h-screen">
+          <GoogleAuthButton />
+          <LinkedinAuthButton />
+        </div>
+
       </Form>
     </AuthBox>
   );
