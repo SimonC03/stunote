@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { account, databases } from '../../lib/appwrite';
+import { account } from '../../lib/appwrite';
 import {
   Form,
   FormField,
@@ -67,7 +67,7 @@ const SignUpForm: React.FC = () => {
       buttonText="Login"
     >
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField
             control={form.control}
             name="username"
@@ -106,7 +106,7 @@ const SignUpForm: React.FC = () => {
           />
           <Button type="submit" variant="default" size="sm" className="w-full" loading={loading}>Sign Up</Button>
         </form>
-        <div className="flex flex-row justify-center items-center gap-2 my-4">
+        <div className="flex flex-row justify-center items-center gap-2 my-2">
           <GoogleAuthButton />
           <LinkedinAuthButton />
         </div>

@@ -97,7 +97,7 @@ const LoginForm: React.FC = () => {
           <a href="/forgot-password" className="text-sm text-blue-600 hover:text-blue-800">Forgot your password?</a>
           <Button type="submit" variant="default" size="sm" className="w-full" loading={loading}>Login</Button>
         </form>
-        <div className="flex flex-row justify-center items-center gap-2 mt-4">
+        <div className="flex flex-row justify-center items-center gap-2 mt-2">
           <GoogleAuthButton />
           <LinkedinAuthButton />
         </div>

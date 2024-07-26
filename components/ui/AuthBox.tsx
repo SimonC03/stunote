@@ -27,7 +27,7 @@ const AuthBox: React.FC<AuthBoxProps> = ({ children, title, subtitle, linkText, 
               <Image src="/icons/logo.svg" alt="logo" width={70} height={70} />
             </Link>
             <div className="flex flex-col items-center justify-center flex-1">
-              <h2 className="text-3xl font-semibold mb-4">{title}</h2>
+              <h2 className="text-2xl font-semibold mb-4">{title}</h2>
               {children}
             </div>
           </div>
