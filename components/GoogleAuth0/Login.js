@@ -1,95 +1,35 @@
 import React from 'react';
 import { account } from '@/lib/appwrite';
 import { toast } from 'react-hot-toast';
+import "../socials.css";
 
 const GoogleAuthButton = () => {
   const handleLogin = async () => {
     try {
-      // Försök att logga in med Google
       await account.createOAuth2Session(
         'google',
         'https://stunote.se/',
         'https://stunote.se/login'
       );
     } catch (error) {
-      // Om det uppstår ett fel, visa ett felmeddelande
       toast.error('Login failed. Please check your credentials and try again.');
     }
   };
 
   return (
-    <button
-      type="button"
-      className="mt-4"
-      onClick={handleLogin}
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        backgroundColor: 'white',
-        border: '1px solid #d1d5db',
-        borderRadius: '0.375rem',
-        boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
-        maxWidth: '16rem',
-        padding: '0.5rem 1.5rem',
-        textAlign: 'center',
-        fontSize: '0.775rem',
-        fontWeight: '500',
-        color: '#1f2937',
-        transition: 'background-color 0.3s, box-shadow 0.3s',
-        cursor: 'pointer'
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.backgroundColor = '#e5e7eb';
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.backgroundColor = 'white';
-      }}
-      onFocus={(e) => {
-        e.currentTarget.style.boxShadow = '0 0 0 4px rgba(100, 116, 139, 0.2)';
-      }}
-      onBlur={(e) => {
-        e.currentTarget.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.1)';
-      }}
-      onMouseDown={(e) => {
-        e.currentTarget.style.backgroundColor = '#d1d5db';
-      }}
-      onMouseUp={(e) => {
-        e.currentTarget.style.backgroundColor = 'white';
-      }}
-    >
+    <div className="social-auth-button" onClick={handleLogin}>
       <svg
-        className="h-6 w-6 mr-2"
         xmlns="http://www.w3.org/2000/svg"
-        xmlnsXlink="http://www.w3.org/1999/xlink"
-        viewBox="-0.5 0 48 48"
-        version="1.1"
-        style={{ height: '1.5rem', width: '1.5rem', marginRight: '0.5rem' }}
+        viewBox="0 0 48 48"
+        width="24px"
+        height="24px"
       >
-        <g id="Icons" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-          <g id="Color-" transform="translate(-401.000000, -860.000000)">
-            <g id="Google" transform="translate(401.000000, 860.000000)">
-              <path
-                d="M9.82727273,24 C9.82727273,22.4757333 10.0804318,21.0144 10.5322727,19.6437333 L2.62345455,13.6042667 C1.08206818,16.7338667 0.213636364,20.2602667 0.213636364,24 C0.213636364,27.7365333 1.081,31.2608 2.62025,34.3882667 L10.5247955,28.3370667 C10.0772273,26.9728 9.82727273,25.5168 9.82727273,24"
-                id="Fill-1" fill="#FBBC05"
-              />
-              <path
-                d="M23.7136364,10.1333333 C27.025,10.1333333 30.0159091,11.3066667 32.3659091,13.2266667 L39.2022727,6.4 C35.0363636,2.77333333 29.6954545,0.533333333 23.7136364,0.533333333 C14.4268636,0.533333333 6.44540909,5.84426667 2.62345455,13.6042667 L10.5322727,19.6437333 C12.3545909,14.112 17.5491591,10.1333333 23.7136364,10.1333333"
-                id="Fill-2" fill="#EB4335"
-              />
-              <path
-                d="M23.7136364,37.8666667 C17.5491591,37.8666667 12.3545909,33.888 10.5322727,28.3562667 L2.62345455,34.3946667 C6.44540909,42.1557333 14.4268636,47.4666667 23.7136364,47.4666667 C29.4455,47.4666667 34.9177955,45.4314667 39.0249545,41.6181333 L31.5177727,35.8144 C29.3995682,37.1488 26.7323182,37.8666667 23.7136364,37.8666667"
-                id="Fill-3" fill="#34A853"
-              />
-              <path
-                d="M46.1454545,24 C46.1454545,22.6133333 45.9318182,21.12 45.6113636,19.7333333 L23.7136364,19.7333333 L23.7136364,28.8 L36.3181818,28.8 C35.6879545,31.8912 33.9724545,34.2677333 31.5177727,35.8144 L39.0249545,41.6181333 C43.3393409,37.6138667 46.1454545,31.6490667 46.1454545,24"
-                id="Fill-4" fill="#4285F4"
-              />
-            </g>
-          </g>
-        </g>
+        <path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12 c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20 c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"></path>
+        <path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657 C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"></path>
+        <path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946 l-6.522,5.025C9.505,39.556,16.227,44,24,44z"></path>
+        <path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002 l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"></path>
       </svg>
-      <span>Continue with Google</span>
-    </button>
+    </div>
   );
 };
 

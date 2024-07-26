@@ -106,7 +106,7 @@ const SignUpForm: React.FC = () => {
           />
           <Button type="submit" variant="default" size="sm" className="w-full" loading={loading}>Sign Up</Button>
         </form>
-        <div className="flex flex-col gap-1 min-h-screen">
+        <div className="flex flex-row justify-center items-center gap-2 my-4">
           <GoogleAuthButton />
           <LinkedinAuthButton />
         </div>

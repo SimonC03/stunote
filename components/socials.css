@@ -1,0 +1,26 @@
+.social-auth-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    border-radius: 50px;
+    color: #2268CD;
+    height: 50px;
+    width: 50px;
+    box-shadow: 0 5px 10px rgba(34, 104, 205, 0.3);
+    margin: 15px;
+    font-size: 22px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .social-auth-button:hover {
+    box-shadow: 0 0 25px rgba(34, 104, 205, 0.5);
+  }
+  
+  .social-auth-button svg {
+    width: 24px;
+    height: 24px;
+    fill: #2268CD; /* Ensures the SVG icon color matches */
+  }
+  

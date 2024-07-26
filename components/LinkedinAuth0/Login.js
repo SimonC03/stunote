@@ -1,78 +1,35 @@
 import React from 'react';
 import { account } from '@/lib/appwrite';
 import { toast } from 'react-hot-toast';
+import "../socials.css";
 
 const LinkedinAuthButton = () => {
   const handleLogin = async () => {
     try {
-      // Försök att logga in med LinkedIn
       await account.createOAuth2Session(
         'linkedin',
         'https://stunote.se/',
         'https://stunote.se/login'
       );
     } catch (error) {
-      // Om det uppstår ett fel, visa ett felmeddelande
       toast.error('Login failed. Please check your credentials and try again.');
     }
   };
 
   return (
-    <button 
-      type="button" 
-      className="mt-4"
-      onClick={handleLogin}
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        backgroundColor: 'white',
-        border: '1px solid #d1d5db',
-        borderRadius: '0.375rem',
-        boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
-        maxWidth: '16rem',
-        padding: '0.5rem 1.5rem',
-        textAlign: 'center',
-        fontSize: '0.775rem',
-        fontWeight: '500',
-        color: '#1f2937',
-        transition: 'background-color 0.3s, box-shadow 0.3s',
-        cursor: 'pointer'
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.backgroundColor = '#e5e7eb';
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.backgroundColor = 'white';
-      }}
-      onFocus={(e) => {
-        e.currentTarget.style.boxShadow = '0 0 0 4px rgba(100, 116, 139, 0.2)';
-      }}
-      onBlur={(e) => {
-        e.currentTarget.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.1)';
-      }}
-      onMouseDown={(e) => {
-        e.currentTarget.style.backgroundColor = '#d1d5db';
-      }}
-      onMouseUp={(e) => {
-        e.currentTarget.style.backgroundColor = 'white';
-      }}
-    >
-      <svg 
-        className="h-6 w-6 mr-2" 
-        xmlns="http://www.w3.org/2000/svg" 
-        xmlnsXlink="http://www.w3.org/1999/xlink" 
-        viewBox="0 -2 44 44" 
-        version="1.1"
-        style={{ height: '1.5rem', width: '1.5rem', marginRight: '0.5rem' }}
+    <div className="social-auth-button" onClick={handleLogin}>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 48 48"
+        width="24px"
+        height="24px"
       >
-        <g id="Icons" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-          <g id="Color-" transform="translate(-702.000000, -265.000000)" fill="#007EBB">
-            <path d="M746,305 L736.2754,305 L736.2754,290.9384 C736.2754,287.257796 734.754233,284.74515 731.409219,284.74515 C728.850659,284.74515 727.427799,286.440738 726.765522,288.074854 C726.517168,288.661395 726.555974,289.478453 726.555974,290.295511 L726.555974,305 L716.921919,305 C716.921919,305 717.046096,280.091247 716.921919,277.827047 L726.555974,277.827047 L726.555974,282.091631 C727.125118,280.226996 730.203669,277.565794 735.116416,277.565794 C741.21143,277.565794 746,281.474355 746,289.890824 L746,305 L746,305 Z M707.17921,274.428187 L707.117121,274.428187 C704.0127,274.428187 702,272.350964 702,269.717936 C702,267.033681 704.072201,265 707.238711,265 C710.402634,265 712.348071,267.028559 712.41016,269.710252 C712.41016,272.34328 710.402634,274.428187 707.17921,274.428187 L707.17921,274.428187 L707.17921,274.428187 Z M703.109831,277.827047 L711.685795,277.827047 L711.685795,305 L703.109831,305 L703.109831,277.827047 L703.109831,277.827047 Z" id="LinkedIn"/>
-          </g>
-        </g>
+        <path fill="#0078d4" d="M42,37c0,2.762-2.238,5-5,5H11c-2.761,0-5-2.238-5-5V11c0-2.762,2.239-5,5-5h26c2.762,0,5,2.238,5,5 V37z"></path>
+        <path d="M30,37V26.901c0-1.689-0.819-2.698-2.192-2.698c-0.815,0-1.414,0.459-1.779,1.364c-0.017,0.064-0.041,0.325-0.031,1.114L26,37h-7V18h7v1.061C27.022,18.356,28.275,18,29.738,18c4.547,0,7.261,3.093,7.261,8.274L37,37H30z M11,37V18h3.457C12.454,18,11,16.528,11,14.499C11,12.472,12.478,11,14.514,11c2.012,0,3.445,1.431,3.486,3.479C18,16.523,16.521,18,14.485,18H18v19H11z" opacity=".05"></path>
+        <path d="M30.5,36.5v-9.599c0-1.973-1.031-3.198-2.692-3.198c-1.295,0-1.935,0.912-2.243,1.677c-0.082,0.199-0.071,0.989-0.067,1.326L25.5,36.5h-6v-18h6v1.638c0.795-0.823,2.075-1.638,4.238-1.638c4.233,0,6.761,2.906,6.761,7.774L36.5,36.5H30.5z M11.5,36.5v-18h6v18H11.5z M14.457,17.5c-1.713,0-2.957-1.262-2.957-3.001c0-1.738,1.268-2.999,3.014-2.999c1.724,0,2.951,1.229,2.986,2.989c0,1.749-1.268,3.011-3.015,3.011H14.457z" opacity=".07"></path>
+        <path fill="#fff" d="M12,19h5v17h-5V19z M14.485,17h-0.028C12.965,17,12,15.888,12,14.499C12,13.08,12.995,12,14.514,12 c1.521,0,2.458,1.08,2.486,2.499C17,15.887,16.035,17,14.485,17z M36,36h-5v-9.099c0-2.198-1.225-3.698-3.192-3.698 c-1.501,0-2.313,1.012-2.707,1.99C24.957,25.543,25,26.511,25,27v9h-5V19h5v2.616C25.721,20.5,26.85,19,29.738,19 c3.578,0,6.261,2.25,6.261,7.274L36,36L36,36z"></path>
       </svg>
-      <span>Continue with LinkedIn</span>
-    </button>
+    </div>
   );
 };
 
