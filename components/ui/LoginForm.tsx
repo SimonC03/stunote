@@ -18,6 +18,7 @@ import { Button } from '@/components/ui/button';
 import AuthBox from './AuthBox';
 import { useUserContext } from '../../context/UserContext';
 import { toast } from 'react-hot-toast';
+import GoogleAuthButton from '@/components/GoogleAuth0/Login';
 
 const signInSchema = z.object({
   email: z.string().email(),
@@ -95,6 +96,7 @@ const LoginForm: React.FC = () => {
           <a href="/forgot-password" className="text-sm text-blue-600 hover:text-blue-800">Forgot your password?</a>
           <Button type="submit" variant="default" size="sm" className="w-full" loading={loading}>Login</Button>
         </form>
+        <GoogleAuthButton />
       </Form>
     </AuthBox>
   );

@@ -17,6 +17,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import AuthBox from './AuthBox';
 import { toast } from 'react-hot-toast';
+import GoogleAuthButton from '../GoogleAuth0/Signup';
 
 const signUpSchema = z.object({
   email: z.string().email(),
@@ -117,6 +118,7 @@ const SignUpForm: React.FC = () => {
           />
           <Button type="submit" variant="default" size="sm" className="w-full" loading={loading}>Sign Up</Button>
         </form>
+        <GoogleAuthButton />
       </Form>
     </AuthBox>
   );
