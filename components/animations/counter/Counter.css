@@ -1,0 +1,39 @@
+.counter-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  background-color: #21242b20;
+  border-radius: 5px;
+  gap: 10px;
+  padding: 1em;
+  width: 25vmin; 
+  height: 7vmin;
+  max-width: 300px;
+  max-height: 100px;
+  border: 1px solid #85c8ff;
+}
+
+.counter-container svg {
+  color: white;
+  width: 3vmin;
+  height: 3vmin;
+}
+
+.counter-container .num {
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 2vmin;
+}
+
+.counter-container .text {
+  color: #e0e0e0;
+  font-size: 1.5vmin;
+  text-align: center;
+}
+
+@media screen and (max-width: 1024px) {
+  .counter-container {
+    display: none;
+  }
+}

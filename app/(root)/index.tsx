@@ -6,7 +6,6 @@ import Link from 'next/link';
 import { FaStar, FaRegStar, FaTrash } from 'react-icons/fa';
 import { toast } from 'react-hot-toast';
 import '@/components/animations/spinner.css';
-import { getUser } from '@/lib/appwrite';
 
 const HomePage = () => {
   const { user, loading: userLoading } = useUserContext();
@@ -20,8 +19,6 @@ const HomePage = () => {
     const fetchUserData = async () => {
       try {
         setLoading(true);
-        const user = await getUser(); // Hämta den inloggade användaren
-
         let userData: UserProfile;
         const userExists = await checkUserExists(user.$id);
 
@@ -55,7 +52,7 @@ const HomePage = () => {
     };
 
     fetchUserData();
-  }, []);
+  }, [user.$id]);
 
   const toggleFavorite = async (course: Course) => {
     try {

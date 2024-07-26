@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useUserContext } from '@/context/UserContext';
 import {
   account, isPhoneVerified, isEmailVerified, updatePhoneNumber,
-  updateEmail, updateUsername, verifyEmail, getUserRole, getUser
+  updateEmail, updateUsername, verifyEmail, getUserRole
 } from '@/lib/appwrite';
 import { toast } from 'react-hot-toast';
 import { getSchools, getEducations } from '@/lib/schools';
@@ -50,11 +50,9 @@ const ProfilePage: React.FC = () => {
     const fetchUserData = async () => {
       if (user) {
         try {
-          const userInfo = await getUser();
-          
-          setUserId(userInfo.$id);
+          setUserId(user.$id);
 
-          const userData = await getUserData(userInfo.$id);
+          const userData = await getUserData(user.$id);
           setUserData(userData);
 
           const userRoles = await getUserRole();

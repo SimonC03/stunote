@@ -6,7 +6,7 @@ import SellModal from '@/components/ui/SellModal';
 import '@/components/animations/spinner.css';
 import { Button } from '@/components/ui/button';
 import { useUserContext } from '@/context/UserContext';
-import { getUserAds, getAds, Course, Ad, deleteAd } from '@/lib/api';
+import { getUserAds, getAds, Ad, deleteAd } from '@/lib/api';
 import AdList from '@/components/ui/AdList';
 import toast from 'react-hot-toast';
 import { detectAdblock } from '@/components/util/adblockDetector';
