@@ -1,5 +1,4 @@
 import { stripe } from "../utils/stripe";
-import { addPremiumLabelToUser } from "@/lib/sdk"; // Importera funktionen
 
 interface SearchParams {
   session_id: string;
@@ -15,16 +14,6 @@ export default async function CheckoutReturn({ searchParams }: { searchParams: S
   const sessionId = searchParams.session_id;
   const userId = searchParams.user_id; // Hämta userId från searchParams
   const session = await getSession(sessionId);
-
-  // Lägg till premiumetikett om betalningen är genomförd
-  if (session?.payment_status === "paid") {
-    try {
-      await addPremiumLabelToUser(userId);
-      console.log(`Premium label added to user ${userId}`);
-    } catch (error) {
-      console.error(`Failed to add premium label to user ${userId}:`, error);
-    }
-  }
 
   return (
     <div className="flex items-center justify-center min-h-screen">
