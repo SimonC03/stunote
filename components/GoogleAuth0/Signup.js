@@ -6,8 +6,8 @@ const GoogleAuthButton = () => {
   const handleSignup = async () => {
     account.createOAuth2Session(
       'google',
-        'http://stunote.se/',
-        'http://stunote.se/sign-up'
+        'https://stunote.se/',
+        'https://stunote.se/sign-up'
     );
   };
 

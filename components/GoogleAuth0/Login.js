@@ -9,8 +9,8 @@ const GoogleAuthButton = () => {
       // Försök att logga in med Google
       await account.createOAuth2Session(
         'google',
-        'http://stunote.se/',
-        'http://stunote.se/login'
+        'https://stunote.se/',
+        'https://stunote.se/login'
       );
     } catch (error) {
       // Om det uppstår ett fel, visa ett felmeddelande
