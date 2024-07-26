@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { Ad } from '@/lib/api';
+import { Ad, getUserData } from '@/lib/api';
 import { Button } from './button';
 import ContactModal from './ContactModal';
 import '@/components/animations/spinner.css';
+import { getUser } from '@/lib/appwrite';
 interface AdListProps {
   ads: Ad[];
   activeTab: string;
@@ -12,14 +13,14 @@ interface AdListProps {
 
 const AdList: React.FC<AdListProps> = ({ ads, activeTab, onDeleteAd }) => {
   const [showContactModal, setShowContactModal] = useState(false);
-  const [contactInfo, setContactInfo] = useState({ email: '', phoneNumber: '', contactMethods: [] as string[] });
   const [loading, setLoading] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
 
   const handleButtonClick = async (ad: Ad) => {
     setLoading(true);
+    const user = getUser();
+
     if (activeTab === 'buy') {
-      setContactInfo({ email: ad.user.email, phoneNumber: ad.user.phoneNumber, contactMethods: ad.contactMethod });
       setShowContactModal(true);
     } else {
       await onDeleteAd(ad.$id!, ad.imageId);
@@ -55,7 +56,7 @@ const AdList: React.FC<AdListProps> = ({ ads, activeTab, onDeleteAd }) => {
           <div className="ad-details">
             <h4 className="ad-title">{ad.bookName}</h4>
             <p className="ad-price">Price: {ad.price} kr</p>
-            <p className="ad-seller">Seller: {ad.user.username}</p>
+            <p className="ad-seller">Seller: Loading...</p>
             <p className="ad-condition">Condition: {ad.condition}</p>
             <p className="ad-city">Location: {ad.city}</p>
             <div className="ad-shipping">
@@ -76,11 +77,7 @@ const AdList: React.FC<AdListProps> = ({ ads, activeTab, onDeleteAd }) => {
           </div>
         </div>
       ))}
-      <ContactModal
-        show={showContactModal}
-        onClose={() => setShowContactModal(false)}
-        contactInfo={contactInfo}
-      />
+      
       <style jsx>{`
         .ads-list {
           display: grid;
