@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import TrustpilotLogo from '/public/icons/trustpilotLogo.svg';  // Anpassa sökvägen till var du har sparat SVG-filen
 
 const Footer = () => {
   return (
@@ -24,9 +23,20 @@ const Footer = () => {
           </div>
         </Link>
       </div>
-      <div className="text-white text-sm sm:text-base mt-4">
-        © 2024 StuNote. All Rights Reserved.
+      <div className="flex flex-col sm:flex-row sm:space-x-5 mb-2 items-center sm:items-start">
+        <div className="text-white text-sm sm:text-base mt-2 sm:mt-0">
+          © 2024 StuNote. All Rights Reserved.
+        </div>
+        <div className="flex flex-col sm:flex-row sm:space-x-5 mt-2 sm:mt-0">
+          <Link href="/terms" rel="noopener noreferrer">
+            <p className="text-white text-sm sm:text-base mt-2 sm:mt-0">Terms Of Service</p>
+          </Link>
+          <Link href="/privacy-policy" rel="noopener noreferrer">
+            <p className="text-white text-sm sm:text-base mt-2 sm:mt-0">Privacy Policy</p>
+          </Link>
+        </div>
       </div>
+
     </footer>
   );
 }
