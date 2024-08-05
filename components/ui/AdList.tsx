@@ -56,7 +56,6 @@ const AdList: React.FC<AdListProps> = ({ ads, activeTab, onDeleteAd }) => {
           <div className="ad-details">
             <h4 className="ad-title">{ad.bookName}</h4>
             <p className="ad-price">Price: {ad.price} kr</p>
-            <p className="ad-seller">Seller: Loading...</p>
             <p className="ad-condition">Condition: {ad.condition}</p>
             <p className="ad-city">Location: {ad.city}</p>
             <div className="ad-shipping">
