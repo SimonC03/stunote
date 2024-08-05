@@ -31,10 +31,6 @@ const LandingPage: React.FC = () => {
         <p className="text-base md:text-lg lg:text-xl mb-4 md:mb-8 max-w-2xl">
           Welcome to StuNote - The best student platform! Access high-quality, course-relevant content and buy or sell used textbooks.<br/>Join us and learn together!
         </p>
-        <div style={{ display: 'flex', justifyContent: 'flex-start', flexWrap: 'wrap', gap: '10px', marginBottom: '60px' }}>
-          <Counter icon={<FaUserFriends />} endValue={100} text="Students" />
-          <Counter icon={<IoDocumentTextOutline />} endValue={200} text="Documents" />
-        </div>
         <div className="flex space-x-4 mb-8">
           <Link href="/sign-in">
             <Button variant="default" className="lg:hidden" size="sm">
