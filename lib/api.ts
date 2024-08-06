@@ -1,5 +1,6 @@
 import { ID, Role, Permission, Query } from 'appwrite';
 import { databases, storage, account } from './appwrite';
+import { Quiz } from './quizapi';
 
 const databaseId = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
 const usersCollectionId = process.env.NEXT_PUBLIC_APPWRITE_USERS_COLLECTION_ID!;
@@ -23,6 +24,7 @@ export interface UserProfile {
   subscriptions: Subscription[];
   favorite_courses: Course[];
   favorite_documents: Document[];
+  quizes: Quiz[];
 }
 
 export interface Subscription {
@@ -183,6 +185,7 @@ export const getUserData = async (userId: string): Promise<UserProfile> => {
       subscriptions: doc.subscriptions || [],
       favorite_courses: doc.favorite_courses || [],
       favorite_documents: doc.favorite_documents || [],
+      quizes: doc.quizes || [],
     };
   } catch (error: any) {
     console.error('Failed to fetch user data:', error);
