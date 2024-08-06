@@ -28,6 +28,47 @@ const handleError = (message: string, error: any) => {
     throw new Error(message);
 };
 
+export const createQuiz = async (): Promise<string> => {
+    try {
+        // Skapa quiz-dokumentet med en tom array av questions
+        const response = await databases.createDocument(
+            databaseId,
+            quizesId,
+            ID.unique(),
+            {
+                questions: []
+            }
+        );
+
+        // Returnera ID för det nya quizet
+        return response.$id;
+    } catch (error) {
+        handleError("Failed to create quiz", error);
+        return ''; // Returnera en tom sträng vid fel
+    }
+};
+
+export const createQuestion = async (questionText: string): Promise<string> => {
+    try {
+        // Skapa frågedokumentet med en tom array av answers
+        const response = await databases.createDocument(
+            databaseId,
+            questionsId,
+            ID.unique(),
+            {
+                question: questionText,
+                answers: []
+            }
+        );
+
+        // Returnera ID för den nya frågan
+        return response.$id;
+    } catch (error) {
+        handleError("Failed to create question", error);
+        return ''; // Returnera en tom sträng vid fel
+    }
+};
+
 export const getQuestionsByQuizId = async (quizId: string): Promise<Question[]> => {
     try {
         console.log(`Fetching questions for quiz with ID: ${quizId}`);
