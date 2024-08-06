@@ -38,6 +38,7 @@ const HomePage = () => {
             subscriptions: [],
             favorite_courses: [],
             favorite_documents: [],
+            quizes: []
           };
         }
 
