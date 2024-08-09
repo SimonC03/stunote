@@ -51,9 +51,6 @@ export default async function CheckoutReturn({ searchParams }: { searchParams: S
       };
 
       await savePaymentData(paymentData); // Spara data i databasen
-      
-      redirect('https://stunote.se/');
-
       // Visa bekräftelsemeddelande om att betalningen är godkänd och premium är tillagd
       return (
         <div className="flex items-center justify-center min-h-screen">
@@ -62,7 +59,6 @@ export default async function CheckoutReturn({ searchParams }: { searchParams: S
             <p className="text-green-500">Your payment was successful, and you have been upgraded to premium!</p>
             <p>Your Stripe customer ID is: <span className="font-mono">{session.customer as string}</span></p>
             <p>Your User ID is: <span className="font-mono">{userId}</span></p>
-            <p className="text-gray-500 mt-4">Redirecting...</p>
           </div>
         </div>
       );
