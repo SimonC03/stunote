@@ -16,14 +16,6 @@ export interface PaymentData {
 
 export const savePaymentData = async (paymentData: PaymentData): Promise<void> => {
     try {
-        // Kontrollera om userId redan finns i databasen
-        const userExists = await doesUserIdExist(paymentData.userId);
-
-        if (userExists) {
-            console.log(`Payment data for userId ${paymentData.userId} already exists.`);
-            return; // Avsluta funktionen om dokumentet redan finns
-        }
-
         // Kontrollera att created_at är i ISO 8601-format
         if (!paymentData.created_at) {
             paymentData.created_at = new Date().toISOString(); // Generera ISO 8601-tid om det saknas

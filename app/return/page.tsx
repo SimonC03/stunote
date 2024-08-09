@@ -1,7 +1,7 @@
 import { updateUserLabels } from "@/lib/sdk";
 import { stripe } from "../utils/stripe";
 import { redirect } from "next/navigation";
-import { PaymentData, savePaymentData } from "@/lib/payments";
+import { doesUserIdExist, PaymentData, savePaymentData } from "@/lib/payments";
 
 interface SearchParams {
   session_id: string;
@@ -24,6 +24,20 @@ export default async function CheckoutReturn({ searchParams }: { searchParams: S
   if (session?.payment_status === "paid" && userId) {
     const labels = ["premium"]; // Lägg till 'premium'-etiketten
     try {
+      const userExists = await doesUserIdExist(userId);
+      if (userExists) {
+        console.log(`Payment data for userId ${userId} already exists.`);
+        // Visa ett meddelande eller omdirigera om betalningsdatan redan finns
+        return (
+          <div className="flex items-center justify-center min-h-screen">
+            <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md text-center">
+              <h2 className="text-2xl font-bold mb-4">Payment Already Processed</h2>
+              <p className="text-green-500">Your payment was already processed and you are already upgraded to premium.</p>
+            </div>
+          </div>
+        );
+      }
+
       await updateUserLabels(userId, labels);
 
       // Spara den viktigaste betalningsrelaterade datan i databasen
