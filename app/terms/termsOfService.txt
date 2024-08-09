@@ -1,3 +1,258 @@
-Terms of Use:
+Terms of Use
 
-These Terms of Use apply to the use of the Platform of StuNote. Please read these Terms of Use carefully in order to ensure that you are aware of your rights and obligations when using the Platform. You can download and print this document.
+These Terms of Use apply to the use of the Platform of StuNote. Please read these Terms of Use carefully to ensure that you are aware of your rights and obligations when using the Platform. You can download and print this document.
+
+These Terms of Use describe the following aspects of the relationship between you and StuNote:
+
+The provision of Study Material (article 7) and creating a Profile (article 5);
+The functionalities of the Platform (articles 3-6);
+The use of the AI Quiz functionality (article 8);
+The notice and take down procedure (article 13);
+The limitation of liability of StuNote (article 14).
+
+Article 1. Definitions
+
+In these Terms of Use, the terms listed below have the following meaning:
+
+1.1. AI: software that uses artificial intelligence techniques to generate answers (AI Answers) to questions submitted by Students (Study Questions) via the AI Quiz.
+
+1.2. AI Answers: all the answers and instructions that AI generates and that are made accessible to Students via the AI Quiz section on the Platform, in response to Study Questions submitted by Students.
+
+1.3. AI Quiz: a separate section on the Platform, which enables Students to submit Study Questions in specific subject areas, which are then answered by AI.
+
+1.4. Information: all information placed on the Platform by StuNote itself, including – but not limited to – the layout and look and feel of the Platform, the logos and trademarks as well as texts. The Information does not include Study Materials.
+
+1.5. Intellectual Property Rights: any and all intellectual property rights and associated rights such as copyrights, trademark rights, patent rights, model rights, trade name rights, database rights and neighbouring rights as well as the rights to know-how and one-line performances.
+
+1.6. Platform: the online environment developed and offered by StuNote, which enables Students from around the world to exchange Study Materials. The Platform contains a separate AI Quiz section where Students can submit Study Questions to AI and access AI Answers. The Platform can be accessed through the websites www.StuNote.se including all underlying domains and web pages.
+
+1.7. Premium Account: a subscription that gives Students access to the most popular Study Materials (“Premium Material”) on the Platform, as well as to certain features and functionalities, unlimited Quizzes, and free ad posts.
+
+1.8. Profile: an individual section created and maintained by you when you register for the Platform.
+
+1.9. Student / you: a User of the Platform.
+
+1.10. Study Material: all the study documents, summaries, notes, assignments, and other study materials that are provided by Students, Teachers, or that Students make accessible or publish using the Platform.
+
+1.11. Study Questions: questions submitted by Students to AI via the AI Quiz section of the Platform.
+
+1.12. StuNote: StuNote, a private limited company.
+
+Article 2. Applicability
+
+2.1. These Terms of Use govern every use of the Platform. By using the Platform, you accept these Terms of Use. The applicability of any other terms and conditions is excluded.
+
+2.2. StuNote is entitled to amend or supplement these Terms of Use. The most up-to-date Terms of Use can be found on the Platform. In the event of an amendment or supplementation that significantly affects your rights or obligations, StuNote will bring these changes to your attention during the use of the Platform.
+
+2.3. In the event that you continue the use of the Platform after these Terms of Use have been amended or supplemented, you thereby irrevocably accept the amended or supplemented Terms of Use. If you do not agree with the amended or supplemented Terms of Use, the only option you have is to no longer use the Platform and to terminate your Profile.
+
+Article 3. Availability
+
+3.1. You accept that the Platform contains only the functionalities and other characteristics as found on the Platform at the time of use ("as is basis"). StuNote expressly excludes any explicit and tacit guarantees, undertakings and warranties of any nature whatsoever including, but not limited to, with regard to the quality, safety, lawfulness, integrity, and accuracy of the Platform, unless explicitly stated otherwise in these Terms of Use.
+
+3.2. You accept that the functionalities of the Platform may change.
+
+3.3. StuNote is entitled to put the Platform (temporarily) out of service and/or to reduce the use of it without any prior notification and without being obliged to pay compensation to you, if in the opinion of StuNote this is necessary, for instance, for maintenance of the Platform.
+
+3.4. StuNote does not guarantee that the Platform or any part thereof will be accessible at all times and without any interruptions or failures. Failures in the Platform can occur as a result of failures in the internet or phone connection or by viruses or faults/defects. StuNote is not liable or obliged to Students to pay compensation in any way whatsoever for any damage resulting or arising from the website being (temporarily) unavailable.
+
+3.5. StuNote is at any time entitled to change, alter, or shut down the Platform without becoming liable to you in any way. If you do not agree with the changes and/or amendments made by StuNote, your only remedy is to cease the use of the Platform and to delete your Profile.
+
+Article 4. The Platform
+
+4.1. StuNote offers a Platform where Students can exchange Study Materials. The Platform also contains a separate AI Quiz section, where Students can submit Study Questions to AI and access AI Answers (for the terms governing the AI Quiz, see article 8). StuNote’s mission is to empower Students to excel at their studies by providing the best tools to study more efficiently.
+
+4.2. Most of the Study Materials on the Platform are available free of charge but requires Students having to create a Profile.
+
+4.3. Some Premium Materials are only available for Students with a Premium Account.
+
+4.4. Through the platform, Students gain access to Study Materials posted by other Student Ambassadors. StuNote accepts no liability whatsoever for the Study Material offered by you or other Students by means of the Platform.
+
+4.5. The Platform may contain links to third-party websites that are not owned or controlled by StuNote. StuNote has no control over, and assumes no responsibility for, the content, privacy policies, or practices of any third-party websites.
+
+Article 5. Profile
+
+5.1. In order to view Premium Materials and to be able to use certain functionalities, you have to create a Profile in the way described on the Platform. When creating a Profile, you must give an email address and password which will allow you to access the Platform and your Profile. You can also register using your existing Google or Linkedin account.
+
+5.2. You are only allowed to use the Platform when aged sixteen (16) or older. In the event that you have not yet reached the age of sixteen (16), you accept that you need the consent of your legal representative(s) (your guardian or (one of) your parents) before creating a Profile and/or taking out a subscription.
+
+5.3. You are responsible for maintaining secrecy with regard to your registration details. As soon as you know or have reason to assume that your username and/or password has come into the hands of unauthorized persons, you must inform StuNote of this, without prejudice to your own obligation to take immediate effective measures yourself such as changing your password. You accept and acknowledge that you are at all times responsible and liable for the use of the Platform by third parties via your Profile.
+
+5.4. The personal data you provide during the registration process will be processed in accordance with StuNote's Privacy Policy Statement.
+
+5.5. You acknowledge and agree that by creating a Profile your user name, university and (if provided) profile picture are visible to other Students.
+
+Article 6. Premium Account
+
+6.1. Students can obtain Premium access by either becoming Student Ambassador or by taking out a any of our subscriptions. The prices are communicated on the Platform.
+
+6.2. Payment is due in the manner described on the Platform.
+
+6.3. StuNote offers a 7 days free trial subscription, which allows you to view Premium Material available on the Platform. After 7 days, your trial subscription automatically extends into the selected Premium subscription, unless you cancel the subscription prior to that date. You can unsubscribe at any time via contact form and no deductions will be made. After unsubscribing, you will retain access for the remainder of the trial period.
+
+6.4. It is possible that StuNote offers longer/shorter free trial subscriptions in specific circumstances, such as actions for study societies. The applicable conditions will then be communicated by StuNote.
+
+6.5. StuNote may introduce or change the subscription fees from time to time, for which we will give you advance notice. If your current subscription is still running, the price will remain in force for the fixed term. If you do not agree with the price change, you must cancel your subscription by the end of the then-current subscription term. If you do not cancel your subscription after the price change goes into effect, you agree to pay the changed price.
+
+6.6. StuNote may suspend or cancel your Premium Account if a payment is not successfully settled.
+
+Article 7. Study Materials
+
+7.1. By means of the Platform, Student ambassadors can post Study Material for the courses and university selected by them.
+
+7.2. You have the possibility to favoritise courses, containing Study Materials selected by you relating to a certain course or subject. These Studylists are not visible to other Students.
+
+7.3. Your Profile will state what Study Material you offer on the Platform.
+
+7.4. The manner in which the Study Material can be posted to the Platform as well as the permitted formats are stated on the Platform.
+
+7.5. You understand and accept that you are responsible and accountable for the Study Material you post on the Platform. You decide what Study Material you post on the Platform. StuNote is not liable to you or any third party for any damages arising out of or in relation to the Study Material created and shared by you within the Platform.
+
+7.6. You understand and accept that StuNote does not, and is under no obligation to, check or (re)view Study Material of other Students. StuNote only conducts an automated (quality) check to verify whether the Study Material contains sufficient texts and/or pages. StuNote has no knowledge of and/or influence on or involvement with the Study Materials posted by Students.
+
+7.7. StuNote reserves the right to convert the Study Materials you uploaded to another format and to automatically insert a watermark and/or advertisements in the Study materials.
+
+7.8. If you or a visitor of the Platform are of the opinion that certain Study Material is unlawful, you can report this to StuNote. StuNote retains the right to remove Study Materials in accordance with article 14.
+
+7.9. StuNote retains the right to decline or remove Study Material from the Platform (for example, if the Study Material in question is reported and/or gets negative ratings) and/or to relocate the Study Material, without accepting any responsibility or liability for its contents, without being held liable for any damage and without being obliged to pay any compensation.
+
+
+Article 8. AI Quiz
+
+8.1. By means of the separate AI Quiz section on the Platform, Students can submit Study Questions for available subjects to be answered by AI. The AI Answers will be available for Students via a database in the Quiz section on the Platform.
+
+8.2. To generate Study Quizzes via the Quiz, you will need to create a Profile.
+
+8.3. You accept and agree StuNote solely facilitates the AI Quiz, which enables Students to use AI to generate AI Answers to their Study Questions.
+
+8.4. The Platform will specify the manner in which Students can submit Study Questions via the AI Quiz section. StuNote reserves the right to limit the availability of AI Quiz to Students with a Premium Account and/or to make the AI Quiz subject to payment/subscription. StuNote can limit the number of questions a Student can submit per day (or other time unit).
+
+8.5. AI will generate the AI Answers within seconds. StuNote, however, does not guarantee that an AI Answer is always provided within this time frame and does not accept liability in this regard.
+
+8.6. Students agree to only submit clear and specific Study Questions that:
+Include all pertinent and contextually relevant information;
+Relate to a clearly identified subject/field of study for which AI Quiz is available;
+Are paraphrased in the Students’ own words, are not copy-pasted directly from another source, and do not infringe Intellectual Property Rights;
+Are clearly focused on one single question; and
+Do not include inappropriate words/phrases.
+
+8.7. Students accept and acknowledge that the Study Questions and the AI Answers shall be made available via a database on the Platform and may be read, collected, and used by other Students.
+
+8.8. You agree to only use the AI Quiz for legitimate (study) purposes and to act with academic integrity. This means, inter alia, that you will not misuse the AI Quiz for cheating purposes and/or that you will not copy AI Answers directly from our Platform and submit them as your own work.
+
+8.9. The AI Answers are to be used for general information purposes only, not as a substitute for in-person evaluation or specific professional advice. StuNote is not liable for the accuracy or completeness of the AI Answers.
+
+8.10. You understand and accept that you are responsible and accountable for the Study Questions you submit via the AI Quiz. StuNote is not liable to you or any third party for any damages arising out of, or in relation to, the Study Questions you submit via the AI Quiz.
+
+8.11. You understand and accept that StuNote does not, and is under no obligation to, check or (re)view the Study Questions and AI Answers. StuNote may, however, (automatically) translate the Study Questions in one or more languages so that more Students can benefit from them.
+
+8.12. StuNote retains the right to remove Study Questions and/or AI Answers in accordance with article 14.
+
+Article 9. Your obligations and use of the Platform
+
+9.1. You will only use the Study Materials and/or AI Answers offered on the Platform as a study aid and in accordance with academic integrity.
+
+9.2. You may not resell, distribute, or in any other way make a profit from the Platform.
+
+9.3. You shall not post entire (e-)books to the Platform.
+
+9.4. You are not permitted to use the Platform for a purpose as listed below, make Study Material available, or submit a Study Question:
+
+Which is unrelated to the purpose of StuNote;
+As your own work if it is not, as this is in breach of copyright. This is also plagiarism and constitutes academic misconduct at all academic institutions;
+Which, at the discretion of StuNote, is discriminating or is otherwise deemed hurtful, offensive or inappropriate;
+In which personal data of others is made available, other than in compliance with applicable law;
+Which contains scrapers, spiders, viruses, Trojan horses, worms, bots or other software which can damage or delete the Platform or make it unusable or inaccessible, or which is intended to circumvent technical protection measures of StuNote, the Website and/or the computer systems of StuNote;
+Which infringes the rights of StuNote and/or third parties, including but not limited to intellectual property rights or rights concerning the protection of privacy;
+Which qualifies as or transmits unwanted or unsolicited material or content (spam);
+Is contrary to these Terms of Use or any applicable laws or regulations, is in any other manner unlawful or which could prejudice the interests and reputation of StuNote.
+
+9.5. StuNote will not be obliged to perform any payment, taxation, levy, or deduction of any nature whatsoever to anyone as a result of Study Materials or Study Questions posted by you, including to persons or parties whose work, model, brand or performance is included in the Study Materials or Study Questions, including to collective rights organizations.
+
+9.6. StuNote reserves the right, without prior notice, to abridge, alter, refuse and/or remove Study Materials and/or Study Questions by you if this is necessary in StuNote’s opinion, without this resulting in any liability.
+
+9.7. StuNote is entitled to (temporarily) restrict or suspend your activities in connection with the Platform and/or to delete your Profile in the event you violate these Terms of Use.
+
+Article 10. Intellectual property rights
+
+10.1. The Intellectual Property Rights in relation to the Platform, including the intellectual property rights with respect to the Information, are held by StuNote or its licensors. Nothing in the Terms of Use is intended to entail any transfer of Intellectual Property Rights to you.
+
+10.2. Under the conditions set out in these Terms of Use, StuNote grants you a limited, personal, revocable, non-exclusive, non-sub licensable and non-transferable right to access and use the Platform, including the Information, insofar as is necessary for the use of the Platform.
+
+10.3. The collection of Study Materials, Information, and AI Answers that is collected by StuNote and displayed on the Platform is a legally protected database. StuNote is the producer of the database and therefore has the exclusive right to grant permission for i) the extraction or re-utilization of the entirety or a substantial part, from a quantitative and/or qualitative point of view, of the contents of the database and ii) the repeated and systematic extraction or re-utilization of non-substantial parts, from a quantitative and/or qualitative point of view, of the contents of the database, in so far as this is in conflict with the normal operation of the database or causes unjustified damage to StuNote’s lawful interests. You may only request or reuse data from the database if and in so far as this is permitted under these Terms and Conditions.
+
+10.4. You retain all Intellectual Property Rights to your Study Material and Study Questions. By making available Study Material and/or Study Questions via the Platform you automatically grant StuNote a free, unencumbered, global, non-exclusive, perpetual and irrevocable license, including the right to (sub)license, to use this Study Material and Study Questions in connection with the Platform and for the Platform’s marketing and/or promotional purposes. This license does not end when you remove your Profile and/or you discontinue the use of the Platform.
+
+10.5. You hereby waive your moral rights to Study Material and Study Questions, in so far as applicable and in so far as possible.
+
+10.6. You warrant that there are no (Intellectual Property) Rights of third parties which preclude you from making the Study Material and Study Questions available through the Platform and/or providing the license as mentioned in Article 10.4.
+
+10.7. You shall refrain from any act that infringes the Intellectual Property Rights of StuNote, including – but not limited to – the registration of domain names, trademarks, or Google Adwords that are identical or similar to any object to which StuNote holds Intellectual Property Rights, as well as the reproduction, modification, reverse engineering, or publishing of the Platform, including the Information, for other purposes than those listed in the Terms of Use.
+
+Article 11. Indemnities and warranties
+
+11.1. You guarantee that you will not use the Platform in a way that (i) infringes the rights of StuNote or third parties, including – but not limited to – Intellectual Property Rights or rights in relation to the protection of privacy, (ii) is contrary to any current legislation or regulations, or (iii) is contrary to any provision in these Terms of Use.
+
+11.2. You are liable and indemnify StuNote against any and all claims of third parties based on the allegation that the Study Material infringes any Intellectual Property Right or other right of third parties or is otherwise unlawful against third parties as well as against all claims resulting from your actions in violation with these Terms of Use. All costs incurred and damages suffered by StuNote which are in any way related to the abovementioned claims will be remunerated by you.
+
+11.3. StuNote does not guarantee (i) the Platform’s fitness for a particular purpose or that the Platform shall meet any of your requirements, (ii) that the Platform shall be available to you at all times and without interruptions or disturbances; (iii) that the Study Material and/or Information and/or AI Answers on the Platform are accurate, up to date, or complete.
+
+Article 12. Downloading and sharing Study Material
+
+12.1. Students with a Profile have the ability to download Study Materials from the Platform for personal use only.
+
+12.2. Downloading Study Material is allowed, provided that you do not violate our Fair Use Policy. This policy states that you can download a maximum of 50 documents per day, with a maximum of 100 documents per month.
+
+12.3. You accept and acknowledge that sharing Study Materials is only permitted using a link to the Platform. You are not permitted to share Study Materials that you have downloaded by other means than a link.
+
+Article 13. Notice of alleged unlawful material & repeat infringers
+
+13.1. StuNote respects the (Intellectual Property) Rights of others and takes the protection of (Intellectual Property) Rights seriously. Although StuNote is not liable for any damages in connection with the (illegal) use of the Platform by Students, StuNote will, under the conditions as set out in this Article, remove Study Material(s), Study Questions and/or AI Answers that is (are) infringing and/or unlawful and stop manifestly unlawful behavior after receiving a notification that is sufficiently precise and adequately substantiated.
+
+13.2. If you claim that certain Study Material, AI Answers, or Study Question infringe on your (Intellectual Property) Rights, you can report this alleged infringement to StuNote by filling in the contact form or by sending us an mail at info@stunote.se. We will examine the notice and, if possible and necessary, take the measures stated in this article.
+
+13.3. StuNote reserves the right to not grant a request to remove Study Materials, AI Answers, or Study Questions or to stop an activity in case it has reasonable grounds to doubt the accuracy of the notification or in case a balancing of interest requires this. In such a situation, StuNote can require a court order from a competent court, to demonstrate that the material or the activity is manifestly unlawful.
+
+13.4. Prior to the removal of any alleged unlawful Study Material(s), AI Answers, or Study Questions, StuNote may request and the notifying party shall provide, additional information substantiating that the notifying party is indeed the rightsholder, and StuNote may request and the notifying party shall provide, a signed copy of an indemnification declaration for StuNote.
+
+13.5. StuNote will not be a party in a dispute between the person making the report and any third party arising out of or in connection with a notification.
+
+13.6. StuNote has a policy of terminating accounts of Students who repeatedly and intentionally infringe the Intellectual Property Rights of others.
+
+13.7. The notifying party indemnifies StuNote against all claims of third parties in relation to the blocking or removal of Study Materials or the stopping of activities as a result of the notification. The indemnification includes all damages and costs StuNote suffers, could suffer, or which StuNote must incur in relation to such a claim, including but not limited to the compensation of legal assistance.
+
+13.8. StuNote respects and protects the privacy of those who provide notifications. All personal data that it receives as part of a notification will only be used to process the notice.
+
+13.9. StuNote reserves the right to forward the notice to the Student responsible for the Study Material to which the notice refers.
+
+Article 14. Liability
+
+14.1. StuNote accepts no liability whatsoever for damages resulting from the provision of the Platform, including damage resulting from or in connection with the use of the Platform or from wrongful acts or otherwise, in so far as this is permitted pursuant to mandatory law.
+
+14.2. In the event that StuNote – despite the above – is liable, this liability is limited to direct damages the Student suffers as a result of a shortcoming or wrongful act that can be attributed to StuNote. Direct damage only includes material damage to goods, reasonable costs incurred to prevent or limit direct damage, and reasonable costs incurred to determine the cause of the damage. StuNote shall in no event be liable for any special, incidental, or consequential damages whatsoever (“indirect damages”), including – but not limited to – loss and/or damage of data (including Study Material), loss of profits, and lost sales, is excluded.
+
+14.3. The limitations and exclusions of liability mentioned in the preceding paragraphs of this article will lapse if and in so far as the damage is the result of intentional or willful recklessness on the part of StuNote or its managers (“own actions”).
+
+Article 15. Force Majeure
+
+15.1. In the case of force majeure, the non-fulfillment of the agreement between you and StuNote cannot be counted as an attributable failure, and StuNote is released from all contractual obligations and liability.
+
+15.2. Force majeure includes, but is not limited to, illness of employees and/or absence of personnel crucial for the provision of the Platform, disruptions of the electricity supply, fire, natural disasters, strikes, floods, failures to perform by third parties hired by StuNote, disturbances in the internet connection, hardware disruptions, disruptions in the (telecommunications) networks, and other unforeseen circumstances.
+
+Article 16. Termination
+
+16.1. You are entitled to discontinue your use of the Platform and to terminate your Profile.
+
+16.2. You accept and acknowledge that any Study Materials posted and Study Questions submitted by you beforehand will, in principle, remain accessible via the Platform.
+
+Article 17. Miscellaneous
+
+17.1. These Terms of Use and the use of the Platform are governed by and construed in accordance with the laws of Sweden.
+
+17.2. Any and all disputes arising from or related to the Platform or the Terms of Use will be brought before the competent court in Gothemburg, unless compulsory law mandates otherwise.
+
+17.3. If at any time any provision of these Terms of Use is or becomes illegal, void, or invalid for any reason whatsoever, such invalidity shall not affect the validity of the remainder of the Terms of Use and such invalid provision shall be replaced by another provision which, being valid in all respects, shall have effect as close as possible to that of such replaced one.
+
+17.4. StuNote is entitled to assign any rights and obligations that result from these Terms of Use to third parties, in which case it will notify you. In the event that you cannot agree with the assignment, your only remedy is to cease the use of the Platform and delete your Profile.
+
+Version: [09-08-2024] 
