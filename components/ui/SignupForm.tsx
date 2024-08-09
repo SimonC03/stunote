@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { account } from '../../lib/appwrite';
 import {
   Form,
   FormField,
@@ -19,6 +18,7 @@ import AuthBox from './AuthBox';
 import { toast } from 'react-hot-toast';
 import GoogleAuthButton from '../GoogleAuth0/Login';
 import LinkedinAuthButton from '../LinkedinAuth0/Login';
+import { createUser } from '@/lib/appwrite';
 
 const signUpSchema = z.object({
   email: z.string().email(),
@@ -43,7 +43,7 @@ const SignUpForm: React.FC = () => {
     setLoading(true);
     try {
       // Create user account
-      await account.create('unique()', values.email, values.password, values.username);
+      await createUser(values.email, values.password, values.username);
       toast.success('Registration successful! Please login.');
       setLoading(false)
       router.push('/sign-in');
