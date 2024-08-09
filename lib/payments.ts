@@ -16,25 +16,17 @@ export interface PaymentData {
 
 export const savePaymentData = async (paymentData: PaymentData): Promise<void> => {
     try {
+        // Kontrollera om userId redan finns i databasen
+        const userExists = await doesUserIdExist(paymentData.userId);
+
+        if (userExists) {
+            console.log(`Payment data for userId ${paymentData.userId} already exists.`);
+            return; // Avsluta funktionen om dokumentet redan finns
+        }
+
         // Kontrollera att created_at är i ISO 8601-format
         if (!paymentData.created_at) {
             paymentData.created_at = new Date().toISOString(); // Generera ISO 8601-tid om det saknas
-        }
-
-        // Kontrollera om det redan finns ett dokument med samma userId
-        const existingDocuments = await databases.listDocuments(
-            databaseId,
-            paymentsCollectionId,
-            [
-                Query.equal('userId', paymentData.userId),
-            ]
-        );
-
-        if (existingDocuments.total > 0) {
-            console.log(`Payment data for userId ${paymentData.userId} already exists.`);
-            // Om du vill uppdatera det befintliga dokumentet istället för att skapa ett nytt,
-            // kan du implementera uppdateringslogik här.
-            return; // Avsluta funktionen om dokumentet redan finns
         }
 
         // Skapa nytt dokument om det inte redan finns
@@ -60,5 +52,22 @@ export const savePaymentData = async (paymentData: PaymentData): Promise<void> =
     } catch (error: any) {
         console.error('Failed to save payment data:', error);
         throw new Error('Failed to save payment data');
+    }
+};
+
+export const doesUserIdExist = async (userId: string): Promise<boolean> => {
+    try {
+        const existingDocuments = await databases.listDocuments(
+            databaseId,
+            paymentsCollectionId,
+            [
+                Query.equal('userId', userId),
+            ]
+        );
+
+        return existingDocuments.total > 0;
+    } catch (error: any) {
+        console.error('Failed to check if userId exists:', error);
+        throw new Error('Failed to check if userId exists');
     }
 };
