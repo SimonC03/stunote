@@ -64,17 +64,22 @@ export const doesUserIdExist = async (userId: string): Promise<boolean> => {
         console.log('All documents:', allDocuments.documents);
 
         // Kontrollera om ett dokument med exakt matchande userId finns genom att jämföra direkt
-        const matchedDocument = allDocuments.documents.find(doc => {
+        let exactMatchFound = false;
+
+        for (const doc of allDocuments.documents) {
             const storedUserId = doc.userId;
             const isMatch = storedUserId === userId;
 
             console.log(`Comparing stored userId: ${storedUserId} with searched userId: ${userId}`);
             console.log(`Is exact match: ${isMatch}`);
 
-            return isMatch;
-        });
+            if (isMatch) {
+                exactMatchFound = true;
+                break;
+            }
+        }
 
-        if (matchedDocument) {
+        if (exactMatchFound) {
             console.log(`Exact match found for userId ${userId}`);
             return true;
         } else {
