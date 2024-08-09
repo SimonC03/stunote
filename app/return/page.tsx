@@ -52,7 +52,7 @@ export default async function CheckoutReturn({ searchParams }: { searchParams: S
 
       await savePaymentData(paymentData); // Spara data i databasen
       
-      redirect('/');
+      redirect('https://stunote.se/');
 
       // Visa bekräftelsemeddelande om att betalningen är godkänd och premium är tillagd
       return (
