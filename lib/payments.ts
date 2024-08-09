@@ -63,25 +63,24 @@ export const doesUserIdExist = async (userId: string): Promise<boolean> => {
         const allDocuments = await databases.listDocuments(databaseId, paymentsCollectionId);
         console.log('All documents:', allDocuments.documents);
 
-        // Kontrollera om ett dokument med exakt matchande userId finns
-        const existingDocuments = await databases.listDocuments(
-            databaseId,
-            paymentsCollectionId,
-            [Query.equal('userId', userId)]
-        );
+        // Kontrollera om ett dokument med exakt matchande userId finns genom att jämföra direkt
+        const matchedDocument = allDocuments.documents.find(doc => {
+            const storedUserId = doc.userId;
+            const isMatch = storedUserId === userId;
 
-        console.log(`Documents found: ${existingDocuments.total}`);
-        console.log('Matched documents:', existingDocuments.documents);
+            console.log(`Comparing stored userId: ${storedUserId} with searched userId: ${userId}`);
+            console.log(`Is exact match: ${isMatch}`);
 
-        // Kontrollera längden på userId för att säkerställa att den stämmer överens
-        const matchedDocument = existingDocuments.documents.find(doc => doc.userId === userId);
+            return isMatch;
+        });
+
         if (matchedDocument) {
             console.log(`Exact match found for userId ${userId}`);
+            return true;
         } else {
             console.error(`No exact match found for userId ${userId}`);
+            return false;
         }
-
-        return existingDocuments.total > 0;
     } catch (error: any) {
         console.error('Failed to check if userId exists:', error.message);
         throw new Error('Failed to check if userId exists');
