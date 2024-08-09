@@ -10,7 +10,6 @@ import Link from 'next/link';
 
 const ExplorePage = () => {
   const { user, loading: userLoading } = useUserContext();
-  const [courses, setCourses] = useState<Course[]>([]);
   const [filteredCourses, setFilteredCourses] = useState<Course[]>([]);
   const [selectedCourseId, setSelectedCourseId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -22,6 +21,8 @@ const ExplorePage = () => {
   const [myEducationCourses, setMyEducationCourses] = useState<Course[]>([]);
   const [selectedYear, setSelectedYear] = useState<number | null>(null);
   const [availableYears, setAvailableYears] = useState<number[]>([]);
+  const [visibleCourses, setVisibleCourses] = useState<Course[]>([]);
+  const [coursesToShow, setCoursesToShow] = useState<number>(18); 
 
   const fetchCourses = useCallback(async () => {
     try {
@@ -65,54 +66,49 @@ const ExplorePage = () => {
       }
     }
   }, [user]);
-  
+
+  const handleLoadMore = () => {
+    setCoursesToShow(prev => prev + 8); // Ladda in 10 fler kurser varje gång
+  };
 
   useEffect(() => {
     if (user && !userLoading) {
       fetchCourses();
       fetchUserData();
     }
-  }, [user, userLoading, fetchCourses, fetchUserData]);
+  }, [user, userLoading, fetchCourses, fetchUserData]);  
 
   useEffect(() => {
+    let coursesToFilter = activeTab === 'explore' ? exploreCourses : myEducationCourses;
+  
+    if (selectedYear !== null && activeTab === 'myEducation' && userData?.school && userData?.education) {
+      coursesToFilter = coursesToFilter.filter(course =>
+        getCoursesByYear(userData.school, userData.education, selectedYear).includes(course.courseCode)
+      );
+    }
+  
     if (searchTerm === '') {
-      setFilteredCourses(exploreCourses);
+      setFilteredCourses(coursesToFilter);
     } else {
       const lowercasedSearchTerm = searchTerm.toLowerCase();
       setFilteredCourses(
-        exploreCourses.filter(
+        coursesToFilter.filter(
           (course) =>
             (course.courseCode && course.courseCode.toLowerCase().includes(lowercasedSearchTerm)) ||
             (course.courseName && course.courseName.toLowerCase().includes(lowercasedSearchTerm))
         )
       );
     }
-  }, [searchTerm, exploreCourses]);
-
-  useEffect(() => {
-    filterCoursesByYear(selectedYear);
-  }, [selectedYear, myEducationCourses]);
+  
+    // Sätt synliga kurser baserat på coursesToShow
+    setVisibleCourses(coursesToFilter.slice(0, coursesToShow));
+  
+  }, [searchTerm, exploreCourses, myEducationCourses, activeTab, selectedYear, userData, coursesToShow]);
+  
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
   };
-
-  const filterCoursesByYear = (year: number | null) => {
-    if (year === null) {
-      setFilteredCourses(myEducationCourses);
-    } else {
-      if (!userData || !userData.school || !userData.education) {
-        setFilteredCourses([]);
-        return;
-      }
-  
-      const filtered = myEducationCourses.filter(course =>
-        getCoursesByYear(userData.school, userData.education, year).includes(course.courseCode)
-      );
-      setFilteredCourses(filtered);
-    }
-  };  
-  
 
   const handleCloseModal = () => setSelectedCourseId(null);
 
@@ -133,11 +129,24 @@ const ExplorePage = () => {
         border: '1px solid #ddd',
         borderRadius: '5px',
         padding: isMobile ? '4px' : '10px',
+        position: 'relative', // Lägg till denna rad för att möjliggöra absolut positionering
         transition: 'background 0.3s',
         display: 'flex',
         flexDirection: 'column',
         cursor: 'pointer'
       }}>
+        {course.premium && (
+          <span style={{
+            position: 'absolute',
+            top: '10px',
+            right: '10px',
+            color: '#DAA520',
+            fontWeight: 'bold',
+            fontSize: isMobile ? '8px' : '12px',
+          }}>
+            ★ Premium
+          </span>
+        )}
         <div onClick={() => onSelectCourse(course.$id)} style={{
           textDecoration: 'none',
           color: 'inherit',
@@ -167,6 +176,8 @@ const ExplorePage = () => {
       </li>
     ));
   };
+  
+  
 
   const renderYearSelection = () => {
     const isMobile = window.innerWidth <= 768;
@@ -244,12 +255,6 @@ const ExplorePage = () => {
       </div>
     );
   };
-  
-  
-  
-  
-  
-  
 
   const renderMyEducation = () => {
     if (!userData) {
@@ -312,10 +317,17 @@ const ExplorePage = () => {
           </button>
         </div>
         <div className="courses-container">
-          {activeTab === 'explore' ? (
+        {activeTab === 'explore' ? (
+          <>
             <ul className="course-list">
-              {renderCourses(filteredCourses, setSelectedCourseId)}
+              {renderCourses(visibleCourses, setSelectedCourseId)}
             </ul>
+            {visibleCourses.length < filteredCourses.length && (
+              <button onClick={handleLoadMore} className="load-more-button">
+                Load More
+              </button>
+            )}
+          </>
           ) : (
             <>
               <div className='year-selection-container'>
@@ -373,6 +385,22 @@ const ExplorePage = () => {
             justify-content: center;
             height: 40px;
             margin-bottom: 5px;
+          }
+          .load-more-button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #47ABFE;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+          }
+
+          .load-more-button:hover {
+            background-color: #005bb5;
           }
           .tab {
             flex: 1;

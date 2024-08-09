@@ -19,7 +19,6 @@ export const FAQ_DATA = [
     question: "How can I delete my account?",
     answer: "Send us a message on the 'Contact Us' tab."
   },
-
   {
     question: "Can I upload study materials?",
     answer: "No, our student ambassadors upload the documents to keep the material in highest quality"

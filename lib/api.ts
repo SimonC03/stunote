@@ -40,6 +40,7 @@ export interface Course {
   courseName: string;
   university: string;
   documents: Document[];
+  premium: boolean;
 }
 
 export interface Document {
@@ -207,6 +208,7 @@ export const getCourseData = async (courseId: string): Promise<Course> => {
       courseName: response.courseName,
       university: response.university,
       documents: response.documents || [],
+      premium: response.premium || false,
     };
   } catch (error: any) {
     handleError('Failed to fetch course data', error);
@@ -275,7 +277,8 @@ export const getCourseDataByCode = async (courseCode: string): Promise<Course> =
       courseCode: courseDoc.courseCode,
       courseName: courseDoc.courseName,
       university: courseDoc.university,
-      documents: documents
+      documents: documents,
+      premium: courseDoc.premium,
     };
   } catch (error: any) {
     handleError('Failed to fetch course data by code', error);

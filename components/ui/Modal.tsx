@@ -180,30 +180,42 @@ const Modal: React.FC<ModalProps> = ({
               </div>
             </div>
 
-            {!hasSubscription && userRole !== 'premium' && emailVerified &&(
-              <div className="free-access-info">
-                <p>You can access this course for free!</p>
-              </div>
-            )}
-            
+            {/* Display Information Based on Course and User Status */}
             {!emailVerified && (
               <div className="email-verification-info">
                 <p>You need to verify your email to access this course.</p>
                 <a href="/profile" className="profile-link">Verify your email here</a>
               </div>
             )}
+
+            {course?.premium && userRole !== 'premium' && emailVerified && (
+              <div className="premium-lock-info">
+                <p>This is a premium course.</p>
+              </div>
+            )}
+
+            {!course?.premium && emailVerified && (
+              <div className="free-access-info">
+                <p>You can access this course for free!</p>
+              </div>
+            )}
+
+            {course?.premium && userRole === 'premium' && emailVerified && (
+              <div className="included-in-subscription-info">
+                <p>This course is included in your premium subscription.</p>
+              </div>
+            )}
+
+            {/* Subscription Button */}
             <Button
               onClick={handleSubscription}
               variant="default"
               size="sm"
               loading={loading}
               className="subscription-button"
-              disabled={!emailVerified}
+              disabled={!emailVerified || (course?.premium && userRole !== 'premium')}
               title={!emailVerified ? 'You need to verify your email to add course' : ''}
             >
-              {!hasSubscription && (
-                <FontAwesomeIcon icon={emailVerified ? faLockOpen : faLock} className="button-icon" />
-              )}
               {hasSubscription ? 'Remove Course' : 'Add Course'}
             </Button>
           </>
@@ -291,17 +303,65 @@ const Modal: React.FC<ModalProps> = ({
           gap: 8px; /* Avstånd mellan ikon och text */
         }
 
+        .premium-lock-info {
+          margin-bottom: 10px;
+          padding: 10px;
+          background-color: red;
+          color: white;
+          border-radius: 5px;
+          font-size: 14px;
+          text-align: center;
+        }
+
+        .included-in-subscription-info {
+          margin-bottom: 10px;
+          padding: 10px;
+          background-color: #e0ffe0;
+          color: #2e7d32;
+          border-radius: 5px;
+          font-size: 14px;
+          text-align: center;
+        }
+
+        .free-access-info {
+          margin-bottom: 10px;
+          padding: 10px;
+          background-color: #e0ffe0;
+          color: #2e7d32;
+          border-radius: 5px;
+          font-size: 14px;
+          text-align: center;
+        }
+
+        .email-verification-info {
+          margin-bottom: 10px;
+          color: #d9534f; /* Röd textfärg för varningar */
+          font-size: 14px;
+          text-align: center;
+        }
+
+        .profile-link {
+          display: inline-block;
+          margin-top: 10px;
+          color: #0070f3;
+          text-decoration: underline;
+        }
+
+        .profile-link:hover {
+          text-decoration: none;
+          color: #005bb5;
+        }
+
         .subscription-button:disabled {
-          background-color: #ccc; /* Grå bakgrundsfärg */
-          color: #666; /* Grå textfärg */
-          cursor: not-allowed; /* Visa inte tillåten pekare */
-          border: 1px solid #aaa; /* Lätt grå kantlinje */
+          background-color: #ccc;
+          color: #666;
+          cursor: not-allowed;
+          border: 1px solid #aaa;
         }
 
         .subscription-button:disabled:hover {
-          background-color: #ccc; /* Behåll samma färg på hover */
+          background-color: #ccc;
         }
-
         .button-icon {
           font-size: 20px;
         }
