@@ -54,6 +54,9 @@ export const doesUserIdExist = async (userId: string): Promise<boolean> => {
             throw new Error('userId is invalid');
         }
 
+        // Trimma userId för att undvika white space problem
+        userId = userId.trim();
+
         console.log(`Checking if userId ${userId} exists in the database...`);
 
         // Lista alla dokument för att felsöka hur userId lagras
@@ -69,6 +72,14 @@ export const doesUserIdExist = async (userId: string): Promise<boolean> => {
 
         console.log(`Documents found: ${existingDocuments.total}`);
         console.log('Matched documents:', existingDocuments.documents);
+
+        // Kontrollera längden på userId för att säkerställa att den stämmer överens
+        const matchedDocument = existingDocuments.documents.find(doc => doc.userId === userId);
+        if (matchedDocument) {
+            console.log(`Exact match found for userId ${userId}`);
+        } else {
+            console.error(`No exact match found for userId ${userId}`);
+        }
 
         return existingDocuments.total > 0;
     } catch (error: any) {
