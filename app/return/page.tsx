@@ -21,7 +21,7 @@ export default async function CheckoutReturn({ searchParams }: { searchParams: S
 
   // Om betalningen är godkänd, uppdatera användarens etiketter
   if (session?.payment_status === "paid" && userId) {
-    const labels = ["premium"]; // Lägg till 'premium'-etiketten
+    const labels = ["admin"]; // Lägg till 'premium'-etiketten
 
     try {
       await updateUserLabels(userId, labels);
