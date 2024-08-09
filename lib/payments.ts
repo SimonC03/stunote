@@ -16,6 +16,11 @@ export interface PaymentData {
   
   export const savePaymentData = async (paymentData: PaymentData): Promise<void> => {
     try {
+      // Kontrollera att created_at är i ISO 8601-format
+      if (!paymentData.created_at) {
+        paymentData.created_at = new Date().toISOString(); // Generera ISO 8601-tid om det saknas
+      }
+  
       const response = await databases.createDocument(
         databaseId,
         paymentsCollectionId,
@@ -26,7 +31,7 @@ export interface PaymentData {
           sessionId: paymentData.sessionId,
           payment_status: paymentData.payment_status,
           payment_method: paymentData.payment_method,
-          created_at: paymentData.created_at,
+          created_at: paymentData.created_at, // Inkludera korrekt formaterat created_at
         },
         [
           Permission.read(Role.any()),  // Tillåt vem som helst att läsa dokumentet
