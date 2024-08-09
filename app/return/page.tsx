@@ -33,8 +33,10 @@ export default async function CheckoutReturn({ searchParams }: { searchParams: S
             <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md text-center">
               <h2 className="text-2xl font-bold mb-4">Payment Already Processed</h2>
               <p className="text-green-500">Your payment was already processed and you are already upgraded to premium.</p>
-              <Link href="/">
-              <a className="mt-4 inline-block bg-blue-500 text-white py-2 px-4 rounded">Go to Home</a>
+              <Link href="/" replace>
+                <a className="mt-4 inline-block bg-blue-500 text-white py-2 px-4 rounded">
+                  Go to Home
+                </a>
               </Link>
             </div>
           </div>
@@ -60,8 +62,10 @@ export default async function CheckoutReturn({ searchParams }: { searchParams: S
           <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md text-center">
             <h2 className="text-2xl font-bold mb-4">Thank You!</h2>
             <p className="text-green-500">Your payment was successful!</p>
-            <Link href="/">
-              <a className="mt-4 inline-block bg-blue-500 text-white py-2 px-4 rounded">Go to Home</a>
+            <Link href="/" replace>
+              <a className="mt-4 inline-block bg-blue-500 text-white py-2 px-4 rounded">
+                Go to Home
+              </a>
             </Link>
           </div>
         </div>
