@@ -19,7 +19,7 @@ export async function POST(request: Request) {
                 trial_period_days: 7,
             },
             client_reference_id: userId,
-            return_url: `${request.headers.get('origin')}/processing-payment?session_id={CHECKOUT_SESSION_ID}`,
+            return_url: `${request.headers.get('origin')}/return?session_id={CHECKOUT_SESSION_ID}`,
         });
 
         console.log("Created session:", session);
