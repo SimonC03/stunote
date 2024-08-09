@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { checkEmailVerificationAndLabel, getUser } from '@/lib/appwrite';
 import Card from "@/components/stripe/Card";
+import '@/components/animations/spinner.css';
 
 const plans = [
     {
@@ -88,7 +89,11 @@ const SubscriptionPage = () => {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="loading-container">
+        <div className="spinner"></div>
+      </div>
+    );
   }
 
   if (!userId) {
