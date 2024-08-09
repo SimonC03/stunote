@@ -16,11 +16,6 @@ export interface PaymentData {
   
   export const savePaymentData = async (paymentData: PaymentData): Promise<void> => {
     try {
-      // Kontrollera att paymentsCollectionId är satt
-      if (!paymentsCollectionId) {
-        throw new Error('Payments Collection ID is not set. Please check your environment variables.');
-      }
-  
       const response = await databases.createDocument(
         databaseId,
         paymentsCollectionId,
@@ -34,9 +29,8 @@ export interface PaymentData {
           created_at: paymentData.created_at,
         },
         [
-          Permission.read(Role.user(paymentData.userId)), // Tillåt användaren att läsa sin egen betalningsdata
-          Permission.write(Role.user(paymentData.userId)), // Tillåt användaren att skriva sin egen betalningsdata (om det behövs)
-          Permission.delete(Role.user(paymentData.userId)), // Tillåt användaren att radera sin egen betalningsdata (om det behövs)
+          Permission.read(Role.any()),  // Tillåt vem som helst att läsa dokumentet
+          Permission.write(Role.any()), // Tillåt vem som helst att skriva dokumentet
         ]
       );
   
