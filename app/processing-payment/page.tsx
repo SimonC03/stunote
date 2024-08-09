@@ -13,20 +13,27 @@ async function getSession(sessionId: string) {
 
 // Funktion för att uppdatera användarens label till premium via din API
 async function updateUserToPremium(userId: string) {
-  const response = await fetch('http://stunote.se/api/updatelabel', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ userId, label: 'premium' }),
-  });
-
-  if (!response.ok) {
-    throw new Error('Failed to update user label to premium');
+    try {
+      const response = await fetch('https://stunote.se/api/updatelabel', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId, label: 'premium' }),
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('API error response:', errorData);
+        throw new Error('Failed to update user label to premium');
+      }
+  
+      return await response.json();
+    } catch (error) {
+      console.error('Failed to fetch:', error);
+      throw error; // Re-throw the error to be caught in the calling function
+    }
   }
-
-  return await response.json();
-}
 
 export default async function CheckoutReturn({ searchParams }: { searchParams: SearchParams }) {
   const sessionId = searchParams.session_id;
