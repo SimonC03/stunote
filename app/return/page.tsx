@@ -35,7 +35,7 @@ export default async function CheckoutReturn({ searchParams }: { searchParams: S
               <p className="text-green-500">Your payment was already processed and you are already upgraded to premium.</p>
               <Link href="/" replace>
                 <a className="mt-4 inline-block bg-blue-500 text-white py-2 px-4 rounded">
-                  Go to Home
+                  Continue
                 </a>
               </Link>
             </div>
@@ -64,7 +64,7 @@ export default async function CheckoutReturn({ searchParams }: { searchParams: S
             <p className="text-green-500">Your payment was successful!</p>
             <Link href="/" replace>
               <a className="mt-4 inline-block bg-blue-500 text-white py-2 px-4 rounded">
-                Go to Home
+                Continue
               </a>
             </Link>
           </div>
