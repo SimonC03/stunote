@@ -1,7 +1,6 @@
 import { updateUserLabels } from "@/lib/sdk";
 import { stripe } from "../utils/stripe";
 import { doesUserIdExist, PaymentData, savePaymentData } from "@/lib/payments";
-import { NextResponse } from "next/server";
 
 interface SearchParams {
   session_id: string;
@@ -28,7 +27,14 @@ export default async function CheckoutReturn({ searchParams }: { searchParams: S
       if (userExists) {
         console.log(`Payment data for userId ${userId} already exists.`);
         // Visa ett meddelande eller omdirigera om betalningsdatan redan finns
-        return NextResponse.redirect('/');
+        return (
+          <div className="flex items-center justify-center min-h-screen">
+            <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md text-center">
+              <h2 className="text-2xl font-bold mb-4">Payment Already Processed</h2>
+              <p className="text-green-500">Your payment was already processed and you are already upgraded to premium.</p>
+            </div>
+          </div>
+        );
       }
 
       await updateUserLabels(userId, labels);
@@ -45,7 +51,16 @@ export default async function CheckoutReturn({ searchParams }: { searchParams: S
 
       await savePaymentData(paymentData); // Spara data i databasen
       // Visa bekräftelsemeddelande om att betalningen är godkänd och premium är tillagd
-      return NextResponse.redirect('/');
+      return (
+        <div className="flex items-center justify-center min-h-screen">
+          <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md text-center">
+            <h2 className="text-2xl font-bold mb-4">Thank You!</h2>
+            <p className="text-green-500">Your payment was successful, and you have been upgraded to premium!</p>
+            <p>Your Stripe customer ID is: <span className="font-mono">{session.customer as string}</span></p>
+            <p>Your User ID is: <span className="font-mono">{userId}</span></p>
+          </div>
+        </div>
+      );
     } catch (error) {
       console.error("Error updating user labels:", error);
       // Hantera felet här om etikettuppdateringen misslyckas

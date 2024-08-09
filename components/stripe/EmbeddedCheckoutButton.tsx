@@ -30,7 +30,6 @@ const EmbeddedCheckoutButton: React.FC<EmbeddedCheckoutButtonProps> = ({ priceId
     })
     .then((res) => res.json())
     .then((data) => {
-        console.log("API response data:", data);
         if (data.client_secret) {
             return data.client_secret;
         } else {
