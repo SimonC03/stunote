@@ -49,7 +49,10 @@ export default async function CheckoutReturn({ searchParams }: { searchParams: S
         payment_method: session.payment_method_types?.[0] || 'unknown',
         created_at: new Date().toISOString(),
       };
+
       await savePaymentData(paymentData); // Spara data i databasen
+      
+      redirect('/');
 
       // Visa bekräftelsemeddelande om att betalningen är godkänd och premium är tillagd
       return (
