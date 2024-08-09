@@ -1,26 +1,27 @@
 'use client'
 
 import { useEffect, useState } from 'react';
-import { Sheet, SheetClose, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
-import { sidebarLinks } from "@/constants"
-import { cn } from "@/lib/utils"
-import Image from "next/image"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import LogoutButton from "./LogoutButton"
-import ProfileIcon from "./ProfileIcon"
+import { Sheet, SheetClose, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { sidebarLinks } from "@/constants";
+import { cn } from "@/lib/utils";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import LogoutButton from "./LogoutButton";
+import ProfileIcon from "./ProfileIcon";
 import { getUserRole } from '@/lib/appwrite'; // Importera getUserRole
 
 const MobileNav = () => {
   const pathname = usePathname();
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isPremium, setIsPremium] = useState(false);
 
   useEffect(() => {
     const fetchUserRoles = async () => {
         try {
             const roles = await getUserRole();
-            // Sätt isAdmin till true om 'admin' finns i rollerna
             setIsAdmin(roles.includes('admin'));
+            setIsPremium(roles.includes('premium'));
         } catch (error) {
             console.error('Failed to fetch user roles:', error);
             // Hantera eventuella fel här
@@ -28,7 +29,7 @@ const MobileNav = () => {
     };
 
     fetchUserRoles();
-}, []);
+  }, []);
 
   return (
     <section>
@@ -48,16 +49,19 @@ const MobileNav = () => {
               <nav className="flex h-full flex-col gap-6 text-white-1">
                 {sidebarLinks
                   .filter(link => !link.admin || (link.admin && isAdmin))
-                  .map(({ route, label, imgURL }) => {
+                  .map(({ route, label, premiumLabel, imgURL }) => {
                     const isActive = pathname === route || pathname.startsWith(`${route}/`);
+                    
+                    // Använd premiumLabel om användaren är Premium
+                    const displayLabel = isPremium && premiumLabel ? premiumLabel : label;
 
                     return (
                       <SheetClose asChild key={route}>
                         <Link href={route} key={label} className={cn("flex gap-3 items-center py-4 max-lg:px-4 justify-start", {
                           'bg-nav-focus border-r-4 border-orange-1': isActive
                         })}>
-                          <Image src={imgURL} alt={label} width={24} height={24}/>
-                          <p>{label}</p>
+                          <Image src={imgURL} alt={displayLabel} width={24} height={24}/>
+                          <p>{displayLabel}</p>
                         </Link>
                       </SheetClose>
                     );
