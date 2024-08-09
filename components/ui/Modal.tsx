@@ -2,8 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { createSubscription, removeSubscription, checkUserSubscription, getCourseData, Course } from '@/lib/api';
 import { useUserContext } from '@/context/UserContext';
 import { toast } from 'react-hot-toast';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLock, faLockOpen } from '@fortawesome/free-solid-svg-icons';
 import { Button } from './button';
 import '@/components/animations/spinner.css';
 import { checkEmailVerificationAndLabel } from '@/lib/appwrite';

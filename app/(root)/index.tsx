@@ -5,6 +5,7 @@ import { getUserData, UserProfile, Subscription, removeFavoriteCourse, addFavori
 import Link from 'next/link';
 import { FaStar, FaRegStar, FaTrash } from 'react-icons/fa';
 import { toast } from 'react-hot-toast';
+import { checkEmailVerificationAndLabel } from '@/lib/appwrite';
 import '@/components/animations/spinner.css';
 
 const HomePage = () => {
@@ -14,6 +15,20 @@ const HomePage = () => {
   const [favorites, setFavorites] = useState<Course[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('yourCourses');
+  const [userRole, setUserRole] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchUserRole = async () => {
+      try {
+        const { userLabel } = await checkEmailVerificationAndLabel();
+        setUserRole(userLabel);
+      } catch (error) {
+        console.error('Failed to fetch user role:', error);
+      }
+    };
+  
+    fetchUserRole();
+  }, []);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -92,13 +107,17 @@ const HomePage = () => {
         display: 'flex',
         flexDirection: 'column',
         position: 'relative',
-        cursor: 'pointer'
+        cursor: userRole === 'premium' || !course.premium ? 'pointer' : 'not-allowed'
       }}>
-        <Link href={`/course/${course.courseCode}`} style={{
-          textDecoration: 'none',
-          color: 'inherit',
-          display: 'block'
-        }}>
+        <Link 
+          href={userRole === 'premium' || !course.premium ? `/course/${course.courseCode}` : '#'} 
+          style={{
+            textDecoration: 'none',
+            color: userRole === 'premium' || !course.premium ? 'inherit' : 'gray',
+            display: 'block',
+            pointerEvents: userRole === 'premium' || !course.premium ? 'auto' : 'none'
+          }}
+        >
           <div style={{ marginBottom: '10px' }}>
             <p style={{
               fontSize: isMobile ? '10px' : '16px',
@@ -118,6 +137,17 @@ const HomePage = () => {
               fontSize: isMobile ? '8px' : '12px',
               margin: '1px 0'
             }}>{course.university}</p>
+            {course.premium && (
+              <span style={{
+                top: '10px',
+                right: '10px',
+                color: '#DAA520',
+                fontWeight: 'bold',
+                fontSize: isMobile ? '8px' : '12px',
+              }}>
+                ★ Premium Course
+              </span>
+            )}
           </div>
         </Link>
         <div style={{
@@ -147,6 +177,7 @@ const HomePage = () => {
       </li>
     ));
   };
+  
   
 
   if (userLoading || loading) {
