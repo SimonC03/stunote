@@ -49,8 +49,18 @@ export const savePaymentData = async (paymentData: PaymentData): Promise<void> =
 
 export const doesUserIdExist = async (userId: string): Promise<boolean> => {
     try {
+        if (!userId) {
+            console.error('userId is invalid:', userId);
+            throw new Error('userId is invalid');
+        }
+
         console.log(`Checking if userId ${userId} exists in the database...`);
 
+        // Lista alla dokument för att felsöka hur userId lagras
+        const allDocuments = await databases.listDocuments(databaseId, paymentsCollectionId);
+        console.log('All documents:', allDocuments.documents);
+
+        // Kontrollera om ett dokument med exakt matchande userId finns
         const existingDocuments = await databases.listDocuments(
             databaseId,
             paymentsCollectionId,
@@ -58,6 +68,7 @@ export const doesUserIdExist = async (userId: string): Promise<boolean> => {
         );
 
         console.log(`Documents found: ${existingDocuments.total}`);
+        console.log('Matched documents:', existingDocuments.documents);
 
         return existingDocuments.total > 0;
     } catch (error: any) {
