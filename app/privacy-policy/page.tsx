@@ -6,27 +6,17 @@ const PrivacyPolicy = async () => {
   const filePath = path.join(process.cwd(), 'app', 'privacy-policy', 'policytext.txt');
   const content = await fs.readFile(filePath, 'utf8');
 
-  // Delar upp texten i sektioner baserat på radbrytningar för att förbättra formateringen
+  // Delar upp texten i sektioner baserat på dubbla radbrytningar för att bevara formateringen
   const sections = content.split('\n\n').map((section, index) => {
-    const lines = section.split('\n');
-    const title = lines[0];
-
-    if (title.trim()) {
-      const text = lines.slice(1).join('<br />');
-      return (
-        <div key={index} style={{ marginBottom: '20px' }}>
-          <h2 style={{ fontSize: '20px', marginTop: '20px', marginBottom: '10px', fontWeight: 'bold' }}>
-            {title}
-          </h2>
-          <p style={{ marginBottom: '20px', textAlign: 'justify' }} dangerouslySetInnerHTML={{ __html: text }} />
-        </div>
-      );
-    } else {
-      const text = lines.join('<br />');
-      return (
-        <p key={index} style={{ marginBottom: '20px', textAlign: 'justify' }} dangerouslySetInnerHTML={{ __html: text }} />
-      );
-    }
+    return (
+      <div key={index} style={{ marginBottom: '20px' }}>
+        {section.split('\n').map((line, i) => (
+          <p key={i} style={{ marginBottom: '10px', textAlign: 'justify', whiteSpace: 'pre-wrap' }}>
+            {line}
+          </p>
+        ))}
+      </div>
+    );
   });
 
   return (
