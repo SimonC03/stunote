@@ -57,17 +57,19 @@ export const savePaymentData = async (paymentData: PaymentData): Promise<void> =
 
 export const doesUserIdExist = async (userId: string): Promise<boolean> => {
     try {
+        console.log(`Checking if userId ${userId} exists in the database...`);
+
         const existingDocuments = await databases.listDocuments(
             databaseId,
             paymentsCollectionId,
-            [
-                Query.equal('userId', userId),
-            ]
+            [Query.equal('userId', userId)]
         );
+
+        console.log(`Documents found: ${existingDocuments.total}`);
 
         return existingDocuments.total > 0;
     } catch (error: any) {
-        console.error('Failed to check if userId exists:', error);
+        console.error('Failed to check if userId exists:', error.message);
         throw new Error('Failed to check if userId exists');
     }
 };
