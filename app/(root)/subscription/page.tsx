@@ -91,9 +91,6 @@ const SubscriptionPage = () => {
     return <div>Loading...</div>;
   }
 
-  if (isPremium) {
-    return <div>You already have a premium subscription!</div>;
-  }
   if (!userId) {
     return <div>Missing UserId!</div>;
   }
@@ -105,7 +102,7 @@ const SubscriptionPage = () => {
             <div key={plan.name} className={`w-full max-w-md mx-auto ${
                 plan.featured ? "order-first lg:order-none lg:scale-110 lg:transform lg:z-10" : "lg:transform lg:scale-90"
             }`}>
-                <Card {...plan} userId={userId} />
+                <Card {...plan} userId={userId} isPremium={isPremium} />
             </div>
             ))}
         </div>

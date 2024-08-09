@@ -12,6 +12,7 @@ const Card = ({
     featured = false,
     features = [],
     userId = '',
+    isPremium = false,
 }) => (
     <div className={`card ${featured ? 'featured' : 'not-featured'}`}>
         {/* Popular tag */}
@@ -43,7 +44,9 @@ const Card = ({
                     </li>
                 ))}
             </ul>
-            <EmbeddedCheckoutButton featured={featured} priceId={priceId} userId={userId}/>
+            {!isPremium && (
+                <EmbeddedCheckoutButton featured={featured} priceId={priceId} userId={userId}/>
+            )}
         </div>
     </div>
 )
