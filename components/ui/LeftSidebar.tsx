@@ -1,11 +1,11 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { sidebarLinks } from '@/constants'
-import { cn } from '@/lib/utils'
-import Image from 'next/image'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { sidebarLinks } from '@/constants';
+import { cn } from '@/lib/utils';
+import Image from 'next/image';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import LogoutButton from './LogoutButton';
 import ProfileIcon from './ProfileIcon';
 import ProtectedRoute from '@/components/ProtectedRoute';
@@ -14,6 +14,7 @@ import { getUserRole } from '@/lib/appwrite'; // Importera getUserRole
 const LeftSidebar = () => {
     const pathname = usePathname();
     const [isAdmin, setIsAdmin] = useState(false);
+    const [isPremium, setIsPremium] = useState(false);
 
     useEffect(() => {
         const fetchUserRoles = async () => {
@@ -21,6 +22,7 @@ const LeftSidebar = () => {
                 const roles = await getUserRole();
                 // Sätt isAdmin till true om 'admin' finns i rollerna
                 setIsAdmin(roles.includes('admin'));
+                setIsPremium(roles.includes('premium'));
             } catch (error) {
                 console.error('Failed to fetch user roles:', error);
                 // Hantera eventuella fel här
@@ -41,15 +43,18 @@ const LeftSidebar = () => {
 
                 {sidebarLinks
                     .filter(link => !link.admin || (link.admin && isAdmin))
-                    .map(({ route, label, imgURL }) => {
+                    .map(({ route, label, premiumLabel, imgURL }) => {
                         const isActive = pathname === route || pathname.startsWith(`${route}/`);
+
+                        // Använd premiumLabel om användaren är Premium
+                        const displayLabel = isPremium && premiumLabel ? premiumLabel : label;
 
                         return (
                             <Link href={route} key={label} className={cn("flex gap-3 items-center py-4 max-lg:px-4 justify-center lg:justify-start", {
                                 'bg-nav-focus border-r-4 border-orange-1': isActive
                             })}>
-                                <Image src={imgURL} alt={label} width={24} height={24}/>
-                                <p>{label}</p>
+                                <Image src={imgURL} alt={displayLabel} width={24} height={24}/>
+                                <p>{displayLabel}</p>
                             </Link> 
                         );
                     })}

@@ -2,6 +2,7 @@ export const sidebarLinks = [
     {
         route: '/subscription',
         label: 'Upgrade to Premium',
+        premiumLabel: 'Premium',  // Nyckel för alternativ titel
         imgURL: "/icons/premiumIcon.svg",
         admin: true,
     },
@@ -35,7 +36,6 @@ export const sidebarLinks = [
         imgURL: '/icons/documentIcon.svg',
         admin: true,
     },
-   
     {
         route: '/create-course',
         label: 'Create Course',
