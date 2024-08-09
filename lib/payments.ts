@@ -1,4 +1,4 @@
-import { ID, Permission, Role } from 'appwrite';
+import { ID, Permission, Role, Query } from 'appwrite';
 import { databases } from './appwrite';
 
 // Hämta miljövariabler för databas och kollektion
@@ -12,36 +12,53 @@ export interface PaymentData {
     payment_status: string;
     payment_method: string;
     created_at: string;
-  }
-  
-  export const savePaymentData = async (paymentData: PaymentData): Promise<void> => {
+}
+
+export const savePaymentData = async (paymentData: PaymentData): Promise<void> => {
     try {
-      // Kontrollera att created_at är i ISO 8601-format
-      if (!paymentData.created_at) {
-        paymentData.created_at = new Date().toISOString(); // Generera ISO 8601-tid om det saknas
-      }
-  
-      const response = await databases.createDocument(
-        databaseId,
-        paymentsCollectionId,
-        ID.unique(),
-        {
-          userId: paymentData.userId,
-          StripeCustomerId: paymentData.StripeCustomerId,
-          sessionId: paymentData.sessionId,
-          payment_status: paymentData.payment_status,
-          payment_method: paymentData.payment_method,
-          created_at: paymentData.created_at, // Inkludera korrekt formaterat created_at
-        },
-        [
-          Permission.read(Role.any()),  // Tillåt vem som helst att läsa dokumentet
-          Permission.write(Role.any()), // Tillåt vem som helst att skriva dokumentet
-        ]
-      );
-  
-      console.log('Payment data saved successfully:', response);
+        // Kontrollera att created_at är i ISO 8601-format
+        if (!paymentData.created_at) {
+            paymentData.created_at = new Date().toISOString(); // Generera ISO 8601-tid om det saknas
+        }
+
+        // Kontrollera om det redan finns ett dokument med samma userId
+        const existingDocuments = await databases.listDocuments(
+            databaseId,
+            paymentsCollectionId,
+            [
+                Query.equal('userId', paymentData.userId),
+            ]
+        );
+
+        if (existingDocuments.total > 0) {
+            console.log(`Payment data for userId ${paymentData.userId} already exists.`);
+            // Om du vill uppdatera det befintliga dokumentet istället för att skapa ett nytt,
+            // kan du implementera uppdateringslogik här.
+            return; // Avsluta funktionen om dokumentet redan finns
+        }
+
+        // Skapa nytt dokument om det inte redan finns
+        const response = await databases.createDocument(
+            databaseId,
+            paymentsCollectionId,
+            ID.unique(),
+            {
+                userId: paymentData.userId,
+                StripeCustomerId: paymentData.StripeCustomerId,
+                sessionId: paymentData.sessionId,
+                payment_status: paymentData.payment_status,
+                payment_method: paymentData.payment_method,
+                created_at: paymentData.created_at, // Inkludera korrekt formaterat created_at
+            },
+            [
+                Permission.read(Role.any()),  // Tillåt vem som helst att läsa dokumentet
+                Permission.write(Role.any()), // Tillåt vem som helst att skriva dokumentet
+            ]
+        );
+
+        console.log('Payment data saved successfully:', response);
     } catch (error: any) {
-      console.error('Failed to save payment data:', error);
-      throw new Error('Failed to save payment data');
+        console.error('Failed to save payment data:', error);
+        throw new Error('Failed to save payment data');
     }
-  };
+};
