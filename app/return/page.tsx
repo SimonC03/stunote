@@ -52,6 +52,14 @@ export default async function CheckoutReturn({ searchParams }: { searchParams: S
 
       await savePaymentData(paymentData); // Spara data i databasen
 
+       // Sätt upp en nedräkning på serversidan
+       for (let i = 5; i > 0; i--) {
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        // Här uppdaterar vi sidan varje sekund för att visa nedräkningen
+        if (i === 1) {
+          redirect('/'); // Redirect när nedräkningen är klar
+        }
+      }
 
       // Visa bekräftelsemeddelande om att betalningen är godkänd och premium är tillagd
       return (
@@ -61,6 +69,7 @@ export default async function CheckoutReturn({ searchParams }: { searchParams: S
             <p className="text-green-500">Your payment was successful, and you have been upgraded to premium!</p>
             <p>Your Stripe customer ID is: <span className="font-mono">{session.customer as string}</span></p>
             <p>Your User ID is: <span className="font-mono">{userId}</span></p>
+            <p className="text-gray-500 mt-4">Redirecting in 5 seconds...</p>
           </div>
         </div>
       );

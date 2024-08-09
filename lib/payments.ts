@@ -49,43 +49,17 @@ export const savePaymentData = async (paymentData: PaymentData): Promise<void> =
 
 export const doesUserIdExist = async (userId: string): Promise<boolean> => {
     try {
-        if (!userId) {
-            console.error('userId is invalid:', userId);
-            throw new Error('userId is invalid');
-        }
-
-        // Trimma userId för att undvika white space problem
-        userId = userId.trim();
-
         console.log(`Checking if userId ${userId} exists in the database...`);
 
-        // Lista alla dokument för att felsöka hur userId lagras
-        const allDocuments = await databases.listDocuments(databaseId, paymentsCollectionId);
-        console.log('All documents:', allDocuments.documents);
+        const existingDocuments = await databases.listDocuments(
+            databaseId,
+            paymentsCollectionId,
+            [Query.equal('userId', userId)]
+        );
 
-        // Kontrollera om ett dokument med exakt matchande userId finns genom att jämföra direkt
-        let exactMatchFound = false;
+        console.log(`Documents found: ${existingDocuments.total}`);
 
-        for (const doc of allDocuments.documents) {
-            const storedUserId = doc.userId;
-            const isMatch = storedUserId === userId;
-
-            console.log(`Comparing stored userId: ${storedUserId} with searched userId: ${userId}`);
-            console.log(`Is exact match: ${isMatch}`);
-
-            if (isMatch) {
-                exactMatchFound = true;
-                break;
-            }
-        }
-
-        if (exactMatchFound) {
-            console.log(`Exact match found for userId ${userId}`);
-            return true;
-        } else {
-            console.error(`No exact match found for userId ${userId}`);
-            return false;
-        }
+        return existingDocuments.total > 0;
     } catch (error: any) {
         console.error('Failed to check if userId exists:', error.message);
         throw new Error('Failed to check if userId exists');
