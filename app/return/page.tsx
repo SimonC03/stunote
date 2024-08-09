@@ -1,6 +1,7 @@
 import { updateUserLabels } from "@/lib/sdk";
 import { stripe } from "../utils/stripe";
 import { redirect } from "next/navigation";
+import { PaymentData, savePaymentData } from "@/lib/payments";
 
 interface SearchParams {
   session_id: string;
@@ -22,9 +23,22 @@ export default async function CheckoutReturn({ searchParams }: { searchParams: S
   // Om betalningen är godkänd, uppdatera användarens etiketter
   if (session?.payment_status === "paid" && userId) {
     const labels = ["premium"]; // Lägg till 'premium'-etiketten
-
     try {
       await updateUserLabels(userId, labels);
+
+      // Spara den viktigaste betalningsrelaterade datan i databasen
+      const paymentData: PaymentData = {
+        userId: userId,
+        StripeCustomerId: session.customer as string,
+        sessionId: sessionId,
+        payment_status: session.payment_status,
+        payment_method: session.payment_method_types?.[0] || 'unknown',
+        created_at: new Date().toISOString(),
+      };
+
+      await savePaymentData(paymentData); // Spara data i databasen
+
+
       // Visa bekräftelsemeddelande om att betalningen är godkänd och premium är tillagd
       return (
         <div className="flex items-center justify-center min-h-screen">
