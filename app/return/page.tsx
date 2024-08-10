@@ -25,7 +25,28 @@ export default async function CheckoutReturn({ searchParams }: { searchParams: S
     const labels = ["premium"]; // Lägg till 'premium'-etiketten
     try {
       await updateUserLabels(userId, labels);
-      console.log("DONE")
+      console.log("DONE");
+
+      const userExists = await doesUserIdExist(userId);
+      if (userExists) {
+        console.log(`Payment data for userId ${userId} already exists.`);
+        // Visa ett meddelande eller omdirigera om betalningsdatan redan finns
+        return (
+          <div className="flex items-center justify-center min-h-screen">
+            <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md text-center">
+              <h2 className="text-2xl font-bold mb-4">Payment Already Processed</h2>
+              <p className="text-green-500">Your payment was already processed and you are already upgraded to premium.</p>
+              <Link href="/" replace>
+                <a className="mt-4 inline-block bg-blue-500 text-white py-2 px-4 rounded">
+                  Continue
+                </a>
+              </Link>
+            </div>
+          </div>
+        );
+      }
+
+      
 
       // Spara den viktigaste betalningsrelaterade datan i databasen
       const paymentData: PaymentData = {
