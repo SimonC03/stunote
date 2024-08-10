@@ -9,10 +9,11 @@ const users = new sdk.Users(client);
 
 export async function updateUserLabels(userId: string, labels: string[]): Promise<void> {
     try {
-        const response = await users.updateLabels(userId, labels);
+        // Använd den korrekta metoden för att uppdatera användarens etiketter
+        const response = await users.updatePrefs(userId, { labels });
         console.log("User labels updated successfully:", response);
-    } catch (error) {
-        console.error("Failed to update user labels:", error);
-        throw new Error('Failed to update user labels');
+    } catch (error: any) {
+        console.error("Failed to update user labels:", error.message || error);
+        throw new Error(`Failed to update user labels for user ${userId}: ${error.message || error}`);
     }
 }

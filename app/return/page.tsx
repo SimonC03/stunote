@@ -25,7 +25,8 @@ export default async function CheckoutReturn({ searchParams }: { searchParams: S
     const labels = ["premium"]; // Lägg till 'premium'-etiketten
     try {
       await updateUserLabels(userId, labels);
-      console.log("DONE")
+      console.log("DONE");
+      
       // Spara den viktigaste betalningsrelaterade datan i databasen
       const paymentData: PaymentData = {
         userId: userId,
@@ -37,6 +38,7 @@ export default async function CheckoutReturn({ searchParams }: { searchParams: S
       };
 
       await savePaymentData(paymentData); // Spara data i databasen
+
       // Visa bekräftelsemeddelande om att betalningen är godkänd och premium är tillagd
       return (
         <div className="flex items-center justify-center min-h-screen">
@@ -52,8 +54,16 @@ export default async function CheckoutReturn({ searchParams }: { searchParams: S
         </div>
       );
     } catch (error) {
-      console.error("Error updating user labels:", error);
-      // Hantera felet här om etikettuppdateringen misslyckas
+      console.error("Error updating user labels or saving payment data:", error);
+      // Hantera felet här om etikettuppdateringen eller spara betalningsdata misslyckas
+      return (
+        <div className="flex items-center justify-center min-h-screen">
+          <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md text-center">
+            <h2 className="text-2xl font-bold mb-4">Error</h2>
+            <p className="text-red-500">There was an issue processing your payment. Please contact support.</p>
+          </div>
+        </div>
+      );
     }
   }
 
