@@ -9,6 +9,7 @@ const users = new sdk.Users(client);
 
 export async function updateUserLabels(userId: string, labels: string[]): Promise<void> {
     try {
+        console.log(users.client.config.project);
         const response = await users.updateLabels(userId, labels);
         console.log("User labels updated successfully:", response);
     } catch (error) {
