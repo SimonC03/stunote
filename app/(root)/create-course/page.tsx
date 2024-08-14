@@ -55,7 +55,7 @@ const CreateCourse = () => {
         courseCode: data.courseCode,
         courseName: data.courseName,
         university: data.university,
-        premium: data.premium || false,
+        premium: false,
       };
 
       await databases.createDocument(
@@ -113,17 +113,6 @@ const CreateCourse = () => {
                     ))}
                   </select>
                 </div>
-              </div>
-              <div>
-                <label htmlFor="premium" className="block text-sm font-medium text-gray-700">
-                  Premium Course
-                </label>
-                <input
-                  id="premium"
-                  type="checkbox"
-                  {...register('premium')}
-                  className="mt-1 block"
-                />
               </div>
               <Button
                 type="submit"
