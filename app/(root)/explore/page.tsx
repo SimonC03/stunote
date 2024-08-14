@@ -68,9 +68,10 @@ const ExplorePage = () => {
   }, [user]);
 
   const handleLoadMore = () => {
-    setCoursesToShow(prev => prev + 8); // Ladda in 10 fler kurser varje gång
+    setCoursesToShow(prev => prev + 8); // Ladda in fler kurser
+    setVisibleCourses(filteredCourses.slice(0, coursesToShow + 8)); // Uppdatera synliga kurser
   };
-
+  
   useEffect(() => {
     if (user && !userLoading) {
       fetchCourses();
@@ -91,19 +92,19 @@ const ExplorePage = () => {
       setFilteredCourses(coursesToFilter);
     } else {
       const lowercasedSearchTerm = searchTerm.toLowerCase();
-      setFilteredCourses(
-        coursesToFilter.filter(
-          (course) =>
-            (course.courseCode && course.courseCode.toLowerCase().includes(lowercasedSearchTerm)) ||
-            (course.courseName && course.courseName.toLowerCase().includes(lowercasedSearchTerm))
-        )
+      coursesToFilter = coursesToFilter.filter(
+        (course) =>
+          (course.courseCode && course.courseCode.toLowerCase().includes(lowercasedSearchTerm)) ||
+          (course.courseName && course.courseName.toLowerCase().includes(lowercasedSearchTerm))
       );
+      setFilteredCourses(coursesToFilter);
     }
   
-    // Sätt synliga kurser baserat på coursesToShow
+    // Begränsa antalet synliga kurser till coursesToShow
     setVisibleCourses(coursesToFilter.slice(0, coursesToShow));
   
   }, [searchTerm, exploreCourses, myEducationCourses, activeTab, selectedYear, userData, coursesToShow]);
+  
   
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
