@@ -167,7 +167,7 @@ const Modal: React.FC<ModalProps> = ({
                 <p className="university-name">School: {course?.university}</p>
                 <p>This course includes:</p>
                 {hasNoDocuments(documentCounts) ? (
-                  <p>No documents available for this course.</p>
+                  <p>No documents available in this course.</p>
                 ) : (
                   documentTypes.map((type) => (
                     documentCounts[type] > 0 && (
