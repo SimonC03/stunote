@@ -15,14 +15,16 @@ const LeftSidebar = () => {
     const pathname = usePathname();
     const [isAdmin, setIsAdmin] = useState(false);
     const [isPremium, setIsPremium] = useState(false);
+    const [isAmbassador, setIsAmbassador] = useState(false);
 
     useEffect(() => {
         const fetchUserRoles = async () => {
             try {
                 const roles = await getUserRole();
-                // Sätt isAdmin till true om 'admin' finns i rollerna
+                // Sätt roller baserat på de hämtade rollerna
                 setIsAdmin(roles.includes('admin'));
                 setIsPremium(roles.includes('premium'));
+                setIsAmbassador(roles.includes('ambassador'));
             } catch (error) {
                 console.error('Failed to fetch user roles:', error);
                 // Hantera eventuella fel här
@@ -42,7 +44,14 @@ const LeftSidebar = () => {
                 </Link>
 
                 {sidebarLinks
-                    .filter(link => !link.admin || (link.admin && isAdmin))
+                    .filter(link => {
+                        if (isAdmin) return true;
+                        // Visa länken om den inte är admin eller ambassador, eller om användaren har rätt roll
+                        if (!link.admin && !link.ambassador) return true;
+                        if (link.admin && isAdmin) return true;
+                        if (link.ambassador && isAmbassador) return true;
+                        return false;
+                    })
                     .map(({ route, label, premiumLabel, imgURL }) => {
                         const isActive = pathname === route || pathname.startsWith(`${route}/`);
 

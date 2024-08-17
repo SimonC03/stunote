@@ -97,19 +97,24 @@ export const getUserRole = async (): Promise<string[]> => {
     const user = await account.get();
     const roles: string[] = [];
 
+    // Kontrollera och lägg till roller baserat på användarens etiketter
     if (user.labels.includes('admin')) {
       roles.push('admin');
     }
     if (user.labels.includes('premium')) {
       roles.push('premium');
     }
-    
+    if (user.labels.includes('ambassador')) {
+      roles.push('ambassador');
+    }
+
     return roles;
   } catch (error: any) {
     console.error('Failed to fetch user roles:', error);
     throw new Error('Failed to fetch user roles');
   }
 };
+
 
 
 export const verifyEmail = async (): Promise<boolean> => {

@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { useEffect, useState } from 'react';
 import { Sheet, SheetClose, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -15,6 +15,7 @@ const MobileNav = () => {
   const pathname = usePathname();
   const [isAdmin, setIsAdmin] = useState(false);
   const [isPremium, setIsPremium] = useState(false);
+  const [isAmbassador, setIsAmbassador] = useState(false);
 
   useEffect(() => {
     const fetchUserRoles = async () => {
@@ -22,6 +23,7 @@ const MobileNav = () => {
             const roles = await getUserRole();
             setIsAdmin(roles.includes('admin'));
             setIsPremium(roles.includes('premium'));
+            setIsAmbassador(roles.includes('ambassador'));
         } catch (error) {
             console.error('Failed to fetch user roles:', error);
             // Hantera eventuella fel här
@@ -48,7 +50,16 @@ const MobileNav = () => {
             <SheetClose asChild>
               <nav className="flex h-full flex-col gap-6 text-white-1">
                 {sidebarLinks
-                  .filter(link => !link.admin || (link.admin && isAdmin))
+                  .filter(link => {
+                    // Om användaren är admin, visa alla länkar
+                    if (isAdmin) return true;
+
+                    // Visa länken om den inte är admin eller ambassador, eller om användaren har rätt roll
+                    if (!link.admin && !link.ambassador) return true;
+                    if (link.admin && isAdmin) return true;
+                    if (link.ambassador && isAmbassador) return true;
+                    return false;
+                  })
                   .map(({ route, label, premiumLabel, imgURL }) => {
                     const isActive = pathname === route || pathname.startsWith(`${route}/`);
                     
