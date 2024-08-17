@@ -12,7 +12,7 @@ const plans = [
         currency: 'SEK',
         frequency: '/month',
         description: 'Pay monthly, cancel anytime.',
-        priceId: 'price_1Pg7v1Rq7k4dESwAS2pqyeiT',
+        priceId: 'price_1PonXiRq7k4dESwArxMa3Siq',
         featured: false,
         features: [
             'Unlock all documents',
@@ -27,7 +27,7 @@ const plans = [
         currency: 'SEK',
         frequency: '/3-months',
         description: 'Save with quarterly billing',
-        priceId: 'price_1Pg7t0Rq7k4dESwALfL6McdI',
+        priceId: 'price_1PonYIRq7k4dESwAfOZcyxux',
         featured: true,
         features: [
             'Unlock all documents',
@@ -42,7 +42,7 @@ const plans = [
         currency: 'SEK',
         frequency: '/year',
         description: 'Best value for annual use.',
-        priceId: 'price_1Pg7tkRq7k4dESwAYMcpGEEi',
+        priceId: 'price_1PonYiRq7k4dESwAs3gyl6Pk',
         featured: false,
         features: [
             'Unlock all documents',
