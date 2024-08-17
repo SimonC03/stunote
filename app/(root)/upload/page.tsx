@@ -7,8 +7,8 @@ import ProtectedRoute from '@/components/ProtectedRoute';
 import { useRouter } from 'next/navigation';
 import { Query } from 'appwrite';
 import { Button } from '@/components/ui/button';
-import AdminRoute from '@/components/AdminRoute';
 import toast from 'react-hot-toast';
+import AmbassadorRoute from '@/components/AmbassadorRoute';
 
 interface UploadFormData {
   school: string;
@@ -196,7 +196,7 @@ const UploadPage = () => {
 
   return (
     <ProtectedRoute>
-      <AdminRoute>
+      <AmbassadorRoute>
         <div className="flex items-center justify-center min-h-screen py-12 px-4 sm:px-6 lg:px-8">
           <div className="bg-white p-8 rounded-md shadow-md w-full max-w-md">
             <h1 className="text-2xl font-bold text-gray-800 mb-6">Upload</h1>
@@ -308,7 +308,7 @@ const UploadPage = () => {
             </form>
           </div>
         </div>
-      </AdminRoute>
+      </AmbassadorRoute>
     </ProtectedRoute>
   );
 };

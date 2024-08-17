@@ -7,9 +7,9 @@ import ProtectedRoute from '@/components/ProtectedRoute';
 import { useRouter } from 'next/navigation';
 import { getSchools } from '@/lib/schools'; // Importera getSchools-funktionen
 import { Button } from '@/components/ui/button';
-import AdminRoute from '@/components/AdminRoute';
 import { Query } from 'appwrite'; // Importera Query från Appwrite SDK
 import toast from 'react-hot-toast';
+import AmbassadorRoute from '@/components/AmbassadorRoute';
 
 interface CourseFormData {
   courseCode: string;
@@ -75,7 +75,7 @@ const CreateCourse = () => {
 
   return (
     <ProtectedRoute>
-      <AdminRoute>
+      <AmbassadorRoute>
         <div className="flex items-center justify-center min-h-screen py-12 px-4 sm:px-6 lg:px-8">
           <div className="bg-white p-8 rounded-md shadow-md w-full max-w-md">
             <h1 className="text-2xl font-bold text-gray-800 mb-6 text-center">Create Course</h1>
@@ -126,7 +126,7 @@ const CreateCourse = () => {
             </form>
           </div>
         </div>
-      </AdminRoute>
+      </AmbassadorRoute>
     </ProtectedRoute>
   );
 };

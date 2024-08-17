@@ -97,86 +97,127 @@ const HomePage = () => {
   const renderCourses = (coursesToRender: Course[]) => {
     const isMobile = window.innerWidth <= 768;
   
-    return coursesToRender.map(course => (
-      <li key={course.$id} style={{
-        background: 'white',
-        border: '1px solid #ddd',
-        borderRadius: '5px',
-        padding: isMobile ? '4px' : '10px',
-        transition: 'background 0.3s',
-        display: 'flex',
-        flexDirection: 'column',
-        position: 'relative',
-        cursor: userRole === 'premium' || !course.premium ? 'pointer' : 'not-allowed'
-      }}>
-        <Link 
-          href={userRole === 'premium' || !course.premium ? `/course/${course.courseCode}` : '#'} 
+    return coursesToRender.map(course => {
+      // Kontrollera om course existerar innan vi försöker läsa dess egenskaper
+      if (!course) {
+        return null; // Om course är null eller undefined, rendera inget
+      }
+  
+      const canAccessCourse = userRole === 'premium' || !course.premium;
+  
+      return (
+        <li
+          key={course.$id}
           style={{
-            textDecoration: 'none',
-            color: userRole === 'premium' || !course.premium ? 'inherit' : 'gray',
-            display: 'block',
-            pointerEvents: userRole === 'premium' || !course.premium ? 'auto' : 'none'
+            background: 'white',
+            border: '1px solid #ddd',
+            borderRadius: '5px',
+            padding: isMobile ? '4px' : '10px',
+            transition: 'background 0.3s',
+            display: 'flex',
+            flexDirection: 'column',
+            position: 'relative',
+            cursor: canAccessCourse ? 'pointer' : 'not-allowed',
           }}
         >
-          <div style={{ marginBottom: '10px' }}>
-            <p style={{
-              fontSize: isMobile ? '10px' : '16px',
-              color: '#000',
-              fontWeight: 'bold',
-              margin: '1px 0'
-            }}>{course.courseName}</p>
-            <p style={{
-              fontWeight: 'bold',
-              color: '#333',
-              fontSize: isMobile ? '8px' : '14px',
-              margin: '1px 0'
-            }}>{course.courseCode}</p>
-            <p style={{
-              fontStyle: 'italic',
-              color: '#777',
-              fontSize: isMobile ? '8px' : '12px',
-              margin: '1px 0'
-            }}>{course.university}</p>
-            {course.premium && (
-              <span style={{
-                top: '10px',
-                right: '10px',
-                color: '#DAA520',
-                fontWeight: 'bold',
-                fontSize: isMobile ? '8px' : '12px',
-              }}>
-                ★ Premium Course
-              </span>
-            )}
+          <Link
+            href={canAccessCourse ? `/course/${course.courseCode}` : '#'}
+            style={{
+              textDecoration: 'none',
+              color: canAccessCourse ? 'inherit' : 'gray',
+              display: 'block',
+              pointerEvents: canAccessCourse ? 'auto' : 'none',
+            }}
+          >
+            <div style={{ marginBottom: '10px' }}>
+              <p
+                style={{
+                  fontSize: isMobile ? '10px' : '16px',
+                  color: '#000',
+                  fontWeight: 'bold',
+                  margin: '1px 0',
+                }}
+              >
+                {course.courseName}
+              </p>
+              <p
+                style={{
+                  fontWeight: 'bold',
+                  color: '#333',
+                  fontSize: isMobile ? '8px' : '14px',
+                  margin: '1px 0',
+                }}
+              >
+                {course.courseCode}
+              </p>
+              <p
+                style={{
+                  fontStyle: 'italic',
+                  color: '#777',
+                  fontSize: isMobile ? '8px' : '12px',
+                  margin: '1px 0',
+                }}
+              >
+                {course.university}
+              </p>
+              {course.premium && (
+                <span
+                  style={{
+                    top: '10px',
+                    right: '10px',
+                    color: '#DAA520',
+                    fontWeight: 'bold',
+                    fontSize: isMobile ? '8px' : '12px',
+                  }}
+                >
+                  ★ Premium Course
+                </span>
+              )}
+            </div>
+          </Link>
+          <div
+            style={{
+              position: 'absolute',
+              top: '10px',
+              right: '10px',
+              display: 'flex',
+              gap: '10px',
+            }}
+          >
+            <button
+              onClick={() => toggleFavorite(course)}
+              className="favorite-button"
+              style={{
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                fontSize: isMobile ? '10px' : '14px',
+              }}
+            >
+              {favorites.some(fav => fav.$id === course.$id) ? (
+                <FaStar className="text-yellow-500" />
+              ) : (
+                <FaRegStar className="text-gray-400" />
+              )}
+            </button>
+            <button
+              onClick={() => handleRemoveSubscription(course.$id)}
+              className="remove-button"
+              style={{
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                fontSize: isMobile ? '10px' : '14px',
+              }}
+            >
+              <FaTrash className="text-gray-400" />
+            </button>
           </div>
-        </Link>
-        <div style={{
-          position: 'absolute',
-          top: '10px',
-          right: '10px',
-          display: 'flex',
-          gap: '10px'
-        }}>
-          <button onClick={() => toggleFavorite(course)} className="favorite-button" style={{
-            background: 'none',
-            border: 'none',
-            cursor: 'pointer',
-            fontSize: isMobile ? '10px' : '14px',
-          }}>
-            {favorites.some(fav => fav.$id === course.$id) ? <FaStar className="text-yellow-500" /> : <FaRegStar className="text-gray-400" />}
-          </button>
-          <button onClick={() => handleRemoveSubscription(course.$id)} className="remove-button" style={{
-            background: 'none',
-            border: 'none',
-            cursor: 'pointer',
-            fontSize: isMobile ? '10px' : '14px',
-          }}>
-            <FaTrash className='text-gray-400'/>
-          </button>
-        </div>
-      </li>
-    ));
+        </li>
+      );
+    });
   };
+  
   
   
 
