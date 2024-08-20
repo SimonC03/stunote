@@ -4,7 +4,7 @@ import { UserProfile } from '@/lib/api';
 import { useUserContext } from '@/context/UserContext';
 import { toast } from 'react-hot-toast';
 import { Button } from '@/components/ui/button';
-import { isEmailVerified, isPhoneVerified } from '@/lib/appwrite';
+import { getUser, isEmailVerified, isPhoneVerified } from '@/lib/appwrite';
 import { getSchools } from '@/lib/schools';
 
 interface SellModalProps {
@@ -96,16 +96,28 @@ const SellModal: React.FC<SellModalProps> = ({ show, onClose, user }) => {
       return;
     }
   
-    if (!user || !user.$id) {
-      alert('You need to be logged in to create an ad.');
-      return;
-    }
-
-    setLoading(true);
     try {
+      const userauth = await getUser(); // Hämta användarens detaljer
+  
+      if (!userauth) {
+        alert('Failed to retrieve user information');
+        return;
+      }
+  
+      // Mappa kontaktmetoder till faktiska användaruppgifter
+      const mappedContactMethods = contactMethods.map(method => {
+        if (method === 'email' || !userauth.email) {
+          return userauth.email; // Användarens email
+        } else if (method === 'phone' || !userauth.phone) {
+          return userauth.phone; // Användarens telefonnummer
+        }
+        return method;
+      });
+  
+      setLoading(true);
       const imageUploadResponse = await uploadAdImage(file);
       const { imageUrl, imageId } = imageUploadResponse;
-
+  
       const newAd: Omit<Ad, '$id'> = {
         bookName,
         user,
@@ -113,23 +125,25 @@ const SellModal: React.FC<SellModalProps> = ({ show, onClose, user }) => {
         price: Number(price),
         condition,
         city,
-        shippingMethod: shippingMethods, // Send as array
+        shippingMethod: shippingMethods, // Skicka som array
         date: new Date().toISOString(),
         imageUrl,
         imageId,
-        contactMethod: contactMethods, // Send as array
+        contactMethod: mappedContactMethods, // Använd mappade kontaktmetoder
       };
+  
       const response = await createAd(newAd);
-
+  
       toast.success('Ad created successfully');
       onClose();
     } catch (error) {
-      console.error('Failed to create ad', error);
+      console.error('Failed to create ad:', error);
       toast.error('Failed to create ad');
     } finally {
       setLoading(false);
     }
   };
+  
 
   if (!show) {
     return null;

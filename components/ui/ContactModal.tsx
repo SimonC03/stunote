@@ -1,13 +1,11 @@
 import React, { useEffect, useRef } from 'react';
-import { Button } from './button';
 
 interface ContactModalProps {
   show: boolean;
   onClose: () => void;
   contactInfo: {
-    email: string;
+    email?: string;
     phoneNumber?: string;
-    contactMethods: string[];
   };
 }
 
@@ -34,12 +32,12 @@ const ContactModal: React.FC<ContactModalProps> = ({ show, onClose, contactInfo 
       <div className="modal-content" ref={modalRef}>
         <button className="close-button" onClick={onClose}>&times;</button>
         <h2>Contact Information</h2>
-        {contactInfo.contactMethods.includes('email') && (
+        {contactInfo.email && (
           <p>
             <strong>Email:</strong> {contactInfo.email}
           </p>
         )}
-        {contactInfo.contactMethods.includes('phone') && contactInfo.phoneNumber && (
+        {contactInfo.phoneNumber && (
           <p>
             <strong>Phone:</strong> {contactInfo.phoneNumber}
           </p>

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { Ad, getUserData } from '@/lib/api';
+import { Ad } from '@/lib/api';
 import { Button } from './button';
 import ContactModal from './ContactModal';
 import '@/components/animations/spinner.css';
-import { getUser } from '@/lib/appwrite';
+
 interface AdListProps {
   ads: Ad[];
   activeTab: string;
@@ -13,18 +13,20 @@ interface AdListProps {
 
 const AdList: React.FC<AdListProps> = ({ ads, activeTab, onDeleteAd }) => {
   const [showContactModal, setShowContactModal] = useState(false);
+  const [selectedAd, setSelectedAd] = useState<Ad | null>(null);
   const [loading, setLoading] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
 
   const handleButtonClick = async (ad: Ad) => {
     setLoading(true);
-    const user = getUser();
 
     if (activeTab === 'buy') {
-      setShowContactModal(true);
+      setSelectedAd(ad); // Sätt den valda annonsen
+      setShowContactModal(true); // Visa kontaktmodalen
     } else {
-      await onDeleteAd(ad.$id!, ad.imageId);
+      await onDeleteAd(ad.$id!, ad.imageId); // Radera annonsen om aktiv flik är "sell"
     }
+
     setLoading(false);
   };
 
@@ -43,7 +45,7 @@ const AdList: React.FC<AdListProps> = ({ ads, activeTab, onDeleteAd }) => {
               </div>
             )}
             <Image
-              src={ad.imageUrl || 'public\icons\default-book.jpg'}
+              src={ad.imageUrl || '/icons/default-book.jpg'}
               alt={ad.bookName}
               layout="fill"
               objectFit="cover"
@@ -70,17 +72,29 @@ const AdList: React.FC<AdListProps> = ({ ads, activeTab, onDeleteAd }) => {
             <p className="ad-uploadDate">Uploaded: {new Date(ad.date).toLocaleDateString()}</p>
             <div className="button-container">
               <Button variant="default" size="xs" loading={loading} onClick={() => handleButtonClick(ad)}>
-                {activeTab === 'buy' ? 'Add to cart' : 'Delete'}
+                {activeTab === 'buy' ? 'Contact seller' : 'Delete'}
               </Button>
             </div>
           </div>
         </div>
       ))}
 
+      {showContactModal && selectedAd && (
+        <ContactModal
+        show={showContactModal}
+        onClose={() => setShowContactModal(false)}
+        contactInfo={{
+          email: selectedAd.contactMethod.find(method => method.includes('@')) || 'te', // Hämta e-post om den finns
+          phoneNumber: selectedAd.contactMethod.find(method => /^\+?[0-9\s-]+$/.test(method)) || ''
+        }}
+      />
+      
+      )}
+
       <style jsx>{`
         .ads-list {
           display: grid;
-          grid-template-columns: repeat(4, 1fr);  /* Ändra från flex till grid layout */
+          grid-template-columns: repeat(4, 1fr);
           gap: 20px;
           justify-content: center;
         }
@@ -121,8 +135,8 @@ const AdList: React.FC<AdListProps> = ({ ads, activeTab, onDeleteAd }) => {
           font-weight: bold;
           margin: 10px 0;
           text-align: center;
-          min-height: 40px; /* Ensures a consistent height */
-          word-wrap: break-word; /* Break long words */
+          min-height: 40px;
+          word-wrap: break-word;
         }
         .ad-price {
           font-size: 14px;
