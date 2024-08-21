@@ -6,6 +6,7 @@ import { Course, Document, getCourseDataByCode, addFavoriteDocument, removeFavor
 import PdfModal from '@/components/ui/PdfModal';
 import { FaStar, FaRegStar } from 'react-icons/fa';
 import { useUserContext } from '@/context/UserContext';
+import '@/components/animations/spinner.css';
 
 const CoursePage = () => {
   const { user } = useUserContext();
@@ -22,6 +23,8 @@ const CoursePage = () => {
   const [activeTab, setActiveTab] = useState<string>('allDocuments');
   const [courseName, setCourseName] = useState<string>('');
   const [courseCode, setCourseCode] = useState<string>('');
+  const [page, setPage] = useState(1); // Current page number
+  const [hasMore, setHasMore] = useState(true);
   const params = useParams();
 
   const courseCodeParam = params.courseId;
@@ -30,26 +33,52 @@ const CoursePage = () => {
   useEffect(() => {
     const fetchCourseData = async () => {
       try {
-        const courseData: Course = await getCourseDataByCode(courseCodeUpper);
+        setLoading(true);
+  
+        // Kontrollera om dokument redan är laddade för den aktuella sidan
+        if (documents.length > (page - 1) * 25) {
+          setLoading(false);
+          return;
+        }
+  
+        const courseData: Course = await getCourseDataByCode(courseCodeUpper, page, 25);
 
         setCourseName(courseData.courseName);
         setCourseCode(courseData.courseCode);
-
-        const formattedDocuments: Document[] = courseData.documents.map((doc) => ({
-          $id: doc.$id,
-          documentType: doc.documentType,
-          uploadTime: doc.uploadTime,
-          fileUrl: doc.fileUrl,
-          uploadedBy: doc.uploadedBy,
-          description: doc.description,
-        }));
-
-        setDocuments(formattedDocuments);
-        setFilteredDocuments(formattedDocuments);
-
-        const types = Array.from(new Set(formattedDocuments.map(doc => doc.documentType)));
+    
+        const formattedDocuments: Document[] = courseData.documents
+          .filter((doc): doc is Document => !!doc) // Filtrera bort undefined
+          .map((doc) => ({
+            $id: doc.$id,
+            documentType: doc.documentType,
+            uploadTime: doc.uploadTime,
+            fileUrl: doc.fileUrl,
+            uploadedBy: doc.uploadedBy,
+            description: doc.description,
+          }));
+    
+        setDocuments((prevDocuments) => {
+          const allDocuments = [...prevDocuments, ...formattedDocuments];
+          const uniqueDocuments = Array.from(new Set(allDocuments.map(doc => doc.$id)))
+            .map(id => allDocuments.find(doc => doc?.$id === id) as Document);
+          return uniqueDocuments;
+        });
+    
+        setFilteredDocuments((prevDocuments) => {
+          const allDocuments = [...prevDocuments, ...formattedDocuments];
+          const uniqueDocuments = Array.from(new Set(allDocuments.map(doc => doc.$id)))
+            .map(id => allDocuments.find(doc => doc?.$id === id) as Document);
+          return uniqueDocuments;
+        });
+    
+        // Kontrollera om det finns fler dokument att hämta
+        if (formattedDocuments.length < 25) {
+          setHasMore(false); // Om färre än 25 dokument returneras, finns det inga fler dokument att ladda
+        }
+    
+        const types = Array.from(new Set([...formattedDocuments.map((doc) => doc.documentType), ...documentTypes]));
         setDocumentTypes(types);
-
+    
         if (user && user.$id) {
           const userData = await getUserData(user.$id);
           setFavorites(userData.favorite_documents);
@@ -60,11 +89,15 @@ const CoursePage = () => {
         setLoading(false);
       }
     };
-
+  
     if (courseCodeUpper && user && user.$id) {
       fetchCourseData();
     }
-  }, [courseCodeUpper, user]);
+  }, [courseCodeUpper, user, page, documentTypes, documents.length]); // Lägg till de saknade beroendena
+  
+  
+  
+  
 
   useEffect(() => {
     let filtered = documents;
@@ -119,8 +152,8 @@ const CoursePage = () => {
   const renderDocuments = (documentsToRender: Document[]) => {
     const isMobile = window.innerWidth <= 768;
 
-    return documentsToRender.map((document) => (
-      <li key={document.$id} style={{
+    return documentsToRender.map((document, index) => (
+      <li key={`${document.$id}-${index}`} style={{
         background: 'white',
         border: '1px solid #ddd',
         borderRadius: '5px',
@@ -222,6 +255,16 @@ const CoursePage = () => {
             {activeTab === 'allDocuments' ? renderDocuments(filteredDocuments) : renderDocuments(filteredDocuments.filter(doc => favorites.some(fav => fav.$id === doc.$id)))}
           </ul>
         </div>
+        {hasMore && (
+          <div style={{ textAlign: 'center', marginTop: '20px' }}>
+            <button
+              onClick={() => setPage((prevPage) => prevPage + 1)} // Öka sidnumret för att ladda nästa sida
+              className="load-more-button"
+            >
+              Load More
+            </button>
+          </div>
+        )}
       </div>
       <PdfModal
         isOpen={isPdfModalOpen}
@@ -289,6 +332,7 @@ const CoursePage = () => {
         }
         .main-section {
           background-color: #F6F6F6;
+          padding-bottom: 10px;
         }
         .documents-container {
           display: flex;
@@ -316,6 +360,22 @@ const CoursePage = () => {
         .document-item:hover {
           background-color: #eeeeee;
         }
+        .load-more-button {
+            display: block;
+            margin: 0px auto;
+            padding: 10px 20px;
+            background-color: #47ABFE;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+          }
+
+          .load-more-button:hover {
+            background-color: #005bb5;
+          }
         @media (max-width: 768px) {
           .welcome-title {
             font-size: 16px;

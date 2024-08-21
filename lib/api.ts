@@ -246,8 +246,9 @@ export const getCourseDocuments = async (courseId: string) => {
   }
 };
 
-export const getCourseDataByCode = async (courseCode: string): Promise<Course> => {
+export const getCourseDataByCode = async (courseCode: string, page: number = 1, limit: number = 25): Promise<Course> => {
   try {
+    // Hämta kursdata
     const response = await databases.listDocuments(databaseId, coursesCollectionId, [
       Query.equal('courseCode', courseCode)
     ]);
@@ -257,8 +258,15 @@ export const getCourseDataByCode = async (courseCode: string): Promise<Course> =
     }
 
     const courseDoc = response.documents[0];
+
+    // Paginering: beräkna offset baserat på sidnummer och limit
+    const offset = (page - 1) * limit;
+
+    // Hämta dokument med paginering
     const documentsResponse = await databases.listDocuments(databaseId, documentsCollectionId, [
-      Query.equal('courses', courseDoc.$id)
+      Query.equal('courses', courseDoc.$id),
+      Query.limit(limit),   // Begränsar antalet dokument som hämtas
+      Query.offset(offset)   // Anger var hämtningen ska börja
     ]);
 
     const documents: Document[] = documentsResponse.documents

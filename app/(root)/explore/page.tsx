@@ -389,7 +389,7 @@ const ExplorePage = () => {
           }
           .load-more-button {
             display: block;
-            margin: 20px auto;
+            margin: 5px auto;
             padding: 10px 20px;
             background-color: #47ABFE;
             color: white;
