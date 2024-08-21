@@ -218,17 +218,41 @@ export const getCourseData = async (courseId: string): Promise<Course> => {
 
 export const getCoursesData = async (): Promise<Course[]> => {
   try {
-    const response = await databases.listDocuments(databaseId, coursesCollectionId);
-    const courses = response.documents;
+    const allCourses: Course[] = [];
+    let page = 1;
+    const limit = 100; // Största antal kurser som hämtas per begäran
+    let hasMoreCourses = true;
 
-    return await Promise.all(
-      courses.map(async (course: any) => await getCourseData(course.$id))
-    );
+    while (hasMoreCourses) {
+      const offset = (page - 1) * limit;
+      
+      const response = await databases.listDocuments(databaseId, coursesCollectionId, [
+        Query.limit(limit),
+        Query.offset(offset),
+      ]);
+      const courses = response.documents;
+
+      if (courses.length > 0) {
+        // Hämta ytterligare information om varje kurs om det behövs
+        const detailedCourses = await Promise.all(
+          courses.map(async (course: any) => await getCourseData(course.$id))
+        );
+
+        allCourses.push(...detailedCourses);
+        page += 1; // Gå till nästa sida
+      } else {
+        hasMoreCourses = false; // Inga fler kurser kvar
+      }
+    }
+
+    return allCourses;
   } catch (error: any) {
     handleError('Failed to fetch courses data', error);
     throw new Error('Failed to fetch courses data');
   }
 };
+
+
 
 export const getCourseDocuments = async (courseId: string) => {
   try {
