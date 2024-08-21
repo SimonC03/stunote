@@ -17,7 +17,6 @@ const plans = [
         features: [
             'Unlock all documents',
             'Unlimited quizzes',
-            'Free ad uploads',
             '7-day free trial',
         ]
     },
@@ -32,7 +31,6 @@ const plans = [
         features: [
             'Unlock all documents',
             'Unlimited quizzes',
-            'Free ad uploads',
             '7-day free trial',
         ]
     },
@@ -47,7 +45,6 @@ const plans = [
         features: [
             'Unlock all documents',
             'Unlimited quizzes',
-            'Free ad uploads',
             '7-day free trial',
         ]
     },

@@ -405,6 +405,10 @@ const CoursePage = () => {
           .filter-select {
             padding: 2px;
           }
+          .load-more-button {
+            padding: 4px 8px;
+            font-size: 8px;
+          }
         }
       `}</style>
     </div>

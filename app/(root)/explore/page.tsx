@@ -489,6 +489,10 @@ const ExplorePage = () => {
             .my-education {
               font-size: 12px;
             }
+            .load-more-button {
+              padding: 4px 8px;
+              font-size: 8px;
+            }
           }
         `}</style>
       </div>
