@@ -56,7 +56,7 @@ const ExplorePage = () => {
   
           const allCourses = await getCoursesData();
           const filteredUserCourses = allCourses.filter(course =>
-            allCodes.includes(course.courseCode)
+            allCodes.includes(course.courseCode.trim())
           );
           setMyEducationCourses(filteredUserCourses);
           setFilteredCourses(filteredUserCourses); // Lägg till detta för att säkerställa att `filteredCourses` är korrekt initialiserad
@@ -84,8 +84,8 @@ const ExplorePage = () => {
   
     if (selectedYear !== null && activeTab === 'myEducation' && userData?.school && userData?.education) {
       coursesToFilter = coursesToFilter.filter(course =>
-        getCoursesByYear(userData.school, userData.education, selectedYear).includes(course.courseCode)
-      );
+        getCoursesByYear(userData.school, userData.education, selectedYear).includes(course.courseCode.trim())
+      );      
     }
   
     if (searchTerm === '') {
@@ -94,9 +94,9 @@ const ExplorePage = () => {
       const lowercasedSearchTerm = searchTerm.toLowerCase();
       coursesToFilter = coursesToFilter.filter(
         (course) =>
-          (course.courseCode && course.courseCode.toLowerCase().includes(lowercasedSearchTerm)) ||
+          (course.courseCode && course.courseCode.trim().toLowerCase().includes(lowercasedSearchTerm)) ||
           (course.courseName && course.courseName.toLowerCase().includes(lowercasedSearchTerm))
-      );
+      );      
       setFilteredCourses(coursesToFilter);
     }
   
