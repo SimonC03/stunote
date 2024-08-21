@@ -499,9 +499,9 @@ export const schoolData: SchoolData = {
       1: [] 
     }},
     { name: "Elektroteknik 300 hp", years: { 
-      1: [],
-      2: [],
-      3: [],
+      1: ["SF1625", "DD1310", "El1110", "IE1205", "SF1624", "SF1626", "EP1200"],
+      2: ["ED1110", "El1220", "EQ1110", "EQ1120", "SF1920", "SK1108", "DD1320"],
+      3: ["EJ1200", "EK1191", "EL1020", "EQ1270", "IE1207"],
       4: [],
       5: [], 
     }},
