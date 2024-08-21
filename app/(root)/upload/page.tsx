@@ -104,62 +104,62 @@ const UploadPage = () => {
   const onSubmit: SubmitHandler<UploadFormData> = async (data) => {
     setLoading(true);
     const file = data.file[0];
-
+  
     if (!file) {
       toast.error('No file selected');
       setLoading(false);
       return;
     }
-
+  
     if (charCount > 100) {
       setDescriptionError('Description exceeds the maximum character limit of 100 characters.');
       setLoading(false);
       return;
     }
-
+  
     try {
       // Hämta den autentiserade användarens ID
       const user = await account.get();
       const userId = user.$id;
-
+  
       // Kontrollera om ett dokument med samma kurs och description redan finns
       let description = data.description;
       if (isExamination && data.examType && data.examDate) {
         description = `${data.examType} ${data.examDate}`;
       }
-
+  
+      const trimmedCourseCode = data.courseId.trim(); // Trimma kurskoden
+  
       const existingDocuments = await databases.listDocuments(
         process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!,
         process.env.NEXT_PUBLIC_APPWRITE_DOCUMENTS_COLLECTION_ID!,
-        [Query.equal('courses', data.courseId), Query.equal('description', description)]
+        [Query.equal('courses', trimmedCourseCode), Query.equal('description', description)]
       );
-
+  
       if (existingDocuments.total > 0) {
-        toast.error("A document with the same course and description already exists.")
+        toast.error("A document with the same course and description already exists.");
         setDescriptionError('A document with the same course and description already exists.');
         setLoading(false);
         return;
       }
-
+  
       // Ladda upp filen till Appwrite Storage
       const fileUploadResponse = await storage.createFile(
         process.env.NEXT_PUBLIC_APPWRITE_STORAGE_ID!,
         'unique()', // Använd 'unique()' för att låta Appwrite generera ett unikt ID för filen
         file
       );
-
+  
       // Skapa metadata för dokumentet
       const documentData = {
         documentType: data.documentType,
-        courses: data.courseId, // Skicka kursens ID direkt
+        courses: trimmedCourseCode, // Använd den trimmade kurskoden
         uploadTime: new Date().toISOString(),
         fileUrl: `https://cloud.appwrite.io/v1/storage/buckets/${process.env.NEXT_PUBLIC_APPWRITE_STORAGE_ID}/files/${fileUploadResponse.$id}/view?project=${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`,
         uploadedBy: userId,
-        description, // Uppdatera description här
-        // Kommentera bort eller ta bort school attributet om det inte finns i din samling
-        // school: data.school,
+        description,
       };
-
+  
       // Spara metadata i Appwrite-databasen
       await databases.createDocument(
         process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!,
@@ -167,7 +167,7 @@ const UploadPage = () => {
         'unique()', // Använd 'unique()' för att låta Appwrite generera ett unikt ID för dokumentet
         documentData
       );
-
+  
       reset();
       toast.success('Document uploaded successfully.');
       router.push(`/`); // Redirect to success page or confirmation page
@@ -182,6 +182,7 @@ const UploadPage = () => {
       setLoading(false);
     }
   };
+  
 
   const handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const charCount = e.target.value.length;
