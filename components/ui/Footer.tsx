@@ -25,7 +25,7 @@ const Footer = () => {
       </div>
       <div className="flex flex-col sm:flex-row sm:space-x-5 mb-2 items-center sm:items-start">
         <div className="text-white text-sm sm:text-base mt-2 sm:mt-0">
-          © 2024 StuNote. All Rights Reserved.
+          © 2025 StuNote. All Rights Reserved.
         </div>
         <div className="flex flex-col sm:flex-row sm:space-x-5 mt-2 sm:mt-0">
           <Link href="/terms" rel="noopener noreferrer">
